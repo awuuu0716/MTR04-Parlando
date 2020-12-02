@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import promotion_1 from '../../img/promotion_1.jpg';
 import promotion_2 from '../../img/promotion_2.jpg';
 import arrow from '../../img/arrow.svg';
-import arrow_hover from '../../img/arrow_hover.svg';
 
 
 const Root = styled.div`
@@ -94,7 +93,8 @@ const Arrow = styled.div`
   display: inline-block;
   width: 50px;
   height: 25px;
-  background: url(${arrow});
+  mask: url(${arrow});
+  background-color: white;
   transform: translate(40px, 2px);
 `;
 
@@ -110,7 +110,7 @@ const BuyNow = styled(Link)`
     text-decoration: none;
 
     ${Arrow} {
-      background: url(${arrow_hover});
+      background-color: rgb(251, 209, 168);
     }
   }
 `;

@@ -7,7 +7,7 @@ import homepage_products_1 from '../../img/homepage_products_1.webp';
 import homepage_products_2 from '../../img/homepage_products_2.webp';
 import homepage_products_3 from '../../img/homepage_products_3.webp';
 
-const ProductsContainer = styled.div`
+const ProductsContainer = styled(Link)`
   display: flex;
   justify-content: space-between;
   width: 80%;
@@ -36,7 +36,8 @@ const ImgFilter = styled.div`
   background: rgba(251, 209, 168, 0.5);
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
-
+  color: #07273c;
+  
   &:hover {
     opacity: 1;
   }
@@ -74,15 +75,15 @@ export default function HomePage() {
       <BannerCarousel />
       <Promotion />
       <ProductsContainer>
-        <ImgContainer>
+        <ImgContainer to="/">
           <ImgFilter>PRODUCT</ImgFilter>
           <ProductImg src={homepage_products_1} />
         </ImgContainer>
-        <ImgContainer>
+        <ImgContainer to="/">
           <ImgFilter>PRODUCT</ImgFilter>
           <ProductImg src={homepage_products_2} />
         </ImgContainer>
-        <ImgContainer>
+        <ImgContainer to="/">
           <ImgFilter>PRODUCT</ImgFilter>
           <ProductImg src={homepage_products_3} />
         </ImgContainer>

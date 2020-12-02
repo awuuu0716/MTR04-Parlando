@@ -2,9 +2,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import logo from '../../img/logo.svg';
 import cart from '../../img/cart.svg';
-import cart_hover from '../../img/cart_hover.svg';
 import member from '../../img/member.svg';
-import member_hover from '../../img/member_hover.svg';
 
 const HeaderContainer = styled.div`
   height: 80px;
@@ -50,11 +48,12 @@ const IconCart = styled.div`
   width: 40px;
   height: 40px;
   cursor: pointer;
-  background: url(${cart}) no-repeat;
+  mask: url(${cart}) no-repeat;
   transform: translate(0px, 5px);
-  
+  background-color: white;
+
   &:hover {
-    background: url(${cart_hover}) no-repeat;
+    background-color: rgb(251, 209, 168);
   }
 `;
 
@@ -62,14 +61,13 @@ const IconMember = styled.div`
   width: 40px;
   height: 40px;
   cursor: pointer;
-  background: url(${member}) no-repeat;
+  mask: url(${member}) no-repeat;
+  background-color: white;
 
   &:hover {
-    background: url(${member_hover}) no-repeat;
+    background-color: rgb(251, 209, 168);
   }
 `;
-
-
 
 export default function Header() {
   return (

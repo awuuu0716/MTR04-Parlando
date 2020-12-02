@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import logo from '../../img/logo.svg';
 import location from '../../img/location.svg';
 import mail from '../../img/mail.svg';
+import fb from '../../img/fb.svg';
+import ig from '../../img/ig.svg';
+import github from '../../img/github.svg';
 
 const FooterTop = styled.div`
   display: flex;
@@ -12,11 +15,12 @@ const FooterTop = styled.div`
 
 const Logo = styled(Link)`
   display: block;
-  width: 200px;
-  height: 55px;
+  width: 292px;
+  height: 80px;
   background: url(${logo}) no-repeat;
   cursor: pointer;
 `;
+
 const FooterBottom = styled.div`
   text-align: center;
   padding: 20px;
@@ -35,14 +39,14 @@ const Container = styled.footer`
 
 const LeftContainer = styled.div`
   display: flex;
-  width: 475px;
+  width: 575px;
   justify-content: space-between;
   align-items: center;
-
 `
 
 const Location = styled.div`
-  margin: 10px 0;
+  margin-bottom: 10px;
+
   span {
     margin-left: 20px;
   }
@@ -52,11 +56,29 @@ const Email = styled.div`
   img {
     transform: translate(-3px, 0px);
   }
+
   span {
     margin-left: 12px;
   }
 `;
 
+const RightContainer = styled.div`
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Icon = styled(Link)`
+  width: 50px;
+  height: 50px;
+  mask: url(${props=>props.$icon}) no-repeat;
+  background-color: white;
+
+  &:hover {
+    background-color: rgb(251, 209, 168);
+  }
+`;
 
 export default function Footer() {
   return (
@@ -66,19 +88,23 @@ export default function Footer() {
           <Logo to="/" />
           <div>
             <Location>
-              <img src={location} />
+              <img src={location} alt="Address" />
               <span>Lorem ipsum dolor sit</span>
             </Location>
             <Email>
-              <img src={mail} />
+              <img src={mail} alt="Email" />
               <span>aaa.xxxxx@aaa.com</span>
             </Email>
           </div>
         </LeftContainer>
 
-        <div></div>
+        <RightContainer>
+          <Icon $icon={fb} />
+          <Icon $icon={ig} />
+          <Icon $icon={github} />
+        </RightContainer>
       </FooterTop>
-      <FooterBottom>xxxxxxxx © 2020 All Rights Reserved.</FooterBottom>
+      <FooterBottom>Made by MTR04 Team Parlando</FooterBottom>
     </Container>
   );
 }
