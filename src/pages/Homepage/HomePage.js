@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import BannerCarousel from '../../component/BannerCarousel';
 import Promotion from '../../component/Promotion';
-import Footer from '../../component/Footer';
 import homepage_products_1 from '../../img/homepage_products_1.webp';
 import homepage_products_2 from '../../img/homepage_products_2.webp';
 import homepage_products_3 from '../../img/homepage_products_3.webp';
@@ -89,7 +88,6 @@ export default function HomePage() {
         </ImgContainer>
       </ProductsContainer>
       <LearnMoreButton to="/">LEARN MORE</LearnMoreButton>
-      <Footer />
     </>
   );
 }
