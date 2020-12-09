@@ -10,7 +10,10 @@ import {
 import HomePage from '../../pages/Homepage';
 import Products from '../../pages/Products';
 import Product from '../../pages/Product';
+import ShoppingCartPage from '../../pages/ShoppingCartpage';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import RecipientPage from '../../pages/RecipientPage';
+import TransactionPage from '../../pages/TransactionPage';
 
 function App() {
   return (
@@ -26,9 +29,18 @@ function App() {
         <Route exact path="/products/:id">
           <Product />
         </Route>
+        <Route exact path="/shopping-cart">
+          <ShoppingCartPage />
+        </Route>
+        <Route exact path="/recipient">
+          <RecipientPage />
+        </Route>
+        <Route exact path="/transaction">
+          <TransactionPage />
+        </Route>
         <Redirect to="/" />
       </Switch>
-      <Footer />
+    <Footer />
     </Router>
   );
 }
