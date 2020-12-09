@@ -6,6 +6,8 @@ import ShoppingCartPage from '../../pages/ShoppingCartpage';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RecipientPage from '../../pages/RecipientPage';
+import TransactionPage from '../../pages/TransactionPage';
+
 
 function App() {
   return (
@@ -20,6 +22,9 @@ function App() {
         </Route>
         <Route exact path="/recipient">
           <RecipientPage />
+        </Route>
+        <Route exact path="/transaction">
+          <TransactionPage />
         </Route>
       </Switch>
     </Router>

@@ -200,7 +200,7 @@ export default function Recipient() {
             required={true}
           />
         </ReceiverInfoForm>
-        <NextBtn to="/success">下一步</NextBtn>
+        <NextBtn to="/transaction">下一步</NextBtn>
       </Container>
     </Root>
   );

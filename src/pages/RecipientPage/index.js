@@ -1,1 +1,2 @@
-export { default } from './Recipient';
+export { default } from './RecipientPage';
+
