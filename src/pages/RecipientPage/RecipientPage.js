@@ -4,10 +4,10 @@ import Footer from '../../component/Footer';
 import Recipient from '../../component/Recipient';
 
 export default function RecipientPage() {
-	return (
-		<>
-			<Recipient />
-			<Footer />
-		</>
-	);
+  return (
+    <>
+      <Recipient />
+      <Footer />
+    </>
+  );
 }
