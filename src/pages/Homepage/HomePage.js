@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import BannerCarousel from '../../component/BannerCarousel';
 import Promotion from '../../component/Promotion';
-import Footer from '../../component/Footer';
 import homepage_products_1 from '../../img/homepage_products_1.webp';
 import homepage_products_2 from '../../img/homepage_products_2.webp';
 import homepage_products_3 from '../../img/homepage_products_3.webp';
@@ -37,7 +36,7 @@ const ImgFilter = styled.div`
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
   color: #07273c;
-  
+
   &:hover {
     opacity: 1;
   }
@@ -89,7 +88,6 @@ export default function HomePage() {
         </ImgContainer>
       </ProductsContainer>
       <LearnMoreButton to="/">LEARN MORE</LearnMoreButton>
-      <Footer />
     </>
   );
 }
