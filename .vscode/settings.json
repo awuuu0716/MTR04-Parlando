@@ -1,5 +1,0 @@
-{
-  "compile-hero.disable-compile-files-on-did-save-code": true,
-  "prettier.resolveGlobalModules": true,
-  "files.autoSave": "afterDelay"
-}
