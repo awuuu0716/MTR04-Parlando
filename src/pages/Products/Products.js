@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import products_1 from '../../img/products_1.webp';
@@ -5,9 +6,9 @@ import products_1 from '../../img/products_1.webp';
 const Container = styled.div`
   width: 80vw;
   margin: 50px auto;
-`
+`;
 
-const Title = styled.h1`
+const Title = styled.h2`
   color: #07273c;
   font-weight: bold;
   margin-left: 30px;
@@ -82,51 +83,52 @@ const Price = styled.p`
 `;
 
 export default function Products() {
+
   return (
-      <Container>
-        <Title>全部商品</Title>
-        <Divider />
-        <OptionContainer>
-          <ProductsOption to="/products/acoustics">音響</ProductsOption>
-          <ProductsOption to="/products/earbuds">入耳式耳機</ProductsOption>
-          <ProductsOption to="/products/headphones">耳罩式耳機</ProductsOption>
-          <ProductsOption to="/products/accessories">週邊配件</ProductsOption>
-        </OptionContainer>
-        <Divider />
+    <Container>
+      <Title>全部商品</Title>
+      <Divider />
+      <OptionContainer>
+        <ProductsOption to="/products/acoustics">音響</ProductsOption>
+        <ProductsOption to="/products/earbuds">入耳式耳機</ProductsOption>
+        <ProductsOption to="/products/headphones">耳罩式耳機</ProductsOption>
+        <ProductsOption to="/products/accessories">週邊配件</ProductsOption>
+      </OptionContainer>
+      <Divider />
 
-        <ProductContainer>
-          <Product to="/products/1">
-            <Img src={products_1} alt="A product" />
-            <Name>PRODUCT NAME</Name>
-            <Description>DESCROPTION DESCRIPION</Description>
-            <Price>NT$1000</Price>
-          </Product>
-          <Product>
-            <Img src={products_1} alt="A product" />
-            <Name>PRODUCT NAME</Name>
-            <Description>DESCROPTION DESCRIPION</Description>
-            <Price>NT$1000</Price>
-          </Product>
-          <Product>
-            <Img src={products_1} alt="A product" />
-            <Name>PRODUCT NAME</Name>
-            <Description>DESCROPTION DESCRIPION</Description>
-            <Price>NT$1000</Price>
-          </Product>
-          <Product>
-            <Img src={products_1} alt="A product" />
-            <Name>PRODUCT NAME</Name>
-            <Description>DESCROPTION DESCRIPION</Description>
-            <Price>NT$1000</Price>
-          </Product>
-          <Product>
-            <Img src={products_1} alt="A product" />
-            <Name>PRODUCT NAME</Name>
-            <Description>DESCROPTION DESCRIPION</Description>
-            <Price>NT$1000</Price>
-          </Product>
+      <ProductContainer>
+        <Product to="/products/1">
+          <Img src={products_1} alt="A product" />
+          <Name>PRODUCT NAME</Name>
+          <Description>DESCROPTION DESCRIPION</Description>
+          <Price>NT$1000</Price>
+        </Product>
+        <Product>
+          <Img src={products_1} alt="A product" />
+          <Name>PRODUCT NAME</Name>
+          <Description>DESCROPTION DESCRIPION</Description>
+          <Price>NT$1000</Price>
+        </Product>
+        <Product>
+          <Img src={products_1} alt="A product" />
+          <Name>PRODUCT NAME</Name>
+          <Description>DESCROPTION DESCRIPION</Description>
+          <Price>NT$1000</Price>
+        </Product>
+        <Product>
+          <Img src={products_1} alt="A product" />
+          <Name>PRODUCT NAME</Name>
+          <Description>DESCROPTION DESCRIPION</Description>
+          <Price>NT$1000</Price>
+        </Product>
+        <Product>
+          <Img src={products_1} alt="A product" />
+          <Name>PRODUCT NAME</Name>
+          <Description>DESCROPTION DESCRIPION</Description>
+          <Price>NT$1000</Price>
+        </Product>
+      </ProductContainer>
 
-        </ProductContainer>
-      </Container>
+    </Container>
   );
 }

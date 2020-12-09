@@ -104,7 +104,7 @@ const Label = styled.label`
   color: #333333;
 `;
 
-const Price = styled.h1`
+const Price = styled.h2`
   color: #333333;
   margin-bottom: 30px;
 `;
@@ -128,6 +128,11 @@ const Option = styled.button`
   &:focus {
     outline: none;
   }
+
+  &:hover {
+    background: white;
+    color: #333333;
+  }
 `;
 
 const Amount = styled.div`
@@ -137,10 +142,16 @@ const Amount = styled.div`
 const AmountButton = styled.button`
   width: 50px;
   height: 50px;
+  font-size: 24px;
   font-weight: bold;
   color: white;
   background: #07273c;
   border: none;
+  transition: all 0.1s linear;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 
   &:focus {
     outline: none;
@@ -214,7 +225,6 @@ const Anchor = styled(HashLink)`
 const Feature = styled.h1`
   text-align: center;
   margin-top: 80px;
-  font-size: 64px;
 `;
 
 const FeatureDescription = styled.p`
@@ -254,7 +264,6 @@ const TitleContainer = styled.div`
 
 const Title = styled.h1`
   color: white;
-  font-size: 24px;
   font-weight: bold;
   text-shadow: 2px 2px 2px #737373;
 `;
@@ -266,18 +275,19 @@ const Specification = styled.div`
 `;
 
 const SpecificationTopic = styled.h2`
-  font-size: 24px
+  font-size: 24px;
   margin: 20px;
 `;
 
 const SpecificationMinorTopic = styled.h3`
   font-weight: normal;
-  font-size: 24px
-  margin: 20px;
+  font-size: 24px;
+  margin: 20px 0 0 20px;
 `;
 
 const SpecificationContent = styled.p`
   padding: 20px;
+  padding-top: 0;
   font-size: 18px;
 `;
 
@@ -291,10 +301,77 @@ const SupportTitle = styled.div`
   margin: 20px;
 `;
 
+const Modal = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: ${(props) => (props.$isShowModal ? 'flex' : 'none')};
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  width: 500px;
+  padding: 80px 0;
+  border: 1px solid #226592;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+  box-shadow: 3px 3px 5px #b2cee0;
+
+  h2 {
+    font-weight: bold;
+    margin-bottom: 40px;
+  }
+`;
+
+const CloseModalButton = styled.button`
+  width: 120px;
+  height: 50px;
+  background: #07273c;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  margin-right: 10px;
+  box-shadow: 3px 3px 5px #b2cee0;
+`;
+
+const CheckoutButton = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 50px;
+  background: #495f6e;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  box-shadow: 3px 3px 5px #b2cee0;
+
+  &:hover {
+    color: white;
+    text-decoration: none;
+  }
+`;
+
+const Actions = styled.div`
+  display: flex;
+`;
+
 export default function Product() {
+  const [picList, setPicList] = useState([
+    { src: product_pic_1, isActive: true },
+    { src: product_pic_2, isActive: false },
+    { src: product_pic_1, isActive: false },
+    { src: product_pic_2, isActive: false },
+  ]);
+  const [nowPicIndex, setNowPicIndex] = useState(0);
   const [amount, setAmount] = useState(1);
+  const [isShowModal, setIsShowModal] = useState(false);
   const [color, setColor] = useState('DARK');
   const { pathname } = useLocation();
+
+  const handleShowModal = (state) => {
+    setIsShowModal(state);
+  };
 
   const chooseColor = (color) => setColor(color);
 
@@ -302,22 +379,61 @@ export default function Product() {
 
   const minusAmount = () => setAmount(amount - 1 <= 0 ? 1 : amount - 1);
 
+  const nextPic = () => {
+    if (nowPicIndex + 1 >= picList.length) {
+      setPicList(
+        picList.map((data, index) => {
+          if (index === 0) return { ...data, isActive: true };
+          return { ...data, isActive: false };
+        })
+      );
+      setNowPicIndex(0);
+    } else {
+      setPicList(
+        picList.map((data, index) => {
+          if (index === nowPicIndex + 1) return { ...data, isActive: true };
+          return { ...data, isActive: false };
+        })
+      );
+      setNowPicIndex(nowPicIndex + 1);
+    }
+  };
+
+  const prePic = () => {
+    if (nowPicIndex - 1 < 0) {
+      setPicList(
+        picList.map((data, index) => {
+          if (index === picList.length - 1) return { ...data, isActive: true };
+          return { ...data, isActive: false };
+        })
+      );
+      setNowPicIndex(picList.length - 1);
+    } else {
+      setPicList(
+        picList.map((data, index) => {
+          if (index === nowPicIndex - 1) return { ...data, isActive: true };
+          return { ...data, isActive: false };
+        })
+      );
+      setNowPicIndex(nowPicIndex - 1);
+    }
+  };
+
   return (
     <>
       <Container>
         <Breadcrumb>breadcrumb breadcrumb </Breadcrumb>
         <ProductContainer>
           <div>
-            <Thumbnail $active={true} src={product_pic_1} />
-            <Thumbnail src={product_pic_2} />
-            <Thumbnail src={product_pic_1} />
-            <Thumbnail src={product_pic_2} />
+            {picList.map((data) => (
+              <Thumbnail $active={data.isActive} src={data.src} />
+            ))}
           </div>
 
           <ProductImgContainer>
-            <ArrowLeft />
-            <ProductImg src={product_pic_1}></ProductImg>
-            <ArrowRight />
+            <ArrowLeft onClick={prePic} />
+            <ProductImg src={picList[nowPicIndex].src}></ProductImg>
+            <ArrowRight onClick={nextPic} />
           </ProductImgContainer>
 
           <ProductInfomationContainer>
@@ -352,7 +468,9 @@ export default function Product() {
               <AmountButton onClick={addAmount}>+</AmountButton>
             </Amount>
             <div>
-              <AddToCart>ADD TO CART</AddToCart>
+              <AddToCart onClick={() => handleShowModal(true)}>
+                ADD TO CART
+              </AddToCart>
               <Buy to="/">BUY</Buy>
             </div>
           </ProductInfomationContainer>
@@ -386,15 +504,15 @@ export default function Product() {
 
         <Specification>
           <SpecificationTopic>TOPIC</SpecificationTopic>
+          <SpecificationMinorTopic>MINOR TOPIC</SpecificationMinorTopic>
           <SpecificationContent>
-            <SpecificationMinorTopic>MINOR TOPIC</SpecificationMinorTopic>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
             euismod bibendum laoreet.
           </SpecificationContent>
 
           <SpecificationTopic>TOPIC</SpecificationTopic>
+          <SpecificationMinorTopic>MINOR TOPIC</SpecificationMinorTopic>
           <SpecificationContent>
-            <SpecificationMinorTopic>MINOR TOPIC</SpecificationMinorTopic>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
             euismod bibendum laoreet.
           </SpecificationContent>
@@ -409,6 +527,15 @@ export default function Product() {
           <SupportTitle>聯絡客服</SupportTitle>
         </Support>
       </Container>
+      <Modal $isShowModal={isShowModal}>
+        <h2>加入成功！</h2>
+        <Actions>
+          <CloseModalButton onClick={() => handleShowModal(false)}>
+            返回
+          </CloseModalButton>
+          <CheckoutButton>結帳</CheckoutButton>
+        </Actions>
+      </Modal>
     </>
   );
 }
