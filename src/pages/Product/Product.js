@@ -133,11 +133,6 @@ const Option = styled.button`
   &:focus {
     outline: none;
   }
-
-  &:hover {
-    background: white;
-    color: #333333;
-  }
 `;
 
 const Amount = styled.div`

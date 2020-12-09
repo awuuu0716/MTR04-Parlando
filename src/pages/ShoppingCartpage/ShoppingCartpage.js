@@ -4,10 +4,5 @@ import Footer from '../../component/Footer';
 import ShoppingCartTable from '../../component/ShoppingCartTable';
 
 export default function ShoppingCartpage() {
-  return (
-    <>
-      <ShoppingCartTable />
-      <Footer />
-    </>
-  );
+  return <ShoppingCartTable />
 }
