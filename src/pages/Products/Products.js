@@ -8,10 +8,11 @@ const Container = styled.div`
   margin: 50px auto;
 `;
 
-const Title = styled.h2`
+const Title = styled.h3`
   color: #07273c;
   font-weight: bold;
   margin-left: 30px;
+  margin-bottom: 30px;
 `;
 
 const Divider = styled.div`
@@ -24,16 +25,16 @@ const OptionContainer = styled.div`
   display: flex;
 `;
 
-const ProductsOption = styled(Link)`
+const ProductsOption = styled.div`
   color: #333;
   padding: 30px 50px;
   border-bottom: 2px solid transparent;
   font-size: 24px;
   font-weight: bold;
+  cursor: pointer;
 
   &:hover {
     border-bottom: 2px solid #07273c;
-    text-decoration: none;
   }
 `;
 
@@ -89,6 +90,8 @@ export default function Products() {
       <Title>全部商品</Title>
       <Divider />
       <OptionContainer>
+      {/*all 不同的 API */}
+        <ProductsOption to="/products">全部商品</ProductsOption>
         <ProductsOption to="/products/acoustics">音響</ProductsOption>
         <ProductsOption to="/products/earbuds">入耳式耳機</ProductsOption>
         <ProductsOption to="/products/headphones">耳罩式耳機</ProductsOption>
@@ -128,7 +131,6 @@ export default function Products() {
           <Price>NT$1000</Price>
         </Product>
       </ProductContainer>
-
     </Container>
   );
 }

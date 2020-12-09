@@ -36,7 +36,7 @@ const ImgFilter = styled.div`
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
   color: #07273c;
-  
+
   &:hover {
     opacity: 1;
   }

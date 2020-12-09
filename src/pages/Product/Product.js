@@ -15,6 +15,10 @@ const Container = styled.div`
 const Breadcrumb = styled.div`
   font-weight: bold;
   padding: 40px;
+
+  a {
+    color: #07273c;
+  }
 `;
 
 const ProductContainer = styled.div`
@@ -124,6 +128,7 @@ const Option = styled.button`
   border: 1px solid #07273c;
   border-radius: 5px;
   box-shadow: 0 0px 6px #ababab;
+  font-size: 16px;
 
   &:focus {
     outline: none;
@@ -177,6 +182,7 @@ const AddToCart = styled.button`
   box-shadow: 0 0px 3px #c1c1c1;
   border: none;
   border-radius: 5px;
+  font-size: 16px;
 `;
 
 const Buy = styled.button`
@@ -190,6 +196,7 @@ const Buy = styled.button`
   box-shadow: 0 0px 3px #c1c1c1;
   border: none;
   border-radius: 5px;
+  font-size: 16px;
 `;
 
 const ProductNav = styled.nav`
@@ -317,9 +324,9 @@ const Modal = styled.div`
   transform: translate(-50%, -50%);
   box-shadow: 3px 3px 5px #b2cee0;
 
-  h2 {
+  h5 {
     font-weight: bold;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
   }
 `;
 
@@ -330,7 +337,7 @@ const CloseModalButton = styled.button`
   border: none;
   color: white;
   border-radius: 5px;
-  margin-right: 10px;
+  margin-right: 30px;
   box-shadow: 3px 3px 5px #b2cee0;
 `;
 
@@ -379,6 +386,16 @@ export default function Product() {
 
   const minusAmount = () => setAmount(amount - 1 <= 0 ? 1 : amount - 1);
 
+  const handleChangePic = (picIndex) => {
+    setNowPicIndex(picIndex);
+    setPicList(
+      picList.map((data, index) => {
+        if (index !== picIndex) return { ...data, isActive: false };
+        return { ...data, isActive: true };
+      })
+    );
+  };
+
   const nextPic = () => {
     if (nowPicIndex + 1 >= picList.length) {
       setPicList(
@@ -422,11 +439,19 @@ export default function Product() {
   return (
     <>
       <Container>
-        <Breadcrumb>breadcrumb breadcrumb </Breadcrumb>
+        <Breadcrumb>
+          <Link to="/products">Products</Link>
+          <span> &#062; </span>
+          <Link to={pathname}>productName</Link>
+        </Breadcrumb>
         <ProductContainer>
           <div>
-            {picList.map((data) => (
-              <Thumbnail $active={data.isActive} src={data.src} />
+            {picList.map((data, index) => (
+              <Thumbnail
+                $active={data.isActive}
+                src={data.src}
+                onClick={() => handleChangePic(index)}
+              />
             ))}
           </div>
 
@@ -528,7 +553,7 @@ export default function Product() {
         </Support>
       </Container>
       <Modal $isShowModal={isShowModal}>
-        <h2>加入成功！</h2>
+        <h5>加入成功！</h5>
         <Actions>
           <CloseModalButton onClick={() => handleShowModal(false)}>
             返回
