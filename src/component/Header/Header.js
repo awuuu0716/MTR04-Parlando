@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../../img/logo.svg';
 import cart from '../../img/cart.svg';
 import member from '../../img/member.svg';
-
+import { ThemeMode } from '../../context';
 const HeaderContainer = styled.div`
   height: 80px;
   display: flex;
@@ -84,6 +84,8 @@ const HoverContainer = styled.div`
 `;
 
 export default function Header() {
+  const { setMode } = useContext(ThemeMode);
+  const location = useLocation();
   const [isShowProducts, setIsShowProducts] = useState(false);
 
   const handleMouseEnter = () => {
@@ -93,6 +95,13 @@ export default function Header() {
 
   const handleMouseLeave = () => setIsShowProducts(false);
 
+  useEffect(() => {
+    if (location.pathname.includes('/backstage')) {
+      setMode(true);
+    } else {
+      setMode(null);
+    }
+  });
   return (
     <>
       <HeaderContainer>
