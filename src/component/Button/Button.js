@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
- const Button = styled.button`
+const Button = styled.button`
   padding: 8px 18px;
   color: white;
   background-color: ${(props) => props.theme.background};
@@ -14,12 +14,20 @@ import styled from 'styled-components';
   &:hover {
     background-color: ${(props) => props.theme.background}77;
   }
+  ${(props) =>
+    props.$size === 's' &&
+    `
+    padding:8px;
+    font-weight: normal;
+  `}
 `;
 const ButtonLight = styled(Button)`
-  background-color: ${(props) => props.theme.background}aa;
+  color: ${(props) => props.theme.textColor};
+  background-color: ${(props) => props.theme.background};
   &:hover {
-    background-color: ${(props) => props.theme.background};
+    background-color: ${(props) => props.theme.navbarHover};
+    color: ${(props) => props.theme.textHover};
   }
 `;
 
-export  { Button, ButtonLight }
+export { Button, ButtonLight };
