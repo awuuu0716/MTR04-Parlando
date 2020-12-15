@@ -18,7 +18,7 @@ import { ThemeMode } from '../../context';
 function App() {
   const [isBackstageMode, setIsBackstageMode] = useState(false);
   return (
-    <ThemeMode.Provider value={{ setIsBackstageMode }}>
+    <ThemeMode.Provider value={{ setIsBackstageMode,isBackstageMode }}>
       <ThemeProvider theme={isBackstageMode ? Themes.backstage : Themes.customer}>
         <Router>
           <Header />

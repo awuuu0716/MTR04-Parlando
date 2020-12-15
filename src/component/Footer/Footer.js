@@ -31,7 +31,7 @@ const Container = styled.footer`
   padding: 50px 180px;
   padding-bottom: 0;
   margin-top: 200px;
-  background: #07273c;
+  background: ${props=>props.theme.background};
   color: white;
   font-size: 18px;
   font-weight: bold;
