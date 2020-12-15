@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useContext } from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../../img/logo.svg';
@@ -84,7 +84,7 @@ const HoverContainer = styled.div`
 `;
 
 export default function Header() {
-  const { setMode } = useContext(ThemeMode);
+  const { setIsBackstageMode } = useContext(ThemeMode);
   const location = useLocation();
   const [isShowProducts, setIsShowProducts] = useState(false);
 
@@ -97,11 +97,11 @@ export default function Header() {
 
   useEffect(() => {
     if (location.pathname.includes('/backstage')) {
-      setMode(true);
+      setIsBackstageMode(true);
     } else {
-      setMode(null);
+      setIsBackstageMode(false);
     }
-  });
+  },[]);
   return (
     <>
       <HeaderContainer>

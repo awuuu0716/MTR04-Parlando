@@ -16,10 +16,10 @@ import { ThemeMode } from '../../context';
 
 
 function App() {
-  const [mode, setMode] = useState(null);
+  const [isBackstageMode, setIsBackstageMode] = useState(false);
   return (
-    <ThemeMode.Provider value={{ setMode }}>
-      <ThemeProvider theme={mode ? Themes.secondary : Themes.primary}>
+    <ThemeMode.Provider value={{ setIsBackstageMode }}>
+      <ThemeProvider theme={isBackstageMode ? Themes.backstage : Themes.customer}>
         <Router>
           <Header />
           <Switch>
