@@ -10,15 +10,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import RecipientPage from '../../pages/RecipientPage';
 import TransactionPage from '../../pages/TransactionPage';
 import AllProductsPage from '../../pages/backstage/AllProductsPage';
+import AddProductsPage from '../../pages/backstage/AddProductsPage';
+import OrdersPage from '../../pages/backstage/OrdersPage';
+import SingleOrderPage from '../../pages/backstage/SingleOrderPage';
+
+
 import Themes from '../../style/Themes';
 import { ThemeProvider } from 'styled-components';
 import { ThemeMode } from '../../context';
 
-
 function App() {
   const [isBackstageMode, setIsBackstageMode] = useState(false);
   return (
-    <ThemeMode.Provider value={{ setIsBackstageMode,isBackstageMode }}>
+    <ThemeMode.Provider value={{ setIsBackstageMode, isBackstageMode }}>
       <ThemeProvider theme={isBackstageMode ? Themes.backstage : Themes.customer}>
         <Router>
           <Header />
@@ -44,6 +48,15 @@ function App() {
             {/* 以下為後台  */}
             <Route exact path="/backstage/product">
               <AllProductsPage />
+            </Route>
+            <Route exact path="/backstage/add-product">
+              <AddProductsPage />
+            </Route>
+            <Route exact path="/backstage/orders">
+              <OrdersPage />
+            </Route>
+            <Route exact path="/backstage/orders/00001">
+              <SingleOrderPage />
             </Route>
             <Redirect to="/" />
           </Switch>

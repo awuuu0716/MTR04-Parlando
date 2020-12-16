@@ -23,7 +23,7 @@ const Button = styled.button`
 `;
 const ButtonLight = styled(Button)`
   color: ${(props) => props.theme.textColor};
-  background-color: ${(props) => props.theme.background};
+  background-color: white;
   &:hover {
     background-color: ${(props) => props.theme.navbarHover};
     color: ${(props) => props.theme.textHover};

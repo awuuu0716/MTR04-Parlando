@@ -55,6 +55,9 @@ const StyledTable = styled.table`
       padding: 20px;
       align-items: center;
       font-size: 1.2em;
+      a:hover{
+        text-decoration:none;
+      }
     }
   }
 `;
@@ -62,58 +65,62 @@ const ButtonGroup = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap;
+  min-width: 160px;
 `;
 
 const Buttons = () => {
   return (
     <ButtonGroup>
-      <ButtonLight $size={'s'}>編輯</ButtonLight>
-      <ButtonLight $size={'s'}>上架</ButtonLight>
-      <ButtonLight $size={'s'}>下架</ButtonLight>
+      <ButtonLight $size={'s'}>通知已出貨</ButtonLight>
       <ButtonLight $size={'s'}>刪除</ButtonLight>
     </ButtonGroup>
   );
 };
-export default function AllProductsPage() {
+export default function OrdersPage() {
   return (
     <Root>
       <Aside />
       <Container>
-        <Header>
-          <Title>所有商品</Title>
-          <Link to="/backstage/add-product">
-            <ButtonLight $size={'s'}>新增商品</ButtonLight>
-          </Link>
-        </Header>
+        <Title>查詢訂單</Title>
         <TableWrapper>
           <StyledTable>
             <thead>
               <tr>
-                <th>Product ID</th>
-                <th>Model</th>
-                <th>Name</th>
-                <th>Price - NT$</th>
-                <th>In stock</th>
+                <th>Order ID</th>
+                <th>Username</th>
+                <th>Description</th>
+                <th>Price (NT$)</th>
+                <th>Address</th>
+                <th>Order time</th>
                 <th>Status</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>00001</td>
-                <td>SE-01</td>
-                <td>product</td>
+                <td>
+                  <Link to="/backstage/orders/00001">00001 </Link>
+                </td>
+                <td>Andy</td>
+                <td>
+                  product * 1<br />
+                  product * 1<br />
+                </td>
                 <td>1200</td>
-                <td>50</td>
-                <td>已上架</td>
+                <td>地址地址地址地址地址地址</td>
+                <td>未出貨</td>
                 <td>
                   <Buttons />
                 </td>
               </tr>
               <tr>
-                <td>00002</td>
+                <td><Link to="/backstage/orders/id">00002 </Link></td>
                 <td>HD-02</td>
-                <td>product</td>
+                <td>
+                  product * 2<br />
+                  product * 1<br />
+                </td>
                 <td>900</td>
                 <td>100</td>
                 <td>未上架</td>
