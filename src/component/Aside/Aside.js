@@ -15,6 +15,7 @@ const Container = styled.div`
   padding: 0 30px;
   flex-direction: column;
   position: absolute;
+  z-index:3;
   top: 30%;
   left: -300%;
   transition: left 0.4s ease-in;

@@ -13,7 +13,6 @@ const HeaderContainer = styled.div`
   padding: 0 50px;
   background: ${props=>props.theme.background};
 `;
-
 const LinkContainer = styled.div`
   width: ${(props) => props.$width}px;
   display: flex;
@@ -97,7 +96,6 @@ export default function Header() {
   const { isBackstageMode, setIsBackstageMode } = useContext(ThemeMode);
   const location = useLocation();
   const [isShowProducts, setIsShowProducts] = useState(false);
-  console.log(isBackstageMode);
   const handleMouseEnter = () => {
     if (isShowProducts) return;
     setIsShowProducts(true);
