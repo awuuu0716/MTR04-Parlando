@@ -7,13 +7,16 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Info from '../../pages/Info';
+import CheckOrder from '../../pages/CheckOrder';
 import HomePage from '../../pages/Homepage';
 import Products from '../../pages/Products';
 import Product from '../../pages/Product';
 import ShoppingCartPage from '../../pages/ShoppingCartpage';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import RecipientPage from '../../pages/RecipientPage';
 import TransactionPage from '../../pages/TransactionPage';
+import OrderInfo from '../../pages/OrderInfo';
 
 function App() {
   return (
@@ -38,9 +41,18 @@ function App() {
         <Route exact path="/transaction">
           <TransactionPage />
         </Route>
+        <Route exact path="/membership/info">
+          <Info />
+        </Route>
+        <Route exact path="/membership/order">
+          <CheckOrder />
+        </Route>
+        <Route exact path="/membership/order/:id">
+          <OrderInfo />
+        </Route>
         <Redirect to="/" />
       </Switch>
-    <Footer />
+      <Footer />
     </Router>
   );
 }

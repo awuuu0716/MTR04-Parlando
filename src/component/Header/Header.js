@@ -57,7 +57,7 @@ const IconCart = styled(Link)`
   }
 `;
 
-const IconMember = styled.div`
+const IconMember = styled(Link)`
   width: 40px;
   height: 40px;
   cursor: pointer;
@@ -106,7 +106,7 @@ export default function Header() {
         </LinkContainer>
         <IconContainer>
           <IconCart to="/shopping-cart"></IconCart>
-          <IconMember></IconMember>
+          <IconMember to="/membership/info"></IconMember>
         </IconContainer>
       </HeaderContainer>
 
