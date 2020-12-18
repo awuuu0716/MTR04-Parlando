@@ -17,6 +17,8 @@ import ShoppingCartPage from '../../pages/ShoppingCartpage';
 import RecipientPage from '../../pages/RecipientPage';
 import TransactionPage from '../../pages/TransactionPage';
 import OrderInfo from '../../pages/OrderInfo';
+import Login from '../../pages/Login';
+import Signup from '../../pages/Signup';
 
 function App() {
   return (
@@ -49,6 +51,12 @@ function App() {
         </Route>
         <Route exact path="/membership/order/:id">
           <OrderInfo />
+        </Route>
+        <Route exact path="/login">
+          <Login />
+        </Route>
+        <Route exact path="/signup">
+          <Signup />
         </Route>
         <Redirect to="/" />
       </Switch>
