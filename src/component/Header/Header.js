@@ -57,7 +57,7 @@ const IconCart = styled(Link)`
   }
 `;
 
-const IconMember = styled.div`
+const IconMember = styled(Link)`
   width: 40px;
   height: 40px;
   cursor: pointer;
@@ -129,11 +129,14 @@ export default function Header() {
             </LinkContainer>
             <IconContainer>
               <IconCart to="/shopping-cart"></IconCart>
-              <IconMember></IconMember>
+              <IconMember to="/membership/info"></IconMember>
             </IconContainer>
           </HeaderContainer>
 
-          <HoverContainer $isShow={isShowProducts} onMouseLeave={handleMouseLeave}>
+          <HoverContainer
+            $isShow={isShowProducts}
+            onMouseLeave={handleMouseLeave}
+          >
             <LinkContainer $width={550} $marginLeft={110}>
               <Nav to="/products/acoustics">音響</Nav>
               <Nav to="/products/earbuds">入耳式耳機</Nav>

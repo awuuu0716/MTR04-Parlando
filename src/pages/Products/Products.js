@@ -83,20 +83,98 @@ const Price = styled.p`
   font-size: 18px;
 `;
 
+const FilterContainer = styled.div`
+  margin: 30px 50px;
+`;
+
+const PriceFilter = styled.button`
+  border: none;
+  border-radius: 5px;
+  background: ${(props) => (props.$isAcitve ? '#ff5f5f' : 'none')};
+  color: ${(props) => (props.$isAcitve ? 'white' : '#333')};
+  font-weight: bold;
+  padding: 5px 10px;
+
+  & + & {
+    margin-left: 20px;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const DateFilter = styled.button`
+  border: none;
+  border-radius: 5px;
+  background: ${(props) => (props.$isAcitve ? '#ff5f5f' : 'none')};
+  color: ${(props) => (props.$isAcitve ? 'white' : '#333')};
+  font-weight: bold;
+  padding: 5px 10px;
+
+  & + & {
+    margin-left: 20px;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
+
 export default function Products() {
+  const [priceFilter, setPriceFilter] = useState('DESC');
+  const [dateFilter, setDateFilter] = useState('DESC');
+
+  const handlePriceFilter = (filter) => {
+    setPriceFilter(filter);
+  };
+
+  const handleDateFilter = (filter) => {
+    setDateFilter(filter);
+  };
 
   return (
     <Container>
       <Title>全部商品</Title>
       <Divider />
       <OptionContainer>
-      {/*all 不同的 API */}
+        {/*all 不同的 API */}
         <ProductsOption to="/products">全部商品</ProductsOption>
         <ProductsOption to="/products/acoustics">音響</ProductsOption>
         <ProductsOption to="/products/earbuds">入耳式耳機</ProductsOption>
         <ProductsOption to="/products/headphones">耳罩式耳機</ProductsOption>
         <ProductsOption to="/products/accessories">週邊配件</ProductsOption>
       </OptionContainer>
+      <FilterContainer>
+        價格排序：
+        <PriceFilter
+          $isAcitve={priceFilter === 'DESC'}
+          onClick={() => handlePriceFilter('DESC')}
+        >
+          由高到低
+        </PriceFilter>
+        <PriceFilter
+          $isAcitve={priceFilter === 'ASC'}
+          onClick={() => handlePriceFilter('ASC')}
+        >
+          由低到高
+        </PriceFilter>
+      </FilterContainer>
+      <FilterContainer>
+        日期：
+        <DateFilter
+          $isAcitve={dateFilter === 'DESC'}
+          onClick={() => handleDateFilter('DESC')}
+        >
+          由新到舊
+        </DateFilter>
+        <DateFilter
+          $isAcitve={dateFilter === 'ASC'}
+          onClick={() => handleDateFilter('ASC')}
+        >
+          由舊到新
+        </DateFilter>
+      </FilterContainer>
       <Divider />
 
       <ProductContainer>
