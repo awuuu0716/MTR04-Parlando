@@ -95,7 +95,7 @@ const InputSelect = ({ inputTitle, types, size }) => {
     </WrapperInput>
   );
 };
-const StyledInput = ({ inputTitle, inputType, size }) => {
+const Input = ({ inputTitle, inputType, size }) => {
   return (
     <WrapperInput>
       <MemoTitle inputTitle={inputTitle} />
@@ -122,13 +122,13 @@ export default function AddProductsPage() {
       <Container>
         <Title>新增商品</Title>
         <Form>
-          <StyledInput inputTitle={'型號'} inputType={'text'} size={'50%'} />
-          <StyledInput inputTitle={'名稱'} inputType={'text'} size={'50%'} />
+          <Input inputTitle={'型號'} inputType={'text'} size={'50%'} />
+          <Input inputTitle={'名稱'} inputType={'text'} size={'50%'} />
           <InputSelect inputTitle={'類別'} types={types} size={'50%'} />
-          <StyledInput inputTitle={'定價'} inputType={'text'} size={'50%'} />
-          <StyledInput inputTitle={'顏色'} inputType={'text'} size={'50%'} />
-          <StyledInput inputTitle={'數量'} inputType={'text'} size={'50%'} />
-          <StyledInput inputTitle={'描述'} inputType={'text'} size={'50%'} />
+          <Input inputTitle={'定價'} inputType={'text'} size={'50%'} />
+          <Input inputTitle={'顏色'} inputType={'text'} size={'50%'} />
+          <Input inputTitle={'數量'} inputType={'text'} size={'50%'} />
+          <Input inputTitle={'描述'} inputType={'text'} size={'50%'} />
           <Editor />
           <PhtotContainer>
           </PhtotContainer>

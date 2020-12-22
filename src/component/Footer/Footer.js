@@ -99,9 +99,9 @@ export default function Footer() {
         </LeftContainer>
 
         <RightContainer>
-          <Icon $icon={fb} />
-          <Icon $icon={ig} />
-          <Icon $icon={github} />
+          <Icon $icon={fb} to="/"/>
+          <Icon $icon={ig} to="/" />
+          <Icon $icon={github} to="/" />
         </RightContainer>
       </FooterTop>
       <FooterBottom>Made by MTR04 Team Parlando</FooterBottom>

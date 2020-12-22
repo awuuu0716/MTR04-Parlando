@@ -81,9 +81,6 @@ const HoverContainer = styled.div`
   z-index: 1;
   transition: top 0.2s ease-in-out;
 `;
-const LoginLink = styled(Nav)`
-  display: block;
-`;
 const BackstageHeader = () => {
   return (
     <HeaderContainer>

@@ -73,7 +73,7 @@ export default function HomePage() {
     <>
       <BannerCarousel />
       <Promotion />
-      <ProductsContainer>
+      <ProductsContainer to="/">
         <ImgContainer to="/">
           <ImgFilter>PRODUCT</ImgFilter>
           <ProductImg src={homepage_products_1} />
