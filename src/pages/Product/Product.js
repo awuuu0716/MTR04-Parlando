@@ -133,11 +133,6 @@ const Option = styled.button`
   &:focus {
     outline: none;
   }
-
-  &:hover {
-    background: white;
-    color: #333333;
-  }
 `;
 
 const Amount = styled.div`
@@ -552,6 +547,7 @@ export default function Product() {
           <SupportTitle>聯絡客服</SupportTitle>
         </Support>
       </Container>
+      
       <Modal $isShowModal={isShowModal}>
         <h5>加入成功！</h5>
         <Actions>
