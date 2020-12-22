@@ -6,18 +6,20 @@ import { device } from '../../../style/breakpoints';
 
 const Root = styled.div`
   max-width: 1280px;
-  margin: 40px auto;
-  display: flex;
+  margin: 0 auto;
   position: relative;
-  justify-content: right;
-  align-items: flex-start;
-  @media ${device.Tablets} {
-    margin: 80px auto;
+  @media ${device.Desktops} {
+    display: flex;
   }
 `;
 const Container = styled.div`
+  position: relative;
+  top: 40px;
+  left: 50%;
   max-width: 80%;
   margin-bottom: 40px;
+  font-size: 24px;
+  transform: translate(-50%);
 `;
 const Header = styled.div``;
 const Title = styled.h3`
@@ -43,12 +45,12 @@ const StyledTable = styled.div`
 
 const TableRow = styled.div`
   display: flex;
-  width:90%;
-  text-align:center;
-  flex-direction:column;
-  @media ${device.Tablets}{
-    flex-direction:row;
-    width:100%;
+  width: 90%;
+  text-align: center;
+  flex-direction: column;
+  @media ${device.Tablets} {
+    flex-direction: row;
+    width: 100%;
   }
 `;
 const ColumnName = styled.div`
@@ -57,8 +59,8 @@ const ColumnName = styled.div`
   border: 1px solid ${(props) => props.theme.borderColor};
   font-size: 1.4em;
   padding: 20px;
-  @media ${device.Tablets}{
-    box-sizing:border-box;
+  @media ${device.Tablets} {
+    box-sizing: border-box;
   }
 `;
 const ColumnValue = styled.div`
@@ -67,9 +69,8 @@ const ColumnValue = styled.div`
   align-items: center;
   font-size: 1.2em;
   border: 1px solid ${(props) => props.theme.borderColor};
-  flex-grow: 3; 
+  flex-grow: 3;
 `;
-
 
 export default function SingleOrderPage() {
   return (
@@ -89,8 +90,6 @@ export default function SingleOrderPage() {
               <ColumnValue>xxxxx-12345</ColumnValue>
               <ColumnName>訂購人</ColumnName>
               <ColumnValue>Andy</ColumnValue>
-              <ColumnName>訂單狀態</ColumnName>
-              <ColumnValue>未出貨</ColumnValue>
             </TableRow>
             <TableRow>
               <ColumnName>訂購日期</ColumnName>
@@ -99,6 +98,8 @@ export default function SingleOrderPage() {
               <ColumnValue>信用卡</ColumnValue>
             </TableRow>
             <TableRow>
+              <ColumnName>訂單狀態</ColumnName>
+              <ColumnValue>未出貨</ColumnValue>
               <ColumnName>訂購內容</ColumnName>
               <ColumnValue>
                 product - 1 (經典白) * 1<br />

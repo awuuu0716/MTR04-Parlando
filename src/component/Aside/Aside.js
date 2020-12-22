@@ -4,18 +4,18 @@ import { Link, useLocation } from 'react-router-dom';
 import { device } from '../../style/breakpoints';
 const AsideWrapper = styled.div`
   width: 250px;
-  position: relative;
+  position: fixed;
+  z-index: 1;
+  @media ${device.Desktops} {
+    position: absolute;
+  }
 `;
 const Container = styled.div`
-  height: auto;
+  height: 100vh;
   width: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 0 30px;
-  flex-direction: column;
   position: absolute;
-  z-index:3;
+  z-index: 10;
   top: 30%;
   left: -300%;
   transition: left 0.4s ease-in;
@@ -26,9 +26,10 @@ const Container = styled.div`
     `
     left:0;
   `};
-  @media ${device.Tablets} {
-    background-color: white;
+  @media ${device.Desktops} {
+    background-color: unset;
     left: 0;
+    top:30px;
     width: unset;
   }
 `;
@@ -64,7 +65,7 @@ const AsideBtn = styled.div`
   padding: 8px;
   background-color: ${(props) => props.theme.background};
   color: white;
-  position: absolute;
+  position: fixed;
   top: 30%;
   left: -5px;
   cursor: pointer;
@@ -81,7 +82,7 @@ const AsideBtn = styled.div`
     left:-100%;
   `};
 
-  @media ${device.Tablets} {
+  @media ${device.Desktops} {
     display: none;
   }
 `;
