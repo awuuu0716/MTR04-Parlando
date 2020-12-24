@@ -1,17 +1,28 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import logo from '../../img/logo.svg';
 import cart from '../../img/cart.svg';
 import member from '../../img/member.svg';
-import { ThemeMode } from '../../context';
+import {
+  selectIsBackstageMode,
+  setIsBackstageMode,
+} from '../../redux/reducers/themeSlice';
+import {
+  selectIsLogin,
+  setIsLogin,
+  setIsAdmin,
+} from '../../redux/reducers/usersSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthToken } from '../../utils';
+
 const HeaderContainer = styled.div`
   height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 50px;
-  background: ${props=>props.theme.background};
+  background: ${(props) => props.theme.background};
 `;
 
 const LinkContainer = styled.div`
@@ -82,22 +93,34 @@ const HoverContainer = styled.div`
   z-index: 1;
   transition: top 0.2s ease-in-out;
 `;
-const LoginLink = styled(Nav)`
-  display: block;
-`;
-const BackstageHeader = () => {
+
+const BackstageHeader = (props) => {
   return (
     <HeaderContainer>
       <Logo to="/" />
-      <Nav to="/backstage/login" >登入</Nav>
+      <LogOut onClick={props.handleLogOut}>登出</LogOut>
     </HeaderContainer>
   );
 };
+
+const LogOut = styled.div`
+  color: white;
+  font-size: 24px;
+
+  &:hover {
+    color: rgb(251, 209, 168);
+    text-decoration: none;
+  }
+`;
+
 export default function Header() {
-  const { isBackstageMode, setIsBackstageMode } = useContext(ThemeMode);
-  const location = useLocation();
   const [isShowProducts, setIsShowProducts] = useState(false);
-  console.log(isBackstageMode);
+  const isBackstageMode = useSelector(selectIsBackstageMode);
+  const isLogin = useSelector(selectIsLogin);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const location = useLocation();
+
   const handleMouseEnter = () => {
     if (isShowProducts) return;
     setIsShowProducts(true);
@@ -107,15 +130,22 @@ export default function Header() {
 
   useEffect(() => {
     if (location.pathname.includes('/backstage')) {
-      setIsBackstageMode(true);
+      dispatch(setIsBackstageMode(true));
     } else {
-      setIsBackstageMode(false);
+      dispatch(setIsBackstageMode(false));
     }
   }, [location.pathname]);
 
+  const handleLogOut = () => {
+    dispatch(setIsLogin(false));
+    dispatch(setIsAdmin(false));
+    setAuthToken('');
+    history.push('/');
+  };
+
   return (
     <>
-      {isBackstageMode && <BackstageHeader />}
+      {isBackstageMode && <BackstageHeader handleLogOut={handleLogOut} />}
       {!isBackstageMode && (
         <>
           <HeaderContainer>
@@ -128,8 +158,9 @@ export default function Header() {
               </Nav>
             </LinkContainer>
             <IconContainer>
-              <IconCart to="/shopping-cart"></IconCart>
-              <IconMember to="/membership/info"></IconMember>
+              <IconCart to={isLogin ? '/shopping-cart' : '/login'} />
+              <IconMember to={isLogin ? '/membership/info' : '/login'} />
+              {isLogin && <LogOut onClick={handleLogOut}>登出</LogOut>}
             </IconContainer>
           </HeaderContainer>
 
