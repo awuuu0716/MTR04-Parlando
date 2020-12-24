@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { signUp } from '../../redux/reducers/usersSlice';
 import {
   replaceInvalidWord,
@@ -87,7 +88,6 @@ const ErrorMessage = styled.div`
   color: red;
   font-weight: bold;
   font-size: 20px;
-  text-align: center;
 `;
 
 export default function Signup() {
@@ -98,24 +98,29 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [formErrorData, setFormErrorData] = useState(() => initFormErrorData());
+  const history = useHistory();
   // const ErrorMessage = useSelector(selectErrorMessage);
   const dispatch = useDispatch();
   const isSubmit = useRef(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!isEmailValid(email)) setFormErrorData({
-      ...formErrorData,
-      email: { valid: false, message: '信箱格式錯誤' },
-    });
-    // if (isSubmit.current) return;
-    // isSubmit.current = true;
-    // dispatch(signUp({ username, password, realName, email, phone })).then(
-    //   (res) => {
-    //     isSubmit.current = false;
-    //     console.log(res);
-    //   }
-    // );
+    if (isSubmit.current) return;
+    isSubmit.current = true;
+    for (let prop in formErrorData) {
+      if (!formErrorData[prop].valid) {
+        isSubmit.current = false;
+        return;
+      }
+    }
+    dispatch(signUp({ username, password, realName, email, phone })).then(
+      (res) => {
+        // 還需要處理 username 重複的情況
+        isSubmit.current = false;
+        history.push('/');
+        console.log(res);
+      }
+    );
   };
 
   const checkPasswordConsistent = () => {
@@ -142,6 +147,18 @@ export default function Signup() {
     });
   };
 
+  const checkEmailValid = () => {
+    if (!isEmailValid(email))
+      return setFormErrorData({
+        ...formErrorData,
+        email: { valid: false, message: '信箱格式錯誤' },
+      });
+    setFormErrorData({
+      ...formErrorData,
+      email: { valid: true, message: '' },
+    });
+  };
+
   return (
     <Container>
       <InputSection>
@@ -165,6 +182,7 @@ export default function Signup() {
               placeholder="20 字以內英數字符號"
               value={password}
               onChange={(e) => setPassword(e.target.value.trim().slice(0, 20))}
+              onBlur={checkPasswordConsistent}
             ></Input>
             <ErrorMessage>{formErrorData.username.message}</ErrorMessage>
           </InputContainer>
@@ -199,6 +217,7 @@ export default function Signup() {
               placeholder="請輸入您的電子信箱"
               value={email}
               onChange={(e) => setEmail(e.target.value.trim())}
+              onBlur={checkEmailValid}
             ></Input>
             <ErrorMessage>{formErrorData.email.message}</ErrorMessage>
           </InputContainer>

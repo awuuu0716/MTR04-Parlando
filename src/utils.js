@@ -21,6 +21,11 @@ export const isEmailValid = (email) => {
   return rule.test(email);
 };
 
+export const isUsernameValid = (username) => {
+  const rule = /\w{0,20}/;
+  return rule.test(username);
+};
+
 export const initFormErrorData = () => {
   return {
     username: { valid: true, message: '' },
