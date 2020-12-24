@@ -110,6 +110,7 @@ const BackstageHeader = (props) => {
 const LogOut = styled.div`
   color: white;
   font-size: 24px;
+  cursor: pointer;
 
   &:hover {
     color: rgb(251, 209, 168);

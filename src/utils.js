@@ -28,8 +28,6 @@ export const isUsernameValid = (username) => {
 
 export const initFormErrorData = () => {
   return {
-    username: { valid: true, message: '' },
-    password: { valid: true, message: '' },
     comfirmpassword: { valid: true, message: '' },
     realName: { valid: true, message: '' },
     email: { valid: true, message: '' },

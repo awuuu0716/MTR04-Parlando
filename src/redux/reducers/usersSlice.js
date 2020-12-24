@@ -4,6 +4,7 @@ import {
   login as loginAPI,
   adminLogin as adminLoginAPI,
   getMe as getMeAPI,
+  updateUserData as updateUserDataAPI,
 } from '../../WebAPI';
 import { setAuthToken } from '../../utils';
 
@@ -53,6 +54,17 @@ export const signUp = ({ username, password, realName, email, phone }) => (
       return data.token;
     }
   );
+};
+
+export const updateUserData = (userData) => (dispatch) => {
+  dispatch(setErrorMessage(''));
+  return updateUserDataAPI(userData).then((data) => {
+    if (data.message) {
+      dispatch(setErrorMessage(data.message));
+      return;
+    }
+    return data
+  });
 };
 
 export const adminLogin = ({ username, password }) => (dispatch) => {
