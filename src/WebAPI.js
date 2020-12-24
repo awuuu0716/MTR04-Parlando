@@ -49,17 +49,6 @@ export const getMe = () => {
     return res.json();
   });
 };
-// export const getUserData = () =>
-//   fetch(`${BASE_URL}/login`, {
-//     method: 'POST',
-//     headers: {
-//       'content-type': 'application/json;charset=utf-8',
-//     },
-//     body: JSON.stringify({
-//       username,
-//       password,
-//     }),
-//   }).then((res) => res.json());
 
 export const getProducts = () => {
   const token = getAuthToken();
@@ -69,3 +58,15 @@ export const getProducts = () => {
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 };
+
+export const updateUserData = ({ realName, email, phone }) =>{
+  const token = getAuthToken();
+   return fetch(`${BASE_URL}/users`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'content-type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({ realName, email, phone }),
+  }).then((res) => res.json());
+}
