@@ -1,8 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import customerSlice from '../reducers/customerSlice';
+import themeReducer from '../reducers/themeSlice';
+import usersSlice from '../reducers/usersSlice';
+import productsSlice from '../reducers/productsSlice';
 
 export default configureStore({
   reducer: {
-    counter: customerSlice,
+    theme: themeReducer,
+    users: usersSlice,
+    products: productsSlice,
   },
 });

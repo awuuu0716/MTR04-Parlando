@@ -1,6 +1,14 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { signUp } from '../../redux/reducers/usersSlice';
+import {
+  replaceInvalidWord,
+  isPhoneValid,
+  initFormErrorData,
+  isEmailValid,
+} from '../../utils';
 
 const Container = styled.div`
   display: flex;
@@ -24,12 +32,12 @@ const InputSection = styled.section`
   h5 {
     font-weight: bold;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 `;
 
-
 const InputContainer = styled.div`
+  position: relative;
   width: 500px;
   margin: 20px 0;
   text-align: end;
@@ -40,40 +48,6 @@ const OptionsContainer = styled.div`
   display: flex;
   margin-top: 20px;
   justify-content: space-around;
-`;
-
-const SignUpLink = styled(Link)`
-  display: flex;
-  margin-right: 10px;
-  color: #1c79b7;
-  font-size: 16px;
-  font-weight: bold;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: none;
-    transform: scale(1.2);
-  }
-`;
-
-const LoginButton = styled.button`
-  width: 140px;
-  height: 40px;
-  display: flex;
-  border: 1px solid #07273c;
-  border-radius: 3px;
-  margin-right: 10px;
-  color: white;
-  background: #07273c;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 3px 3px 5px #07273c85;
-
-  &:hover {
-    background: #293e4c;
-  }
 `;
 
 const Label = styled.label`
@@ -87,13 +61,6 @@ const Input = styled.input`
   &:focus {
     outline: none;
   }
-`;
-
-const ErrorMessage = styled.div`
-  color: red;
-  font-size: 20px;
-  font-weight: bold;
-  height: 36px;
 `;
 
 const SignupButtin = styled.button`
@@ -115,65 +82,161 @@ const SignupButtin = styled.button`
   }
 `;
 
+const ErrorMessage = styled.div`
+  position: relative;
+  min-height: 30px;
+  color: red;
+  font-weight: bold;
+  font-size: 20px;
+`;
+
 export default function Signup() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [comfirmpassword, setComfirmpassword] = useState('');
+  const [realName, setRealName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [formErrorData, setFormErrorData] = useState(() => initFormErrorData());
+  const history = useHistory();
+  // const ErrorMessage = useSelector(selectErrorMessage);
+  const dispatch = useDispatch();
+  const isSubmit = useRef(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isSubmit.current) return;
+    isSubmit.current = true;
+    for (let prop in formErrorData) {
+      if (!formErrorData[prop].valid) {
+        isSubmit.current = false;
+        return;
+      }
+    }
+    dispatch(signUp({ username, password, realName, email, phone })).then(
+      (res) => {
+        // 還需要處理 username 重複的情況
+        isSubmit.current = false;
+        history.push('/');
+        console.log(res);
+      }
+    );
+  };
+
+  const checkPasswordConsistent = () => {
+    if (password !== comfirmpassword)
+      return setFormErrorData({
+        ...formErrorData,
+        comfirmpassword: { valid: false, message: '密碼不一致' },
+      });
+    setFormErrorData({
+      ...formErrorData,
+      comfirmpassword: { valid: true, message: '' },
+    });
+  };
+
+  const checkPhoneValid = () => {
+    if (!isPhoneValid(phone))
+      return setFormErrorData({
+        ...formErrorData,
+        phone: { valid: false, message: '手機格式錯誤' },
+      });
+    setFormErrorData({
+      ...formErrorData,
+      phone: { valid: true, message: '' },
+    });
+  };
+
+  const checkEmailValid = () => {
+    if (!isEmailValid(email))
+      return setFormErrorData({
+        ...formErrorData,
+        email: { valid: false, message: '信箱格式錯誤' },
+      });
+    setFormErrorData({
+      ...formErrorData,
+      email: { valid: true, message: '' },
+    });
+  };
 
   return (
     <Container>
       <InputSection>
-        <h5>註冊</h5>
-        <InputContainer>
-          <Label>使用者帳號：</Label>
-          <Input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          ></Input>
-        </InputContainer>
-        <InputContainer>
-          <Label>密碼：</Label>
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Input>
-        </InputContainer>
-        <InputContainer>
-          <Label>確認密碼：</Label>
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Input>
-        </InputContainer>
-        <InputContainer>
-          <Label>姓名：</Label>
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Input>
-        </InputContainer>
-        <InputContainer>
-          <Label>電子信箱：</Label>
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Input>
-        </InputContainer>
-        <InputContainer>
-          <Label>手機：</Label>
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Input>
-        </InputContainer>
+        <form onSubmit={handleSubmit}>
+          <h5>註冊</h5>
+          <InputContainer>
+            <Label>使用者帳號：</Label>
+            <Input
+              required
+              value={username}
+              placeholder="20 字以內英數字"
+              onChange={(e) => setUsername(replaceInvalidWord(e.target.value))}
+            ></Input>
+            <ErrorMessage>{formErrorData.username.message}</ErrorMessage>
+          </InputContainer>
+          <InputContainer>
+            <Label>密碼：</Label>
+            <Input
+              required
+              type="password"
+              placeholder="20 字以內英數字符號"
+              value={password}
+              onChange={(e) => setPassword(e.target.value.trim().slice(0, 20))}
+              onBlur={checkPasswordConsistent}
+            ></Input>
+            <ErrorMessage>{formErrorData.username.message}</ErrorMessage>
+          </InputContainer>
+          <InputContainer>
+            <Label>確認密碼：</Label>
+            <Input
+              type="password"
+              placeholder="請再輸入一次密碼"
+              value={comfirmpassword}
+              onChange={(e) =>
+                setComfirmpassword(e.target.value.trim().slice(0, 20))
+              }
+              onBlur={checkPasswordConsistent}
+            ></Input>
+            <ErrorMessage>{formErrorData.comfirmpassword.message}</ErrorMessage>
+          </InputContainer>
+          <InputContainer>
+            <Label>姓名：</Label>
+            <Input
+              required
+              value={realName}
+              placeholder="20 字以內中英數字符號"
+              onChange={(e) => setRealName(e.target.value.trim().slice(0, 20))}
+            ></Input>
+            <ErrorMessage>{formErrorData.realName.message}</ErrorMessage>
+          </InputContainer>
+          <InputContainer>
+            <Label>電子信箱：</Label>
+            <Input
+              required
+              type="email"
+              placeholder="請輸入您的電子信箱"
+              value={email}
+              onChange={(e) => setEmail(e.target.value.trim())}
+              onBlur={checkEmailValid}
+            ></Input>
+            <ErrorMessage>{formErrorData.email.message}</ErrorMessage>
+          </InputContainer>
+          <InputContainer>
+            <Label>手機：</Label>
+            <Input
+              required
+              value={phone}
+              placeholder="請輸入您的手機號碼"
+              onBlur={checkPhoneValid}
+              onChange={(e) => setPhone(e.target.value.trim())}
+            ></Input>
+            <ErrorMessage>{formErrorData.phone.message}</ErrorMessage>
+          </InputContainer>
 
-        <OptionsContainer>
-          <SignupButtin>送出</SignupButtin>
-        </OptionsContainer>
+          <OptionsContainer>
+            <SignupButtin>送出</SignupButtin>
+          </OptionsContainer>
+        </form>
       </InputSection>
     </Container>
   );

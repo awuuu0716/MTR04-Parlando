@@ -4,7 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectErrorMessage,
-  login,
+  adminLogin,
   setErrorMessage,
 } from '../../redux/reducers/usersSlice';
 
@@ -116,16 +116,16 @@ export default function Login() {
     e.preventDefault();
     if (isSubmit.current) return;
     isSubmit.current = true;
-    dispatch(login({ username, password })).then((res) => {
+    dispatch(adminLogin({ username, password })).then((res) => {
       isSubmit.current = false;
-      if (res) history.push('/');
+      if (res) history.push('/backstage/product');
     });
   };
 
   return (
     <Container>
       <InputSection>
-        <h5>登入</h5>
+        <h5>管理員登入</h5>
         <form onSubmit={handleSubmit}>
           <InputContainer>
             <Label>帳號：</Label>

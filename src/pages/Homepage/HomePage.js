@@ -6,7 +6,7 @@ import homepage_products_1 from '../../img/homepage_products_1.webp';
 import homepage_products_2 from '../../img/homepage_products_2.webp';
 import homepage_products_3 from '../../img/homepage_products_3.webp';
 
-const ProductsContainer = styled(Link)`
+const ProductsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 80%;
