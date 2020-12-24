@@ -33,7 +33,7 @@ const LinkContainer = styled.div`
 `;
 
 const IconContainer = styled.div`
-  width: 120px;
+  width: ${(props) => (props.$isLogin ? '170' : '120')}px;
   display: flex;
   justify-content: space-between;
 `;
@@ -98,7 +98,11 @@ const BackstageHeader = (props) => {
   return (
     <HeaderContainer>
       <Logo to="/" />
-      <LogOut onClick={props.handleLogOut}>登出</LogOut>
+      {props.isLogin ? (
+        <LogOut onClick={props.handleLogOut}>登出</LogOut>
+      ) : (
+        <Nav to="/adminLogin">登入</Nav>
+      )}
     </HeaderContainer>
   );
 };
@@ -145,7 +149,9 @@ export default function Header() {
 
   return (
     <>
-      {isBackstageMode && <BackstageHeader handleLogOut={handleLogOut} />}
+      {isBackstageMode && (
+        <BackstageHeader handleLogOut={handleLogOut} isLogin={isLogin} />
+      )}
       {!isBackstageMode && (
         <>
           <HeaderContainer>
@@ -157,7 +163,7 @@ export default function Header() {
                 選購商品
               </Nav>
             </LinkContainer>
-            <IconContainer>
+            <IconContainer $isLogin={isLogin}>
               <IconCart to={isLogin ? '/shopping-cart' : '/login'} />
               <IconMember to={isLogin ? '/membership/info' : '/login'} />
               {isLogin && <LogOut onClick={handleLogOut}>登出</LogOut>}

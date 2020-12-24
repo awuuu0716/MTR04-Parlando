@@ -12,6 +12,7 @@ export const usersSlice = createSlice({
   initialState: {
     isLogin: false,
     isAdmin: false,
+    userInfo: {},
     errorMessage: '',
   },
   reducers: {
@@ -24,10 +25,18 @@ export const usersSlice = createSlice({
     setErrorMessage: (state, action) => {
       state.errorMessage = action.payload;
     },
+    setUserInfo: (state, action) => {
+      state.userInfo = {...action.payload};
+    },
   },
 });
 
-export const { setIsLogin, setErrorMessage, setIsAdmin } = usersSlice.actions;
+export const {
+  setIsLogin,
+  setErrorMessage,
+  setIsAdmin,
+  setUserInfo,
+} = usersSlice.actions;
 
 export const signUp = ({ username, password, realName, email, phone }) => (
   dispatch
@@ -75,14 +84,13 @@ export const login = ({ username, password }) => (dispatch) => {
 
 export const getMe = () => (dispatch) => {
   return getMeAPI().then((data) => {
-    console.log(data)
     if (data.message) {
       setAuthToken('');
       return;
     } else if (data.user.username === 'Oliver') {
-      dispatch(setIsLogin(true));
       dispatch(setIsAdmin(true));
     }
+    dispatch(setUserInfo(data.user));
     dispatch(setIsLogin(true));
   });
 };
@@ -91,5 +99,6 @@ export const getMe = () => (dispatch) => {
 export const selectErrorMessage = (state) => state.users.errorMessage;
 export const selectIsLogin = (state) => state.users.isLogin;
 export const selectIsAdmin = (state) => state.users.isAdmin;
+export const selectUserInfo = (state) => state.users.userInfo;
 
 export default usersSlice.reducer;

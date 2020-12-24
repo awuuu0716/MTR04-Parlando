@@ -1,18 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import MemberNav from '../../component/MemberNav';
+import { getMe, selectUserInfo } from '../../redux/reducers/usersSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Container = styled.div`
   display: flex;
   padding: 7% 10%;
-`;
-
-const UserDataContainer = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 30px;
 `;
 
 const H5 = styled.h5`
@@ -42,22 +36,33 @@ const EditButton = styled.button`
   }
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+`;
+
 const Title = styled.label`
+  display: flex;
+  justify-content: flex-end;
   font-weight: bold;
   font-size: 20px;
   margin: 0;
   color: #333;
+  margin-bottom: 30px;
 `;
 
 const UserData = styled.div`
-  font-size: 18px;
-  &::after {
+  font-size: 20px;
+  height: 30px;
+  margin-bottom: 30px;
+  /* &::after {
     content: '';
     position: absolute;
     display: block;
     width: 240px;
     border-bottom: 2px solid #333;
-  }
+  } */
 `;
 
 const ErrorMessage = styled.div`
@@ -67,53 +72,47 @@ const ErrorMessage = styled.div`
   font-size: 16px;
 `;
 
-const Infomation = styled.section`
-  position: relative;
+const InfoContainer = styled.div``;
+
+const Top = styled.div`
   display: flex;
-  width: 50%;
-  align-items: baseline;
-  flex-direction: column;
+`;
+
+const Bottom = styled.div`
+  display: flex;
+  margin-top: 30px;
 `;
 
 export default function Info() {
-  const [memberData, setMemberData] = useState({});
+  const userInfo = useSelector(selectUserInfo);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getMe());
+  }, []);
   return (
     <Container>
       <MemberNav />
-
-      <Infomation>
-        <div>
-          <UserDataContainer>
-            <H5>會員資料</H5>
-            <EditButton>Edit</EditButton>
-          </UserDataContainer>
-
-          <UserDataContainer>
+      <InfoContainer>
+        <Top>
+          <H5>會員資料</H5>
+          <EditButton>Edit</EditButton>
+        </Top>
+        <Bottom>
+          <TitleContainer>
             <Title>使用者帳號：</Title>
-            <UserData>content</UserData>
-            <ErrorMessage>欄位不得為空</ErrorMessage>
-          </UserDataContainer>
-
-          <UserDataContainer>
             <Title>姓名：</Title>
-            <UserData>content</UserData>
-            <ErrorMessage>欄位不得為空</ErrorMessage>
-          </UserDataContainer>
-
-          <UserDataContainer>
             <Title>電子信箱：</Title>
-            <UserData>content</UserData>
-            <ErrorMessage>欄位不得為空</ErrorMessage>
-          </UserDataContainer>
-
-          <UserDataContainer>
             <Title>手機：</Title>
-            <UserData>content</UserData>
-            <ErrorMessage>欄位不得為空</ErrorMessage>
-          </UserDataContainer>
-        </div>
-      </Infomation>
+          </TitleContainer>
+          <TitleContainer>
+            <UserData>{userInfo.username}</UserData>
+            <UserData>{userInfo.realName}</UserData>
+            <UserData>{userInfo.email}</UserData>
+            <UserData>{userInfo.phone}</UserData>
+          </TitleContainer>
+        </Bottom>
+      </InfoContainer>
     </Container>
   );
 }
