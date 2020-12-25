@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import products_1 from '../../img/products_1.webp';
+import { Link, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getProducts,
+  selectProducts,
+} from '../../redux/reducers/productsSlice';
 
 const Container = styled.div`
   width: 80vw;
@@ -25,7 +29,7 @@ const OptionContainer = styled.div`
   display: flex;
 `;
 
-const ProductsOption = styled.div`
+const ProductsOption = styled(Link)`
   color: #333;
   padding: 30px 50px;
   border-bottom: 2px solid transparent;
@@ -34,6 +38,8 @@ const ProductsOption = styled.div`
   cursor: pointer;
 
   &:hover {
+    text-decoration: none;
+    color: #333;
     border-bottom: 2px solid #07273c;
   }
 `;
@@ -54,6 +60,7 @@ const Product = styled(Link)`
   margin: 20px 15px;
   background: rgb(155, 183, 202);
   transition: all 0.2s ease-in-out;
+  animation: fade-in 0.6s linear;
 
   &:hover {
     transform: scale(1.01);
@@ -122,92 +129,66 @@ const DateFilter = styled.button`
 `;
 
 export default function Products() {
-  const [priceFilter, setPriceFilter] = useState('DESC');
-  const [dateFilter, setDateFilter] = useState('DESC');
+  const { type } = useParams();
+  const dispatch = useDispatch();
+  const products = useSelector(selectProducts);
+  const [sortFilter, setSortFilter] = useState('price');
+  const [order, setOrder] = useState('DESC');
 
-  const handlePriceFilter = (filter) => {
-    setPriceFilter(filter);
-  };
-
-  const handleDateFilter = (filter) => {
-    setDateFilter(filter);
-  };
+  useEffect(() => dispatch(getProducts({ type, order, sort: sortFilter })), [
+    dispatch,
+    type,
+    sortFilter,
+    order,
+  ]);
 
   return (
     <Container>
       <Title>全部商品</Title>
       <Divider />
       <OptionContainer>
-        {/*all 不同的 API */}
-        <ProductsOption to="/products">全部商品</ProductsOption>
-        <ProductsOption to="/products/acoustics">音響</ProductsOption>
-        <ProductsOption to="/products/earbuds">入耳式耳機</ProductsOption>
-        <ProductsOption to="/products/headphones">耳罩式耳機</ProductsOption>
-        <ProductsOption to="/products/accessories">週邊配件</ProductsOption>
+        <ProductsOption to="/products/all">全部商品</ProductsOption>
+        <ProductsOption to="/products/1">耳罩式耳機</ProductsOption>
+        <ProductsOption to="/products/2">入耳式耳機</ProductsOption>
+        <ProductsOption to="/products/3">音響</ProductsOption>
+        <ProductsOption to="/products/4">週邊配件</ProductsOption>
       </OptionContainer>
       <FilterContainer>
-        價格排序：
         <PriceFilter
-          $isAcitve={priceFilter === 'DESC'}
-          onClick={() => handlePriceFilter('DESC')}
+          $isAcitve={sortFilter === 'price'}
+          onClick={() => setSortFilter('price')}
         >
-          由高到低
+          照價格排序
         </PriceFilter>
         <PriceFilter
-          $isAcitve={priceFilter === 'ASC'}
-          onClick={() => handlePriceFilter('ASC')}
+          $isAcitve={sortFilter === 'createdAt'}
+          onClick={() => setSortFilter('createdAt')}
         >
-          由低到高
+          照日期排序
         </PriceFilter>
       </FilterContainer>
       <FilterContainer>
-        日期：
         <DateFilter
-          $isAcitve={dateFilter === 'DESC'}
-          onClick={() => handleDateFilter('DESC')}
+          $isAcitve={order === 'DESC'}
+          onClick={() => setOrder('DESC')}
         >
-          由新到舊
+          升序
         </DateFilter>
-        <DateFilter
-          $isAcitve={dateFilter === 'ASC'}
-          onClick={() => handleDateFilter('ASC')}
-        >
-          由舊到新
+        <DateFilter $isAcitve={order === 'ASC'} onClick={() => setOrder('ASC')}>
+          降序
         </DateFilter>
       </FilterContainer>
       <Divider />
 
       <ProductContainer>
-        <Product to="/products/1">
-          <Img src={products_1} alt="A product" />
-          <Name>PRODUCT NAME</Name>
-          <Description>DESCROPTION DESCRIPION</Description>
-          <Price>NT$1000</Price>
-        </Product>
-        <Product>
-          <Img src={products_1} alt="A product" />
-          <Name>PRODUCT NAME</Name>
-          <Description>DESCROPTION DESCRIPION</Description>
-          <Price>NT$1000</Price>
-        </Product>
-        <Product>
-          <Img src={products_1} alt="A product" />
-          <Name>PRODUCT NAME</Name>
-          <Description>DESCROPTION DESCRIPION</Description>
-          <Price>NT$1000</Price>
-        </Product>
-        <Product>
-          <Img src={products_1} alt="A product" />
-          <Name>PRODUCT NAME</Name>
-          <Description>DESCROPTION DESCRIPION</Description>
-          <Price>NT$1000</Price>
-        </Product>
-        <Product>
-          <Img src={products_1} alt="A product" />
-          <Name>PRODUCT NAME</Name>
-          <Description>DESCROPTION DESCRIPION</Description>
-          <Price>NT$1000</Price>
-        </Product>
+        {products.map((data) => (
+          <Product to={`/product/${data.id}`} key={data.id}>
+            <Img src={data.Photos[0].url} alt={data.type} />
+            <Name>{data.productName}</Name>
+            <Description>DESCROPTION DESCRIPION</Description>
+            <Price>NT${data.price}</Price>
+          </Product>
+        ))}
       </ProductContainer>
     </Container>
   );

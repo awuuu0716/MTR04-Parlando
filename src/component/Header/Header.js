@@ -160,7 +160,7 @@ export default function Header() {
             <LinkContainer $width={400}>
               <Nav to="/about">關於我們</Nav>
               <Nav to="/news">最新消息</Nav>
-              <Nav to="/products" onMouseEnter={handleMouseEnter}>
+              <Nav to="/products/all" onMouseEnter={handleMouseEnter}>
                 選購商品
               </Nav>
             </LinkContainer>
@@ -176,10 +176,10 @@ export default function Header() {
             onMouseLeave={handleMouseLeave}
           >
             <LinkContainer $width={550} $marginLeft={110}>
-              <Nav to="/products/acoustics">音響</Nav>
-              <Nav to="/products/earbuds">入耳式耳機</Nav>
-              <Nav to="/products/headphones">耳罩式耳機</Nav>
-              <Nav to="/products/accessories">週邊配件</Nav>
+              <Nav to="/products/1">耳罩式耳機</Nav>
+              <Nav to="/products/2">入耳式耳機</Nav>
+              <Nav to="/products/3">音響</Nav>
+              <Nav to="/products/4">週邊配件</Nav>
             </LinkContainer>
           </HoverContainer>
         </>
