@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import product_pic_1 from '../../img/product_pic_1.webp';
-import product_pic_2 from '../../img/product_pic_2.webp';
 import product_pic_3 from '../../img/carousel_4.webp';
 import feature from '../../img/feature.jpg';
+import preload from '../../img/preload.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProduct, selectProduct } from '../../redux/reducers/productsSlice';
 
 const Container = styled.div`
   width: 80vw;
@@ -28,15 +30,11 @@ const ProductContainer = styled.div`
 
 const Thumbnail = styled.img`
   display: block;
-  margin: 0 20px;
   width: 80px;
   height: 80px;
   object-fit: cover;
   cursor: pointer;
   filter: ${(props) => (props.$active ? 'brightness(1)' : 'brightness(0.3)')};
-  & + & {
-    margin: 20px;
-  }
 `;
 
 const ProductImgContainer = styled.div`
@@ -115,12 +113,14 @@ const Price = styled.h2`
 
 const Alternative = styled.div`
   display: flex;
-  margin-bottom: 70px;
+  margin-bottom: 20px;
+`;
+
+const Storage = styled.div`
+  margin-bottom: 20px;
 `;
 
 const Option = styled.button`
-  width: 100px;
-  height: 40px;
   margin: 10px;
   margin-left: 0;
   background: ${(props) => (props.$active ? '#07273c' : 'white')};
@@ -358,24 +358,30 @@ const Actions = styled.div`
   display: flex;
 `;
 
+const PhotosContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 20px;
+  justify-content: space-between;
+  width: 180px;
+`;
+
 export default function Product() {
-  const [picList, setPicList] = useState([
-    { src: product_pic_1, isActive: true },
-    { src: product_pic_2, isActive: false },
-    { src: product_pic_1, isActive: false },
-    { src: product_pic_2, isActive: false },
-  ]);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const product = useSelector(selectProduct);
+  const [picList, setPicList] = useState([]);
   const [nowPicIndex, setNowPicIndex] = useState(0);
   const [amount, setAmount] = useState(1);
   const [isShowModal, setIsShowModal] = useState(false);
-  const [color, setColor] = useState('DARK');
+  const [models, setModels] = useState([]);
+  const [storage, setStorage] = useState('');
+  const [selectedModel, setSelectedModel] = useState('');
   const { pathname } = useLocation();
-
+  
   const handleShowModal = (state) => {
     setIsShowModal(state);
   };
-
-  const chooseColor = (color) => setColor(color);
 
   const addAmount = () => setAmount(amount + 1);
 
@@ -431,57 +437,70 @@ export default function Product() {
     }
   };
 
+  useEffect(() => {
+    dispatch(getProduct(id)).then((res) => {
+      setPicList(
+        res.Photos.map((photo, index) => {
+          if (index === 0)
+            return { src: photo.url, isActive: true, id: photo.id };
+          return { src: photo.url, isActive: false, id: photo.id };
+        })
+      );
+      setModels(res.Product_models);
+      setSelectedModel(res.Product_models[0].modelName);
+      setStorage(res.Product_models[0].storage);
+    });
+  }, [dispatch, id]);
+
   return (
     <>
       <Container>
         <Breadcrumb>
-          <Link to="/products">Products</Link>
+          <Link to="/products/all">Products</Link>
           <span> &#062; </span>
-          <Link to={pathname}>productName</Link>
+          <Link to={pathname}>{product.productName}</Link>
         </Breadcrumb>
         <ProductContainer>
-          <div>
+          <PhotosContainer>
             {picList.map((data, index) => (
               <Thumbnail
                 $active={data.isActive}
                 src={data.src}
                 onClick={() => handleChangePic(index)}
+                key={`photo-${data.id}`}
               />
             ))}
-          </div>
+          </PhotosContainer>
 
           <ProductImgContainer>
             <ArrowLeft onClick={prePic} />
-            <ProductImg src={picList[nowPicIndex].src}></ProductImg>
+            <ProductImg
+              src={picList.length > 0 ? picList[nowPicIndex].src : preload}
+            ></ProductImg>
             <ArrowRight onClick={nextPic} />
           </ProductImgContainer>
 
           <ProductInfomationContainer>
-            <Name>Product's Name</Name>
-            <SubName>SOMETHING SOMETHING</SubName>
+            <Name>{product.productName}</Name>
+            <SubName>{product.type}</SubName>
             <Label>Price</Label>
-            <Price>NT$1000</Price>
-            <Label>Color</Label>
+            <Price>NT${product.price}</Price>
+            <Label>Model</Label>
             <Alternative>
-              <Option
-                $active={color === 'DARK'}
-                onClick={() => chooseColor('DARK')}
-              >
-                DARK
-              </Option>
-              <Option
-                $active={color === 'CHERRY'}
-                onClick={() => chooseColor('CHERRY')}
-              >
-                CHERRY
-              </Option>
-              <Option
-                $active={color === 'GREEN'}
-                onClick={() => chooseColor('GREEN')}
-              >
-                GREEN
-              </Option>
+              {models.map((model) => (
+                <Option
+                  $active={selectedModel === model.modelName}
+                  onClick={() => {
+                    setSelectedModel(model.modelName)
+                    setStorage(model.storage);
+                  }}
+                  key={`model-${model.id}`}
+                >
+                  {model.modelName}
+                </Option>
+              ))}
             </Alternative>
+            <Storage>Storage: {storage}</Storage>
             <Amount>
               <AmountButton onClick={minusAmount}>-</AmountButton>
               <AmountShow>{amount}</AmountShow>
@@ -547,14 +566,14 @@ export default function Product() {
           <SupportTitle>聯絡客服</SupportTitle>
         </Support>
       </Container>
-      
+
       <Modal $isShowModal={isShowModal}>
         <h5>加入成功！</h5>
         <Actions>
           <CloseModalButton onClick={() => handleShowModal(false)}>
             返回
           </CloseModalButton>
-          <CheckoutButton>結帳</CheckoutButton>
+          <CheckoutButton to="/">結帳</CheckoutButton>
         </Actions>
       </Modal>
     </>

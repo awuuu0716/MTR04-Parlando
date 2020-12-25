@@ -45,10 +45,10 @@ function App() {
           <Route exact path="/">
             <HomePage />
           </Route>
-          <Route exact path="/products">
+          <Route exact path="/products/:type">
             <Products />
           </Route>
-          <Route exact path="/products/:id">
+          <Route exact path="/product/:id">
             <Product />
           </Route>
           <Route exact path="/shopping-cart">
