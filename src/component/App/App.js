@@ -20,6 +20,10 @@ import AllProductsPage from '../../pages/backstage/AllProductsPage';
 import AddProductsPage from '../../pages/backstage/AddProductsPage';
 import OrdersPage from '../../pages/backstage/OrdersPage';
 import SingleOrderPage from '../../pages/backstage/SingleOrderPage';
+import AddPhotoPage from '../../pages/backstage/AddPhotoPage';
+import AddProductsModelPage from '../../pages/backstage/AddProductsModelPage';
+
+
 
 
 import Themes from '../../style/Themes';
@@ -78,6 +82,12 @@ function App() {
             </Route>
             <Route exact path="/backstage/add-product">
               <AddProductsPage />
+            </Route>
+            <Route exact path="/backstage/add-product/model">
+              <AddProductsModelPage />
+            </Route>
+            <Route exact path="/backstage/add-product/add-photo">
+              <AddPhotoPage />
             </Route>
             <Route exact path="/backstage/orders">
               <OrdersPage />
