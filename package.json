@@ -11,6 +11,7 @@
     "quill": "^1.3.7",
     "quill-image-resize-module": "^3.0.0",
     "quill-image-resize-module--fix-imports-error": "^3.0.0",
+    "gh-pages": "^3.1.0",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^17.0.1",
@@ -22,7 +23,10 @@
     "react-scripts": "4.0.1",
     "styled-components": "^5.2.1"
   },
+  "homepage": "https://awuuu0716.github.io/MTR04-Parlando",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -31,7 +31,7 @@ const Container = styled.footer`
   padding: 50px 180px;
   padding-bottom: 0;
   margin-top: 200px;
-  background: ${props=>props.theme.background};
+  background: ${(props) => props.theme.background};
   color: white;
   font-size: 18px;
   font-weight: bold;
@@ -42,7 +42,7 @@ const LeftContainer = styled.div`
   width: 575px;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 const Location = styled.div`
   margin-bottom: 10px;
@@ -50,7 +50,7 @@ const Location = styled.div`
   span {
     margin-left: 20px;
   }
-`
+`;
 
 const Email = styled.div`
   img {
@@ -72,7 +72,7 @@ const RightContainer = styled.div`
 const Icon = styled(Link)`
   width: 50px;
   height: 50px;
-  mask: url(${props=>props.$icon}) no-repeat;
+  mask: url(${(props) => props.$icon}) no-repeat;
   background-color: white;
 
   &:hover {
@@ -99,7 +99,7 @@ export default function Footer() {
         </LeftContainer>
 
         <RightContainer>
-          <Icon $icon={fb} to="/"/>
+          <Icon $icon={fb} to="/" />
           <Icon $icon={ig} to="/" />
           <Icon $icon={github} to="/" />
         </RightContainer>
