@@ -1,5 +1,5 @@
 import { getAuthToken } from './utils';
-const BASE_URL = 'http://18.236.235.107:3000';
+const BASE_URL = 'https://parlando.tw';
 
 // users
 export const signUp = ({ username, password, realName, email, phone }) =>
