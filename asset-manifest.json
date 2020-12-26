@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/MTR04-Parlando/static/js/main.7f4cc483.chunk.js",
-    "main.js.map": "/MTR04-Parlando/static/js/main.7f4cc483.chunk.js.map",
+    "main.js": "/MTR04-Parlando/static/js/main.154e504c.chunk.js",
+    "main.js.map": "/MTR04-Parlando/static/js/main.154e504c.chunk.js.map",
     "runtime-main.js": "/MTR04-Parlando/static/js/runtime-main.84194655.js",
     "runtime-main.js.map": "/MTR04-Parlando/static/js/runtime-main.84194655.js.map",
     "static/css/2.1a02f21c.chunk.css": "/MTR04-Parlando/static/css/2.1a02f21c.chunk.css",
@@ -39,6 +39,6 @@
     "static/js/runtime-main.84194655.js",
     "static/css/2.1a02f21c.chunk.css",
     "static/js/2.c0f4b529.chunk.js",
-    "static/js/main.7f4cc483.chunk.js"
+    "static/js/main.154e504c.chunk.js"
   ]
 }
