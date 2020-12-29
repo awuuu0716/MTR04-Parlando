@@ -1,8 +1,17 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Aside from '../../../component/Aside';
 import { ButtonLight } from '../../../component/Button';
 import { device } from '../../../style/breakpoints';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getProducts,
+  updateProductStatus,
+  deleteProduct,
+  selectProducts,
+  selectErrorMessage,
+} from '../../../redux/reducers/productsSlice';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -20,8 +29,13 @@ const Container = styled.div`
   margin-bottom: 40px;
   font-size: 24px;
   transform: translate(-50%);
+  @media ${device.Tablets} {
+    width: 800px;
+  }
 `;
-const Header = styled.div``;
+const Header = styled.div`
+  position: relative;
+`;
 const Title = styled.h3`
   font-size: 24px;
   color: ${(props) => props.theme.titleColor};
@@ -65,18 +79,50 @@ const ButtonGroup = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
+const FilterSelector = styled.div`
+  font-size: 0.8em;
+  display: block;
+  @media ${device.Tablets} {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+`;
 
-const Buttons = () => {
+const Buttons = ({ isShow, handleProductDelete, id, handleProductIsShow }) => {
   return (
     <ButtonGroup>
-      <ButtonLight $size={'s'}>編輯</ButtonLight>
-      <ButtonLight $size={'s'}>上架</ButtonLight>
-      <ButtonLight $size={'s'}>下架</ButtonLight>
-      <ButtonLight $size={'s'}>刪除</ButtonLight>
+      <Link to={`/backstage/edit-product/${id}`}>
+        <ButtonLight $size={'s'}>編輯</ButtonLight>
+      </Link>
+      <ButtonLight $size={'s'} onClick={() => handleProductIsShow({ id, isShow })}>
+        {isShow === 1 ? '下架' : '上架'}
+      </ButtonLight>
+      <ButtonLight $size={'s'} onClick={() => handleProductDelete(id)}>
+        刪除
+      </ButtonLight>
     </ButtonGroup>
   );
 };
 export default function AllProductsPage() {
+  const dispatch = useDispatch();
+  const products = useSelector(selectProducts);
+  const errorMessage = useSelector(selectErrorMessage);
+  const [sortFilter, setSortFilter] = useState('id');
+  const [order, setOrder] = useState('DESC');
+  const [type, setType] = useState('all');
+  const [update, setUpdate] = useState(false);
+  useEffect(() => dispatch(getProducts({ type, order, sort: sortFilter })), [update,dispatch, type, sortFilter, order]);
+  const handleProductDelete = (id) => {
+    dispatch(deleteProduct(id));
+    setUpdate(!update)
+  };
+  const handleProductIsShow = ({ id, isShow }) => {
+    dispatch(updateProductStatus({ id, isShow }));
+    setUpdate(!update)
+  };
   return (
     <Root>
       <Aside />
@@ -86,43 +132,49 @@ export default function AllProductsPage() {
           <Link to="/backstage/add-product">
             <ButtonLight $size={'s'}>新增商品</ButtonLight>
           </Link>
+          <Link to="/backstage/products-model">
+            <ButtonLight $size={'s'}>所有商品型號</ButtonLight>
+          </Link>
+          <FilterSelector>
+            <select onChange={(e) => setType(e.target.value)} value={type}>
+              <option value={'all'}>全部</option>
+              <option value={1}>耳罩式耳機</option>
+              <option value={2}>入耳式耳機</option>
+              <option value={3}>音響</option>
+              <option value={4}>週邊配件</option>
+            </select>
+          </FilterSelector>
         </Header>
         <TableWrapper>
           <StyledTable>
             <thead>
               <tr>
                 <th>Product ID</th>
-                <th>Model</th>
                 <th>Name</th>
                 <th>Price - NT$</th>
-                <th>In stock</th>
+                <th>Type</th>
                 <th>Status</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>00001</td>
-                <td>SE-01</td>
-                <td>product</td>
-                <td>1200</td>
-                <td>50</td>
-                <td>已上架</td>
-                <td>
-                  <Buttons />
-                </td>
-              </tr>
-              <tr>
-                <td>00002</td>
-                <td>HD-02</td>
-                <td>product</td>
-                <td>900</td>
-                <td>100</td>
-                <td>未上架</td>
-                <td>
-                  <Buttons />
-                </td>
-              </tr>
+              {products.map((product) => (
+                <tr key={product.id}>
+                  <td>{product.id}</td>
+                  <td>{product.productName}</td>
+                  <td>{product.price}</td>
+                  <td>{product.type}</td>
+                  <td>{product.isShow === 1 ? '已上架' : '未上架'}</td>
+                  <td>
+                    <Buttons
+                      isShow={product.isShow}
+                      id={product.id}
+                      handleProductDelete={handleProductDelete}
+                      handleProductIsShow={handleProductIsShow}
+                    />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </StyledTable>
         </TableWrapper>

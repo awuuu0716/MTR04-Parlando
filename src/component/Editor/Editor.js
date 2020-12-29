@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useQuill } from 'react-quilljs';
 import ImageResize from 'quill-image-resize-module--fix-imports-error';
+import ImageUploader from 'quill-image-uploader';
+import { addArticlePhoto } from '../../WebAPI';
 import 'quill/dist/quill.snow.css';
 import styled from 'styled-components';
 import { device } from '../../style/breakpoints';
@@ -20,52 +22,69 @@ const Container = styled.div`
     }
     .ql-editor {
       word-break: break-all;
-      text-align:center;
-
+      text-align: center;
     }
   }
 `;
+const contentInit = [
+  {
+    insert: 'FEATURES ',
+    attributes: {
+      align: 'center',
+      size: 'huge',
+    },
+  },
+  {
+    insert: `請於此輸入你的特色說明 `,
+    attributes: { align: 'center' },
+  },
+  { insert: { image: 'https://fakeimg.pl/600x400/' } },
+  { insert: ' ', attributes: { align: 'center' } },
+  { insert: { image: 'https://fakeimg.pl/150/' } },
+  { insert: { image: 'https://fakeimg.pl/150/' } },
+  { insert: { image: 'https://fakeimg.pl/150/' } },
+  { insert: { image: 'https://fakeimg.pl/150/' } },
+  { insert: '\n' },
+];
 
-export default function Editor({ onChange }) {
+export default function Editor({ onChange, content }) {
   const counterRef = React.useRef();
   const modules = {
     imageResize: {
       displaySize: true,
     },
     toolbar: [[{ header: [1, 2, 3, 4, false] }], [{ align: [] }], ['bold', 'italic', 'underline'], ['link', 'image'], ['clean']],
+    imageUploader: {
+      upload: (files) => {
+        return new Promise((resolve, reject) => {
+          const formData = new FormData();
+          formData.append('files', files);
+          addArticlePhoto(formData)
+            .then((result) => {
+              console.log(result);
+              resolve(result.url);
+            })
+            .catch((error) => {
+              reject('Upload failed');
+              console.error('Error:', error);
+            });
+        });
+      },
+    },
   };
 
   const { quill, quillRef, Quill } = useQuill({ modules });
-
   if (Quill && !quill) {
-    Quill.register('modules/imageResize', ImageResize);
+    Quill.debug('error')
+    Quill.register({ 'modules/imageResize': ImageResize, 'modules/imageUploader': ImageUploader });
   }
 
   useEffect(() => {
     if (quill) {
-      quill.setContents([
-        {
-          insert: 'FEATURES ',
-          attributes: {
-            align: 'center',
-            size: 'huge',
-          },
-        },
-        {
-          insert: `請於此輸入你的特色說明 `,
-          attributes: { align: 'center' },
-        },
-        { insert: { image: 'https://fakeimg.pl/600x400/' } },
-        { insert: ' ' ,attributes: { align: 'center' },},
-        { insert: { image: 'https://fakeimg.pl/150/' } },
-        { insert: { image: 'https://fakeimg.pl/150/' } },
-        { insert: { image: 'https://fakeimg.pl/150/' } },
-        { insert: { image: 'https://fakeimg.pl/150/' } },
-
-        { insert: '\n' },
-      ]);
+      quill.setContents(content ? content : contentInit);
       quill.on('text-change', () => {
         const text = quill.getContents();
+        console.log(text);
         onChange(text);
       });
     }

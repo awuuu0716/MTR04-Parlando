@@ -17,6 +17,8 @@ import OrdersPage from '../../pages/backstage/OrdersPage';
 import SingleOrderPage from '../../pages/backstage/SingleOrderPage';
 import AddPhotoPage from '../../pages/backstage/AddPhotoPage';
 import AddProductsModelPage from '../../pages/backstage/AddProductsModelPage';
+import AllProductsModelPage from '../../pages/backstage/AllProductsModelPage';
+import EditProductPage from '../../pages/backstage/EditProductPage';
 
 import Themes from '../../style/Themes';
 import { ThemeProvider } from 'styled-components';
@@ -34,9 +36,9 @@ function App() {
   const isAdmin = useSelector(selectIsAdmin);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (getAuthToken()) dispatch(getMe());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (getAuthToken()) dispatch(getMe());
+  // }, [dispatch]);
 
   return (
     <ThemeProvider theme={isBackstageMode ? Themes.backstage : Themes.customer}>
@@ -80,8 +82,15 @@ function App() {
           <Route exact path="/adminLogin">
             <AdminLogin />
           </Route>
-          <Route exact path="/backstage/product">
-            {isAdmin ? <AllProductsPage /> : <Redirect to="/adminLogin" />}
+          <Route exact path="/backstage/products">
+            {/* {isAdmin ? <AllProductsPage /> : <Redirect to="/adminLogin" />} */}
+            <AllProductsPage /> 
+          </Route>
+          <Route exact path="/backstage/edit-product/:id">
+            <EditProductPage /> 
+          </Route>
+          <Route exact path="/backstage/products-model">
+            <AllProductsModelPage /> 
           </Route>
           <Route exact path="/backstage/add-product">
             <AddProductsPage />

@@ -62,6 +62,7 @@ const modelErrorMessageInit = {
 export default function AddProductsModelPage() {
   const [productErrorMessage, setProductErrorMessage] = useState(modelErrorMessageInit);
   const [model, setModel] = useState('');
+  const [productId, setProductId]= useState('')
   const [color, setColor] = useState('');
   const [store, setStore] = useState('');
 
@@ -78,88 +79,38 @@ export default function AddProductsModelPage() {
     }
   };
   const checkProductIsValid = (value, name) => {};
-  const updateErrorMessage = (errorType, name, message) => {
-    if (errorType === 'product') {
-      console.log(name)
-      let key =name
-      const obj = { ...productErrorMessage, key: { valid: false, message } };
-      console.log(obj);
-      // setProductErrorMessage({ ...productErrorMessage, name: { valid: false, message} });
-      // console.log(productErrorMessage);
-    }
-  };
+  const updateErrorMessage = (errorType, name, message) => {};
 
   const handleAddProductModel = (e) => {
     e.preventDefault();
-    if (!model || !type || !color || !store) {
-      if (!model) {
-      }
-      // if (!type) {
-      //   setTypeError('此處不得為空');
-      // }
-      // if (!color) {
-      //   setColorError('此處不得為空');
-      // }
-      // if (!store) {
-      //   setStoreError('此處不得為空');
-      // }
-      // if (!description) {
-      //   setDescriptionError('此處不得為空');
-      // }
-      return;
+    if (!model || !color || !store) {
     }
-
-    // addProduct(productName, price, article)
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //     if (data.ok === 0) {
-    //       setErrorMessage(data.message.toString())
-    //     }
-    // setProductId(data.info.productId)
-    //   });
   };
-  // console.log(article);
+
   return (
     <Root>
       <Aside />
       <Container>
         <Title>新增商品型號</Title>
-          <Form productId={productId}>
-            <InputContainer>
-              <Input
-                inputTitle={'數量'}
-                inputType={'text'}
-                size={'90%'}
-                name={'store'}
-                value={store}
-                onChange={handleInputChange}
-                errorMessage={storeError}
-              />
-              <Input
-                inputTitle={'型號'}
-                inputType={'text'}
-                size={'90%'}
-                name={'model'}
-                value={model}
-                onChange={handleInputChange}
-                errorMessage={modelError}
-                ple
-              />
-            </InputContainer>
-            <InputContainer>
-              <Input
-                inputTitle={'顏色'}
-                inputType={'text'}
-                size={'90%'}
-                name={'color'}
-                value={color}
-                onChange={handleInputChange}
-                errorMessage={colorError}
-              />
-            </InputContainer>
-            <SubmitBtn onClick={handleAddProductModel}>送出</SubmitBtn>
-          </Form>
+        <Form productId={productId}>
+          <InputContainer>
+            <Input inputTitle={'數量'} inputType={'text'} size={'90%'} name={'store'} value={store} onChange={handleInputChange} errorMessage={''} />
+            <Input
+              inputTitle={'型號'}
+              inputType={'text'}
+              size={'90%'}
+              name={'model'}
+              value={model}
+              onChange={handleInputChange}
+              errorMessage={''}
+              ple
+            />
+          </InputContainer>
+          <InputContainer>
+            <Input inputTitle={'顏色'} inputType={'text'} size={'90%'} name={'color'} value={color} onChange={handleInputChange} errorMessage={''} />
+          </InputContainer>
+          <SubmitBtn onClick={handleAddProductModel}>送出</SubmitBtn>
+        </Form>
       </Container>
     </Root>
   );

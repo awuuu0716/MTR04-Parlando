@@ -109,7 +109,7 @@ export default function Aside() {
         <AsideTitle>後台管理</AsideTitle>
         <LinkContainer>
           <Nav to="/backstage/orders">訂單管理</Nav>
-          <Nav to="/backstage/product">商品管理</Nav>
+          <Nav to="/backstage/products">商品管理</Nav>
         </LinkContainer>
       </Container>
     </AsideWrapper>

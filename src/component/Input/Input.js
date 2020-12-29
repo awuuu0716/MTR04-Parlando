@@ -55,8 +55,8 @@ export const InputSelect = ({ inputTitle, types, value, size, name, errorMessage
       </HeaderContainer>
       <select name={name} size={size} onChange={onChange} value={value} >
         {types.map((type, index) => (
-          <option key={index} value={type}>
-            {type}
+          <option key={index} value={type.value}>
+            {type.name}
           </option>
         ))}
       </select>
