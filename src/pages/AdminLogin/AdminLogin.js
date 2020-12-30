@@ -119,7 +119,7 @@ export default function Login() {
     isSubmit.current = true;
     dispatch(adminLogin({ username, password })).then((res) => {
       isSubmit.current = false;
-      if (res) history.push('/backstage/product');
+      if (res) history.push('/backstage/products');
     });
   };
 
