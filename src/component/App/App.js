@@ -158,6 +158,7 @@ function App() {
         <Header />
         <AuthSwitch userLevel={userLevel} />
         <Footer />
+      </Router>
     </ThemeProvider>
   );
 }
