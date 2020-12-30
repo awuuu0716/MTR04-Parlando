@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.js": "/MTR04-Parlando/static/js/main.154e504c.chunk.js",
-    "main.js.map": "/MTR04-Parlando/static/js/main.154e504c.chunk.js.map",
+    "main.js": "/MTR04-Parlando/static/js/main.d1833234.chunk.js",
+    "main.js.map": "/MTR04-Parlando/static/js/main.d1833234.chunk.js.map",
     "runtime-main.js": "/MTR04-Parlando/static/js/runtime-main.84194655.js",
     "runtime-main.js.map": "/MTR04-Parlando/static/js/runtime-main.84194655.js.map",
-    "static/css/2.1a02f21c.chunk.css": "/MTR04-Parlando/static/css/2.1a02f21c.chunk.css",
-    "static/js/2.c0f4b529.chunk.js": "/MTR04-Parlando/static/js/2.c0f4b529.chunk.js",
-    "static/js/2.c0f4b529.chunk.js.map": "/MTR04-Parlando/static/js/2.c0f4b529.chunk.js.map",
+    "static/css/2.83d8d302.chunk.css": "/MTR04-Parlando/static/css/2.83d8d302.chunk.css",
+    "static/js/2.a1efcfb8.chunk.js": "/MTR04-Parlando/static/js/2.a1efcfb8.chunk.js",
+    "static/js/2.a1efcfb8.chunk.js.map": "/MTR04-Parlando/static/js/2.a1efcfb8.chunk.js.map",
     "index.html": "/MTR04-Parlando/index.html",
-    "static/css/2.1a02f21c.chunk.css.map": "/MTR04-Parlando/static/css/2.1a02f21c.chunk.css.map",
-    "static/js/2.c0f4b529.chunk.js.LICENSE.txt": "/MTR04-Parlando/static/js/2.c0f4b529.chunk.js.LICENSE.txt",
+    "static/css/2.83d8d302.chunk.css.map": "/MTR04-Parlando/static/css/2.83d8d302.chunk.css.map",
+    "static/js/2.a1efcfb8.chunk.js.LICENSE.txt": "/MTR04-Parlando/static/js/2.a1efcfb8.chunk.js.LICENSE.txt",
     "static/media/arrow.be1000be.svg": "/MTR04-Parlando/static/media/arrow.be1000be.svg",
     "static/media/carousel_1.b6585451.webp": "/MTR04-Parlando/static/media/carousel_1.b6585451.webp",
     "static/media/carousel_2.ef876008.webp": "/MTR04-Parlando/static/media/carousel_2.ef876008.webp",
@@ -37,8 +37,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.84194655.js",
-    "static/css/2.1a02f21c.chunk.css",
-    "static/js/2.c0f4b529.chunk.js",
-    "static/js/main.154e504c.chunk.js"
+    "static/css/2.83d8d302.chunk.css",
+    "static/js/2.a1efcfb8.chunk.js",
+    "static/js/main.d1833234.chunk.js"
   ]
 }
