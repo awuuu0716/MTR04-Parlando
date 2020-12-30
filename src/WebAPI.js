@@ -1,5 +1,5 @@
 import { getAuthToken } from './utils';
-const BASE_URL = 'https://parlando.tw';
+const BASE_URL = 'https://huiming.tw';
 
 // users
 export const signUp = ({ username, password, realName, email, phone }) =>
@@ -138,8 +138,6 @@ export const deleteProduct = (id) => {
 export const updateProduct = ({ id, productName, price, article, isShow, type }) => {
   const token = getAuthToken();
   const authToken = `Bearer ${token}`;
-  console.log(id, productName, price, article, isShow, type);
-
   return fetch(`${BASE_URL}/products/${id}`, {
     method: 'PATCH',
     headers: {
@@ -176,7 +174,7 @@ export const addArticlePhoto = (file) => {
   }).then((res) => res.json());
 };
 
-
+//model
 export const getModel = (id) => {
   const token = getAuthToken();
   const authToken = token ? `Bearer ${token}` : '';
@@ -186,7 +184,6 @@ export const getModel = (id) => {
     headers: { Authorization: authToken },
   }).then((res) => res.json());
 };
-
 export const deleteModel = (id) => {
   const token = getAuthToken();
   const authToken = token ? `Bearer ${token}` : '';
@@ -196,7 +193,7 @@ export const deleteModel = (id) => {
       Authorization: authToken,
     },
   }).then((res) => {
-    console.log('status Code',res.status)
+    console.log('status Code', res.status);
     if (res.status === 204) {
       console.log('刪除成功！！');
       return { success: true, message: '刪除成功！！' };
@@ -209,12 +206,39 @@ export const updateModelStatus = ({ id, isShow }) => {
   const token = getAuthToken();
   const authToken = `Bearer ${token}`;
 
-  return fetch(`${BASE_URL}/products/${id}`, {
+  return fetch(`${BASE_URL}/models/${id}`, {
     method: 'PATCH',
     headers: {
       Authorization: authToken,
       'content-type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({ isShow: isShow === 1 ? 0 : 1 }),
+  }).then((res) => res.json());
+};
+export const updateModel = ({ id, modelName, isShow, storage, colorChip }) => {
+  const token = getAuthToken();
+  const authToken = `Bearer ${token}`;
+
+  return fetch(`${BASE_URL}/models/${id}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: authToken,
+      'content-type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({ modelName, isShow, storage, colorChip }),
+  }).then((res) => res.json());
+};
+
+export const addModel = ({ id, modelName, isShow, storage, colorChip }) => {
+  const token = getAuthToken();
+  const authToken = token ? `Bearer ${token}` : '';
+
+  return fetch(`${BASE_URL}/models`, {
+    method: 'POST',
+    headers: {
+      Authorization: authToken,
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({ productId: id, modelName, storage, colorChip, isShow, isDeleted:0 }),
   }).then((res) => res.json());
 };

@@ -5,7 +5,7 @@ import { ButtonLight } from '../../../component/Button';
 import { device } from '../../../style/breakpoints';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getModels, selectModels } from '../../../redux/reducers/modelsSlice';
+import { getModels, selectModels, updateModelStatus, deleteModel } from '../../../redux/reducers/modelsSlice';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -95,23 +95,22 @@ export default function ProductModelsPage() {
   const models = useSelector(selectModels);
   const [update, setUpdate] = useState(false);
   const handleModelDelete = (id) => {
-    dispatch();
+    dispatch(deleteModel(id));
     setUpdate(!update);
   };
   const handleModelIsShow = ({ id, isShow }) => {
-    dispatch();
+    dispatch(updateModelStatus({ id, isShow }));
     setUpdate(!update);
   };
-  useEffect(() => dispatch(getModels(id)), [dispatch]);
-  console.log(id);
-  console.log(models);
+  useEffect(() => dispatch(getModels(id)), [dispatch, id, update]);
+  console.log(models)
   return (
     <Root>
       <Aside />
       <Container>
         <Header>
           <Title>商品型號</Title>
-          <Link to="/backstage/add-product">
+          <Link to={`/backstage/add-model/${id}`}>
             <ButtonLight $size={'s'}>新增型號</ButtonLight>
           </Link>
           <Link to="/backstage/products">
@@ -132,21 +131,24 @@ export default function ProductModelsPage() {
               </tr>
             </thead>
             <tbody>
-              {models.map((model) => (
-                <tr key={model.id}>
-                  <td>{model.id}</td>
-                  <td>{model.modelName}</td>
-                  <td>
-                    <ColorChip $color={model.colorChip} />
-                  </td>
-                  <td>{model.storage}</td>
-                  <td>{model.sell}</td>
-                  <td>{model.isShow ? '已上架' : '未上架'}</td>
-                  <td>
-                    <Buttons isShow={model.isShow} id={model.id} handleModelDelete={handleModelDelete} handleModelIsShow={handleModelIsShow} />
-                  </td>
-                </tr>
-              ))}
+              {models.map(
+                (model) =>
+                  model.isDeleted === 0 && (
+                    <tr key={model.id}>
+                      <td>{model.id}</td>
+                      <td>{model.modelName}</td>
+                      <td>
+                        <ColorChip $color={model.colorChip} />
+                      </td>
+                      <td>{model.storage}</td>
+                      <td>{model.sell}</td>
+                      <td>{model.isShow ? '已上架' : '未上架'}</td>
+                      <td>
+                        <Buttons isShow={model.isShow} id={model.id} handleModelDelete={handleModelDelete} handleModelIsShow={handleModelIsShow} />
+                      </td>
+                    </tr>
+                  )
+              )}
             </tbody>
           </StyledTable>
         </TableWrapper>

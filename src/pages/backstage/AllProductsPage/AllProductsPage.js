@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Aside from '../../../component/Aside';
 import { ButtonLight } from '../../../component/Button';
 import { device } from '../../../style/breakpoints';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts, updateProductStatus, deleteProduct, selectProducts, selectErrorMessage } from '../../../redux/reducers/productsSlice';
+import { getProducts, updateProductStatus, deleteProduct, selectProducts,  } from '../../../redux/reducers/productsSlice';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -89,7 +89,7 @@ const Buttons = ({ isShow, handleProductDelete, id, handleProductIsShow }) => {
   return (
     <ButtonGroup>
       <Link to={`/backstage/product-models/${id}`}>
-        <ButtonLight $sie={'s'}>型號</ButtonLight>
+        <ButtonLight $size={'s'}>型號</ButtonLight>
       </Link>
       <Link to={`/backstage/edit-product/${id}`}>
         <ButtonLight $size={'s'}>編輯</ButtonLight>
@@ -106,7 +106,6 @@ const Buttons = ({ isShow, handleProductDelete, id, handleProductIsShow }) => {
 export default function AllProductsPage() {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
-  const errorMessage = useSelector(selectErrorMessage);
   const [sortFilter, setSortFilter] = useState('id');
   const [order, setOrder] = useState('DESC');
   const [type, setType] = useState('all');

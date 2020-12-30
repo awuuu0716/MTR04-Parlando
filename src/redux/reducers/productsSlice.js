@@ -47,7 +47,7 @@ export const getProduct = (id) => (dispatch) =>
       return data;
     }
     dispatch(setProduct(data.product));
-    dispatch(setArticle(JSON.parse(data.product.article)));
+    // dispatch(setArticle(JSON.parse(data.product.article)));
     return data.product;
   });
 

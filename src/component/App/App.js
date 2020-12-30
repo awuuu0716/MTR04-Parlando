@@ -16,9 +16,10 @@ import AddProductsPage from '../../pages/backstage/AddProductsPage';
 import OrdersPage from '../../pages/backstage/OrdersPage';
 import SingleOrderPage from '../../pages/backstage/SingleOrderPage';
 import AddPhotoPage from '../../pages/backstage/AddPhotoPage';
-import AddProductsModelPage from '../../pages/backstage/AddProductsModelPage';
+import AddModelPage from '../../pages/backstage/AddModelPage';
 import ProductModelsPage from '../../pages/backstage/ProductModelsPage';
 import EditProductPage from '../../pages/backstage/EditProductPage';
+import EditModelPage from '../../pages/backstage/EditModelPage';
 import Themes from '../../style/Themes';
 import { ThemeProvider } from 'styled-components';
 import OrderInfo from '../../pages/OrderInfo';
@@ -110,14 +111,14 @@ const Admin = () => (
     <Route exact path="/backstage/edit-product/:id">
       <EditProductPage /> 
     </Route>
-    <Route exact path="/backstage/products-model">
+    <Route exact path="/backstage/product-models/:id">
       <ProductModelsPage /> 
     </Route>
-    <Route exact path="/backstage/add-product">
-      <AddProductsPage />
+    <Route exact path="/backstage/edit-model/:id">
+      <EditModelPage />
     </Route>
-    <Route exact path="/backstage/add-product/model">
-      <AddProductsModelPage />
+    <Route exact path="/backstage/add-model/:id">
+      <AddModelPage />
     </Route>
     <Route exact path="/backstage/add-product/add-photo">
       <AddPhotoPage />

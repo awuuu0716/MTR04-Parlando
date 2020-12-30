@@ -3,11 +3,13 @@ import { useState, useEffect, useRef } from 'react';
 import Aside from '../../../component/Aside';
 import { ButtonLight } from '../../../component/Button';
 import { device } from '../../../style/breakpoints';
-import Input, { InputSelect, InputTitle, InputContainer, ErrorMessage, HeaderContainer } from '../../../component/Input';
+import Input, { InputSelect, InputContainer } from '../../../component/Input';
 import { isColorChipValid, isModelNameValid, isStorageValid } from '../../../utils';
 import { useParams, useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { getModel, updateModel, selectModel } from '../../../redux/reducers/modelsSlice';
+import { addModel } from '../../../redux/reducers/modelsSlice';
+import { getProduct,selectProduct } from '../../../redux/reducers/productsSlice';
+
 const Root = styled.div`
   max-width: 1280px;
   margin: 0 auto;
@@ -66,24 +68,25 @@ const modelErrorMessageInit = {
   storage: { valid: true, message: '' },
   isShow: { valid: true, message: '' },
 };
-export default function EditModelPage() {
+export default function AddModelPage() {
   const { id } = useParams();
   const history = useHistory();
   const isSubmit = useRef(false);
-  const model = useSelector(selectModel);
+  const product = useSelector(selectProduct);
   const dispatch = useDispatch();
   const [modelErrorMessage, setModelErrorMessage] = useState(modelErrorMessageInit);
-  const [modelName, setModelName] = useState(model.modelName);
-  const [colorChip, setColorChip] = useState(model.colorChip);
-  const [storage, setStorage] = useState(model.storage);
-  const [isShow, setIsShow] = useState(model.isShow);
-
+  const [modelName, setModelName] = useState('');
+  const [colorChip, setColorChip] = useState('');
+  const [storage, setStorage] = useState('');
+  const [isShow, setIsShow] = useState(0);
+  console.log(modelErrorMessage)
   useEffect(() => {
-    dispatch(getModel(id));
+    dispatch(getProduct(id));
   }, [dispatch,id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(value)
     if (name === 'modelName') {
       updateModelNameIsValid(value);
       return setModelName(value);
@@ -105,10 +108,10 @@ export default function EditModelPage() {
   };
 
   const updateModelNameIsValid = (value) => {
-    if (!isModelNameValid(value)) {
+    if (!value||value.length>2) {
       return setModelErrorMessage((modelErrorMessage) => ({
         ...modelErrorMessage,
-        modelName: { valid: false, message: '長度不超出14字元' },
+        modelName: { valid: false, message: '請輸入色表兩碼縮寫' },
       }));
     }
     return setModelErrorMessage((modelErrorMessage) => ({
@@ -129,6 +132,7 @@ export default function EditModelPage() {
     }));
   };
   const updateStorageIsValid = (value) => {
+    console.log(isStorageValid(value))
     if (!isStorageValid(value)) {
       return setModelErrorMessage((modelErrorMessage) => ({
         ...modelErrorMessage,
@@ -141,7 +145,7 @@ export default function EditModelPage() {
     }));
   };
 
-  const handleEditModel = (e) => {
+  const handleAddModel = (e) => {
     e.preventDefault();
     isSubmit.current = true;
     for (let prop in modelErrorMessage) {
@@ -150,7 +154,7 @@ export default function EditModelPage() {
       }
     }
     if (isSubmit) {
-      dispatch(updateModel({ id, modelName, colorChip, storage, isShow }));
+      dispatch(addModel({ id, modelName, colorChip, storage }));
       history.goBack();
     }
   };
@@ -160,12 +164,12 @@ export default function EditModelPage() {
       <Aside />
       <Container>
         <Header>
-          <Title>更改商品型號</Title>
+          <Title>新增商品型號</Title>
           <ButtonLight $size={'s'} onClick={() => history.goBack()}>
             返回
           </ButtonLight>
         </Header>
-        <Form id="editModelForm">
+        <Form id="addModelForm">
           <InputContainer>
             <Input
               inputTitle={'庫存'}
@@ -217,7 +221,7 @@ export default function EditModelPage() {
               errorMessage={modelErrorMessage['isShow'].message}
             />
           </InputContainer>
-          <SubmitBtn onClick={handleEditModel} type="submit" form="editModelForm">
+          <SubmitBtn onClick={handleAddModel} type="submit" form="addModelForm">
             送出
           </SubmitBtn>
         </Form>

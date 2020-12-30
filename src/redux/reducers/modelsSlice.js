@@ -4,6 +4,8 @@ import {
   getModel as getModelAPI,
   deleteModel as deleteModelAPI,
   updateModelStatus as updateModelStatusAPI,
+  updateModel as updateModelAPI,
+  addModel as addModelAPI
 } from '../../WebAPI';
 
 export const modelsSlice = createSlice({
@@ -60,17 +62,28 @@ export const updateModelStatus = (data) => (dispatch) =>
       dispatch(setErrorMessage(newData.message));
       return newData;
     }
+    dispatch(setModel(newData));
     return newData;
   });
 
 export const updateModel = (data) => (dispatch) =>
-  updateProductAPI(data).then((newData) => {
+  updateModelAPI(data).then((newData) => {
     if (newData.message) {
       dispatch(setErrorMessage(data.message));
       return newData;
     }
     return newData;
   });
+
+  export const addModel = (data) => (dispatch) =>
+  addModelAPI(data).then((newData) => {
+    if (newData.message) {
+      dispatch(setErrorMessage(data.message));
+      return newData;
+    }
+    return newData;
+  });
+
 
 export const { setModels, setModel, setErrorMessage } = modelsSlice.actions;
 
