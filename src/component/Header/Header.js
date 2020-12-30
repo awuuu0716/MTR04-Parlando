@@ -8,11 +8,7 @@ import {
   selectIsBackstageMode,
   setIsBackstageMode,
 } from '../../redux/reducers/themeSlice';
-import {
-  selectIsLogin,
-  setIsLogin,
-  setIsAdmin,
-} from '../../redux/reducers/usersSlice';
+import { selectUserLevel, setUserLevel } from '../../redux/reducers/usersSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken } from '../../utils';
 
@@ -94,14 +90,14 @@ const HoverContainer = styled.div`
   transition: top 0.2s ease-in-out;
 `;
 
-const BackstageHeader = (props) => {
+const BackstageHeader = ({ isLogin, handleLogOut }) => {
   return (
     <HeaderContainer>
       <Logo to="/" />
-      {props.isLogin ? (
-        <LogOut onClick={props.handleLogOut}>登出</LogOut>
+      {isLogin ? (
+        <LogOut onClick={handleLogOut}>登出</LogOut>
       ) : (
-        <Nav to="/adminLogin">登入</Nav>
+        <Nav to="/backstage/adminLogin">登入</Nav>
       )}
     </HeaderContainer>
   );
@@ -121,7 +117,7 @@ const LogOut = styled.div`
 export default function Header() {
   const [isShowProducts, setIsShowProducts] = useState(false);
   const isBackstageMode = useSelector(selectIsBackstageMode);
-  const isLogin = useSelector(selectIsLogin);
+  const userLevel = useSelector(selectUserLevel);
   const history = useHistory();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -139,11 +135,10 @@ export default function Header() {
     } else {
       dispatch(setIsBackstageMode(false));
     }
-  }, [location.pathname]);
+  }, [location.pathname, dispatch]);
 
   const handleLogOut = () => {
-    dispatch(setIsLogin(false));
-    dispatch(setIsAdmin(false));
+    dispatch(setUserLevel('guest'));
     setAuthToken('');
     history.push('/');
   };
@@ -151,7 +146,10 @@ export default function Header() {
   return (
     <>
       {isBackstageMode && (
-        <BackstageHeader handleLogOut={handleLogOut} isLogin={isLogin} />
+        <BackstageHeader
+          handleLogOut={handleLogOut}
+          isLogin={userLevel === 'admin'}
+        />
       )}
       {!isBackstageMode && (
         <>
@@ -164,10 +162,12 @@ export default function Header() {
                 選購商品
               </Nav>
             </LinkContainer>
-            <IconContainer $isLogin={isLogin}>
-              <IconCart to={isLogin ? '/shopping-cart' : '/login'} />
-              <IconMember to={isLogin ? '/membership/info' : '/login'} />
-              {isLogin && <LogOut onClick={handleLogOut}>登出</LogOut>}
+            <IconContainer $isLogin={userLevel === 'member'}>
+              <IconCart to="/shopping-cart" />
+              <IconMember to="/membership/info" />
+              {userLevel === 'member' && (
+                <LogOut onClick={handleLogOut}>登出</LogOut>
+              )}
             </IconContainer>
           </HeaderContainer>
 

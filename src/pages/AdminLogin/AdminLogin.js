@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +7,7 @@ import {
   adminLogin,
   setErrorMessage,
 } from '../../redux/reducers/usersSlice';
-
+import { setIsBackstageMode } from '../../redux/reducers/themeSlice';
 
 const Container = styled.div`
   display: flex;
@@ -115,6 +115,7 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isSubmit.current) return;
+    dispatch(setErrorMessage(''));
     isSubmit.current = true;
     dispatch(adminLogin({ username, password })).then((res) => {
       isSubmit.current = false;
@@ -122,6 +123,10 @@ export default function Login() {
     });
   };
 
+  useEffect(() => {
+    dispatch(setIsBackstageMode(true));
+    return dispatch(setErrorMessage(''));
+  }, [dispatch]);
   return (
     <Container>
       <InputSection>
