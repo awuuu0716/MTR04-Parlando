@@ -156,3 +156,46 @@ export const addArticlePhoto = (file) => {
     body: file,
   }).then((res) => res.json());
 };
+
+
+export const getModel = (id) => {
+  const token = getAuthToken();
+  const authToken = token ? `Bearer ${token}` : '';
+
+  return fetch(`${BASE_URL}/models/${id}`, {
+    method: 'GET',
+    headers: { Authorization: authToken },
+  }).then((res) => res.json());
+};
+
+export const deleteModel = (id) => {
+  const token = getAuthToken();
+  const authToken = token ? `Bearer ${token}` : '';
+  return fetch(`${BASE_URL}/models/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: authToken,
+    },
+  }).then((res) => {
+    console.log('status Code',res.status)
+    if (res.status === 204) {
+      console.log('刪除成功！！');
+      return { success: true, message: '刪除成功！！' };
+    }
+    console.log('刪除失敗');
+    return { success: false, message: '刪除失敗' };
+  });
+};
+export const updateModelStatus = ({ id, isShow }) => {
+  const token = getAuthToken();
+  const authToken = `Bearer ${token}`;
+
+  return fetch(`${BASE_URL}/products/${id}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: authToken,
+      'content-type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({ isShow: isShow === 1 ? 0 : 1 }),
+  }).then((res) => res.json());
+};

@@ -5,7 +5,7 @@ import { ButtonLight } from '../../../component/Button';
 import { device } from '../../../style/breakpoints';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts, selectProducts } from '../../../redux/reducers/productsSlice';
+import { getModels, selectModels } from '../../../redux/reducers/modelsSlice';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -68,26 +68,43 @@ const ButtonGroup = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
+const ColorChip = styled.div`
+  width: 40px;
+  height: 20px;
+  background-color: #${(props) => props.$color};
+`;
 
-const Buttons = () => {
+const Buttons = ({ isShow, handleModelDelete, id, handleModelIsShow }) => {
   return (
     <ButtonGroup>
-      <ButtonLight $size={'s'}>編輯</ButtonLight>
-      <ButtonLight $size={'s'}>上架</ButtonLight>
-      <ButtonLight $size={'s'}>下架</ButtonLight>
-      <ButtonLight $size={'s'}>刪除</ButtonLight>
+      <Link to={`/backstage/edit-model/${id}`}>
+        <ButtonLight $size={'s'}>編輯</ButtonLight>
+      </Link>
+      <ButtonLight $size={'s'} onClick={() => handleModelIsShow({ id, isShow })}>
+        {isShow === 1 ? '下架' : '上架'}
+      </ButtonLight>
+      <ButtonLight $size={'s'} onClick={() => handleModelDelete(id)}>
+        刪除
+      </ButtonLight>
     </ButtonGroup>
   );
 };
-export default function AllProductsModelPage() {
-  const { type } = useParams();
+export default function ProductModelsPage() {
+  const { id } = useParams();
   const dispatch = useDispatch();
-  const products = useSelector(selectProducts);
-  const [sortFilter, setSortFilter] = useState('price');
-  const [order, setOrder] = useState('DESC');
-
-  useEffect(() => dispatch(getProducts({ type, order, sort: sortFilter })), [dispatch, type, sortFilter, order]);
-
+  const models = useSelector(selectModels);
+  const [update, setUpdate] = useState(false);
+  const handleModelDelete = (id) => {
+    dispatch();
+    setUpdate(!update);
+  };
+  const handleModelIsShow = ({ id, isShow }) => {
+    dispatch();
+    setUpdate(!update);
+  };
+  useEffect(() => dispatch(getModels(id)), [dispatch]);
+  console.log(id);
+  console.log(models);
   return (
     <Root>
       <Aside />
@@ -95,35 +112,38 @@ export default function AllProductsModelPage() {
         <Header>
           <Title>商品型號</Title>
           <Link to="/backstage/add-product">
-            <ButtonLight $size={'s'}>新增商品</ButtonLight>
+            <ButtonLight $size={'s'}>新增型號</ButtonLight>
           </Link>
           <Link to="/backstage/products">
-            <ButtonLight $size={'s'}>所有商品</ButtonLight>
+            <ButtonLight $size={'s'}>返回</ButtonLight>
           </Link>
         </Header>
         <TableWrapper>
           <StyledTable>
             <thead>
               <tr>
-                <th>Product ID</th>
+                <th>Model ID</th>
                 <th>Name</th>
-                <th>Price - NT$</th>
+                <th>Color</th>
                 <th>In stock</th>
+                <th>Sell</th>
                 <th>Status</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
-                <tr>
-                  <td>{product.id}</td>
-                  <td>{product.na}-01</td>
-                  <td>product</td>
-                  <td>1200</td>
-                  <td>50</td>
-                  <td>已上架</td>
+              {models.map((model) => (
+                <tr key={model.id}>
+                  <td>{model.id}</td>
+                  <td>{model.modelName}</td>
                   <td>
-                    <Buttons />
+                    <ColorChip $color={model.colorChip} />
+                  </td>
+                  <td>{model.storage}</td>
+                  <td>{model.sell}</td>
+                  <td>{model.isShow ? '已上架' : '未上架'}</td>
+                  <td>
+                    <Buttons isShow={model.isShow} id={model.id} handleModelDelete={handleModelDelete} handleModelIsShow={handleModelIsShow} />
                   </td>
                 </tr>
               ))}

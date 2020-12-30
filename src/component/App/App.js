@@ -17,7 +17,7 @@ import OrdersPage from '../../pages/backstage/OrdersPage';
 import SingleOrderPage from '../../pages/backstage/SingleOrderPage';
 import AddPhotoPage from '../../pages/backstage/AddPhotoPage';
 import AddProductsModelPage from '../../pages/backstage/AddProductsModelPage';
-import AllProductsModelPage from '../../pages/backstage/AllProductsModelPage';
+import ProductModelsPage from '../../pages/backstage/ProductModelsPage';
 import EditProductPage from '../../pages/backstage/EditProductPage';
 
 import Themes from '../../style/Themes';
@@ -89,8 +89,8 @@ function App() {
           <Route exact path="/backstage/edit-product/:id">
             <EditProductPage /> 
           </Route>
-          <Route exact path="/backstage/products-model">
-            <AllProductsModelPage /> 
+          <Route exact path="/backstage/product-models/:id">
+            <ProductModelsPage /> 
           </Route>
           <Route exact path="/backstage/add-product">
             <AddProductsPage />

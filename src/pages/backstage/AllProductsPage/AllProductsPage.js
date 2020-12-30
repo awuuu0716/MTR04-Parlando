@@ -5,13 +5,7 @@ import { ButtonLight } from '../../../component/Button';
 import { device } from '../../../style/breakpoints';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getProducts,
-  updateProductStatus,
-  deleteProduct,
-  selectProducts,
-  selectErrorMessage,
-} from '../../../redux/reducers/productsSlice';
+import { getProducts, updateProductStatus, deleteProduct, selectProducts, selectErrorMessage } from '../../../redux/reducers/productsSlice';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -94,6 +88,9 @@ const FilterSelector = styled.div`
 const Buttons = ({ isShow, handleProductDelete, id, handleProductIsShow }) => {
   return (
     <ButtonGroup>
+      <Link to={`/backstage/product-models/${id}`}>
+        <ButtonLight $sie={'s'}>型號</ButtonLight>
+      </Link>
       <Link to={`/backstage/edit-product/${id}`}>
         <ButtonLight $size={'s'}>編輯</ButtonLight>
       </Link>
@@ -114,15 +111,16 @@ export default function AllProductsPage() {
   const [order, setOrder] = useState('DESC');
   const [type, setType] = useState('all');
   const [update, setUpdate] = useState(false);
-  useEffect(() => dispatch(getProducts({ type, order, sort: sortFilter })), [update,dispatch, type, sortFilter, order]);
+  useEffect(() => dispatch(getProducts({ type, order, sort: sortFilter })), [update, dispatch, type, sortFilter, order]);
   const handleProductDelete = (id) => {
     dispatch(deleteProduct(id));
-    setUpdate(!update)
+    setUpdate(!update);
   };
   const handleProductIsShow = ({ id, isShow }) => {
     dispatch(updateProductStatus({ id, isShow }));
-    setUpdate(!update)
+    setUpdate(!update);
   };
+  console.log(products);
   return (
     <Root>
       <Aside />
@@ -131,9 +129,6 @@ export default function AllProductsPage() {
           <Title>所有商品</Title>
           <Link to="/backstage/add-product">
             <ButtonLight $size={'s'}>新增商品</ButtonLight>
-          </Link>
-          <Link to="/backstage/products-model">
-            <ButtonLight $size={'s'}>所有商品型號</ButtonLight>
           </Link>
           <FilterSelector>
             <select onChange={(e) => setType(e.target.value)} value={type}>
