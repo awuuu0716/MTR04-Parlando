@@ -8,19 +8,25 @@ import feature from '../../img/feature.jpg';
 import preload from '../../img/preload.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct, selectProduct } from '../../redux/reducers/productsSlice';
+import { handelStorageAmount } from '../../utils';
 
 const Container = styled.div`
-  width: 80vw;
-  margin: 50px auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
-const Breadcrumb = styled.div`
+const BreadcrumbContainer = styled.div`
   font-weight: bold;
   padding: 40px;
 
   a {
     color: #07273c;
   }
+`;
+
+const Breadcrumb = styled(Link)`
+  font-size: 20px;
 `;
 
 const ProductContainer = styled.div`
@@ -39,6 +45,7 @@ const Thumbnail = styled.img`
 
 const ProductImgContainer = styled.div`
   position: relative;
+  flex: 2;
 `;
 
 const ProductImg = styled.img`
@@ -50,7 +57,7 @@ const ProductImg = styled.img`
 
 const ArrowLeft = styled.div`
   position: absolute;
-  top: 45%;
+  top: 215px;
   left: 20px;
   width: 30px;
   height: 30px;
@@ -69,7 +76,7 @@ const ArrowLeft = styled.div`
 
 const ArrowRight = styled.div`
   position: absolute;
-  top: 45%;
+  top: 215px;
   right: 85px;
   width: 30px;
   height: 30px;
@@ -86,7 +93,9 @@ const ArrowRight = styled.div`
   }
 `;
 
-const ProductInfomationContainer = styled.div``;
+const ProductInfomationContainer = styled.div`
+  flex: 1;
+`;
 
 const Name = styled.h1`
   font-size: 32px;
@@ -114,15 +123,19 @@ const Price = styled.h2`
 const Alternative = styled.div`
   display: flex;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+  width: 500px;
 `;
 
 const Storage = styled.div`
+  font-size: 18px;
   margin-bottom: 20px;
 `;
 
 const Option = styled.button`
   margin: 10px;
   margin-left: 0;
+  padding: 5px 10px;
   background: ${(props) => (props.$active ? '#07273c' : 'white')};
   color: ${(props) => (props.$active ? 'white' : '#333333')};
   border: 1px solid #07273c;
@@ -198,7 +211,6 @@ const ProductNav = styled.nav`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
   height: 80px;
   background: #9bb7ca;
 `;
@@ -236,6 +248,7 @@ const FeatureDescription = styled.p`
 
 const FeaturImgBig = styled.img`
   display: block;
+  width: 99%;
   margin: 0 auto;
   margin-bottom: 60px;
 `;
@@ -243,14 +256,17 @@ const FeaturImgBig = styled.img`
 const FeatureImgsContainer = styled.div`
   display: flex;
   margin: 0 auto;
-  width: 1280px;
-  justify-content: space-between;
+  width: 100%;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  flex: 1;
 `;
 
 const FeaturImgSmall = styled.img`
   display: block;
   width: 300px;
   height: 300px;
+  margin: 20px;
   object-fit: cover;
 `;
 
@@ -264,7 +280,7 @@ const TitleContainer = styled.div`
   background: #9bb7ca;
 `;
 
-const Title = styled.h1`
+const Title = styled.h2`
   color: white;
   font-weight: bold;
   text-shadow: 2px 2px 2px #737373;
@@ -273,7 +289,8 @@ const Title = styled.h1`
 const Specification = styled.div`
   width: 100%;
   margin: 0 auto;
-  padding: 60px 30px;
+  padding: 40px 20px;
+  padding-bottom: 0;
 `;
 
 const SpecificationTopic = styled.h2`
@@ -300,7 +317,7 @@ const Support = styled.div`
 const SupportTitle = styled.div`
   font-size: 24px;
   font-weight: bold;
-  margin: 20px;
+  margin: 20px 10px;
 `;
 
 const Modal = styled.div`
@@ -378,7 +395,7 @@ export default function Product() {
   const [storage, setStorage] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const { pathname } = useLocation();
-  
+
   const handleShowModal = (state) => {
     setIsShowModal(state);
   };
@@ -438,6 +455,7 @@ export default function Product() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(getProduct(id)).then((res) => {
       setPicList(
         res.Photos.map((photo, index) => {
@@ -455,116 +473,121 @@ export default function Product() {
   return (
     <>
       <Container>
-        <Breadcrumb>
-          <Link to="/products/all">Products</Link>
-          <span> &#062; </span>
-          <Link to={pathname}>{product.productName}</Link>
-        </Breadcrumb>
-        <ProductContainer>
-          <PhotosContainer>
-            {picList.map((data, index) => (
-              <Thumbnail
-                $active={data.isActive}
-                src={data.src}
-                onClick={() => handleChangePic(index)}
-                key={`photo-${data.id}`}
-              />
-            ))}
-          </PhotosContainer>
+        <div>
+          {/* <BreadcrumbContainer>
+            <Breadcrumb to="/products/all">Products</Breadcrumb>
+            <span> &#062; </span>
+            <Breadcrumb to={pathname}>{product.productName}</Breadcrumb>
+          </BreadcrumbContainer> */}
 
-          <ProductImgContainer>
-            <ArrowLeft onClick={prePic} />
-            <ProductImg
-              src={picList.length > 0 ? picList[nowPicIndex].src : preload}
-            ></ProductImg>
-            <ArrowRight onClick={nextPic} />
-          </ProductImgContainer>
-
-          <ProductInfomationContainer>
-            <Name>{product.productName}</Name>
-            <SubName>{product.type}</SubName>
-            <Label>Price</Label>
-            <Price>NT${product.price}</Price>
-            <Label>Model</Label>
-            <Alternative>
-              {models.map((model) => (
-                <Option
-                  $active={selectedModel === model.modelName}
-                  onClick={() => {
-                    setSelectedModel(model.modelName)
-                    setStorage(model.storage);
-                  }}
-                  key={`model-${model.id}`}
-                >
-                  {model.modelName}
-                </Option>
+          <ProductContainer>
+            <PhotosContainer>
+              {picList.map((data, index) => (
+                <Thumbnail
+                  $active={data.isActive}
+                  src={data.src}
+                  onClick={() => handleChangePic(index)}
+                  key={`photo-${data.id}`}
+                />
               ))}
-            </Alternative>
-            <Storage>Storage: {storage}</Storage>
-            <Amount>
-              <AmountButton onClick={minusAmount}>-</AmountButton>
-              <AmountShow>{amount}</AmountShow>
-              <AmountButton onClick={addAmount}>+</AmountButton>
-            </Amount>
-            <div>
-              <AddToCart onClick={() => handleShowModal(true)}>
-                ADD TO CART
-              </AddToCart>
-              <Buy to="/">BUY</Buy>
-            </div>
-          </ProductInfomationContainer>
-        </ProductContainer>
+            </PhotosContainer>
+
+            <ProductImgContainer>
+              <ArrowLeft onClick={prePic} />
+              <ProductImg
+                src={picList.length > 0 ? picList[nowPicIndex].src : preload}
+              ></ProductImg>
+              <ArrowRight onClick={nextPic} />
+            </ProductImgContainer>
+
+            <ProductInfomationContainer>
+              <Name>{product.productName}</Name>
+              <SubName>{product.type}</SubName>
+              <Label>Price</Label>
+              <Price>NT${product.price}</Price>
+              <Label>Model</Label>
+              <Alternative>
+                {models.map((model) => (
+                  <Option
+                    $active={selectedModel === model.modelName}
+                    onClick={() => {
+                      setSelectedModel(model.modelName);
+                      setStorage(model.storage);
+                    }}
+                    key={`model-${model.id}`}
+                  >
+                    {model.modelName}
+                  </Option>
+                ))}
+              </Alternative>
+              <Storage>庫存狀況: {storage}</Storage>
+              <Amount>
+                <AmountButton onClick={minusAmount}>-</AmountButton>
+                <AmountShow>{amount}</AmountShow>
+                <AmountButton onClick={addAmount}>+</AmountButton>
+              </Amount>
+              <div>
+                <AddToCart onClick={() => handleShowModal(true)}>
+                  ADD TO CART
+                </AddToCart>
+                <Buy to="/">BUY</Buy>
+              </div>
+            </ProductInfomationContainer>
+          </ProductContainer>
+        </div>
       </Container>
 
-      <ProductNav>
+      {/* <ProductNav>
         <Anchor to={`${pathname}#feature`}>概觀</Anchor>
         <Anchor to={`${pathname}#spec`}>規格</Anchor>
         <Anchor to={`${pathname}#support`}>支援</Anchor>
       </ProductNav>
 
       <Container>
-        <Feature id="feature">FEATURES</Feature>
-        <FeatureDescription>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-          euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan
-          et viverra justo commodo.
-        </FeatureDescription>
-        <FeaturImgBig src={feature} />
-        <FeatureImgsContainer>
-          <FeaturImgSmall src={product_pic_3} />
-          <FeaturImgSmall src={product_pic_1} />
-          <FeaturImgSmall src={product_pic_3} />
-          <FeaturImgSmall src={product_pic_1} />
-        </FeatureImgsContainer>
-
-        <TitleContainer id="spec">
-          <Title>規格</Title>
-        </TitleContainer>
-
-        <Specification>
-          <SpecificationTopic>TOPIC</SpecificationTopic>
-          <SpecificationMinorTopic>MINOR TOPIC</SpecificationMinorTopic>
-          <SpecificationContent>
+        <div>
+          <Feature id="feature">FEATURES</Feature>
+          <FeatureDescription>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-            euismod bibendum laoreet.
-          </SpecificationContent>
+            euismod bibendum laoreet. Proin gravida dolor sit amet lacus
+            accumsan et viverra justo commodo.
+          </FeatureDescription>
+          <FeaturImgBig src={feature} />
+          <FeatureImgsContainer>
+            <FeaturImgSmall src={product_pic_3} />
+            <FeaturImgSmall src={product_pic_1} />
+            <FeaturImgSmall src={product_pic_3} />
+            <FeaturImgSmall src={product_pic_1} />
+          </FeatureImgsContainer>
 
-          <SpecificationTopic>TOPIC</SpecificationTopic>
-          <SpecificationMinorTopic>MINOR TOPIC</SpecificationMinorTopic>
-          <SpecificationContent>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-            euismod bibendum laoreet.
-          </SpecificationContent>
-        </Specification>
+          <TitleContainer id="spec">
+            <Title>規格</Title>
+          </TitleContainer>
 
-        <TitleContainer id="support">
-          <Title>支援</Title>
-        </TitleContainer>
+          <Specification>
+            <SpecificationTopic>TOPIC</SpecificationTopic>
+            <SpecificationMinorTopic>MINOR TOPIC</SpecificationMinorTopic>
+            <SpecificationContent>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+              euismod bibendum laoreet.
+            </SpecificationContent>
 
-        <Support>
-          <SupportTitle>產品說明文件.PDF</SupportTitle>
-          <SupportTitle>聯絡客服</SupportTitle>
-        </Support>
+            <SpecificationTopic>TOPIC</SpecificationTopic>
+            <SpecificationMinorTopic>MINOR TOPIC</SpecificationMinorTopic>
+            <SpecificationContent>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+              euismod bibendum laoreet.
+            </SpecificationContent>
+          </Specification>
+
+          <TitleContainer id="support">
+            <Title>支援</Title>
+          </TitleContainer>
+
+          <Support>
+            <SupportTitle>產品說明文件.PDF</SupportTitle>
+            <SupportTitle>聯絡客服</SupportTitle>
+          </Support>
+        </div>
       </Container>
 
       <Modal $isShowModal={isShowModal}>
@@ -575,7 +598,7 @@ export default function Product() {
           </CloseModalButton>
           <CheckoutButton to="/">結帳</CheckoutButton>
         </Actions>
-      </Modal>
+      </Modal> */}
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +7,6 @@ import {
   login,
   setErrorMessage,
 } from '../../redux/reducers/usersSlice';
-
 
 const Container = styled.div`
   display: flex;
@@ -115,12 +114,15 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isSubmit.current) return;
+    dispatch(setErrorMessage(''));
     isSubmit.current = true;
     dispatch(login({ username, password })).then((res) => {
       isSubmit.current = false;
       if (res) history.push('/');
     });
   };
+
+  useEffect(() => dispatch(setErrorMessage('')), [dispatch]);
 
   return (
     <Container>

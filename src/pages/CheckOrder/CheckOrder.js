@@ -1,6 +1,10 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import MemberNav from '../../component/MemberNav';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrders, selectOrders } from '../../redux/reducers/ordersSlice';
+import { handleDateFormat } from '../../utils';
 
 const Container = styled.div`
   display: flex;
@@ -8,7 +12,7 @@ const Container = styled.div`
   padding-right: 0;
 `;
 
-const H5 = styled.h5`
+const H3 = styled.h3`
   color: #07273c;
   font-weight: bold;
   margin-bottom: 30px;
@@ -55,16 +59,25 @@ const OrderNumber = styled(Link)`
 
 const OrderInfo = styled.div`
   width: 25%;
-  font-size:20px;
+  font-size: 20px;
 `;
 
+
+
 export default function CheckOrder() {
+  const dispatch = useDispatch();
+  const orders = useSelector(selectOrders);
+
+  useEffect(() => {
+    dispatch(getOrders());
+  }, [dispatch]);
+
   return (
     <Container>
       <MemberNav />
 
       <section>
-        <H5>查詢訂單</H5>
+        <H3>查詢訂單</H3>
 
         <Ul>
           <HeaderContainer>
@@ -73,25 +86,20 @@ export default function CheckOrder() {
             <Header>price (NT$)</Header>
             <Header>time</Header>
           </HeaderContainer>
-
-          <Li>
-            <OrderNumber to="/membership/order/1">00001</OrderNumber>
-            <OrderInfo>
-              product * 1 <br />
-              product * 3 <br />
-              product * 2
-            </OrderInfo>
-            <OrderInfo>3000</OrderInfo>
-            <OrderInfo>2020-11-15</OrderInfo>
-          </Li>
-          <Li>
-            <OrderNumber>00002</OrderNumber>
-            <OrderInfo>
-              product * 1 <br />
-            </OrderInfo>
-            <OrderInfo>1000</OrderInfo>
-            <OrderInfo>2020-11-16</OrderInfo>
-          </Li>
+          {orders.map((order) => (
+            <Li key={order.UUID.slice(0, 8)}>
+              <OrderNumber to={`/membership/order/${order.UUID}`}>
+                {order.UUID.slice(0, 8)}
+              </OrderNumber>
+              <OrderInfo>
+                {order.products.map((data) => (
+                  <div key={data.modelId}>{data.modelName}</div>
+                ))}
+              </OrderInfo>
+              <OrderInfo>{order.totalPrice}</OrderInfo>
+              <OrderInfo>{handleDateFormat(order.createdAt)}</OrderInfo>
+            </Li>
+          ))}
         </Ul>
       </section>
     </Container>

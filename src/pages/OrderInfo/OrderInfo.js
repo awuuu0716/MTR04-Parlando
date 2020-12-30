@@ -1,6 +1,10 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MemberNav from '../../component/MemberNav';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrder, selectOrder } from '../../redux/reducers/ordersSlice';
+import { handleDateFormat } from '../../utils';
 
 const Container = styled.div`
   display: flex;
@@ -105,6 +109,16 @@ const ReturnButton = styled.button`
 `;
 
 export default function OrderInfo() {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const order = useSelector(selectOrder);
+
+  useEffect(() => {
+    dispatch(getOrder(id)).then(() => setIsLoaded(true));
+  }, [dispatch]);
+  console.log(order);
+
   return (
     <Container>
       <MemberNav />
@@ -115,13 +129,15 @@ export default function OrderInfo() {
         <Ul>
           <Li>
             <Header>訂單編號</Header>
-            <Info $flex={3}> xxxxx-12345</Info>
+            <Info $flex={3}> {id}</Info>
             <Header>訂單狀態</Header>
-            <Info $flex={2}>XXX</Info>
+            <Info $flex={2}>{order.status || 'null'}</Info>
           </Li>
           <Li>
             <Header>訂購日期</Header>
-            <Info $flex={3}>2020.10.10 19</Info>
+            <Info $flex={3}>
+              {isLoaded ? handleDateFormat(order.createdAt) : 'loading...'}
+            </Info>
             <Header>付款方式</Header>
             <Info $flex={2}>信用卡</Info>
           </Li>
@@ -129,13 +145,19 @@ export default function OrderInfo() {
             <HeaderFat>訂單內容</HeaderFat>
             <Info $flex={3}>
               <OrderContent>
-                product - 1 (經典白) $ 500 * 1 <br />
-                product - 2 (石曜黑) $ 500 * 3 <br />
-                product - 3 (玫瑰金) $ 500 * 2
+                {isLoaded
+                  ? order.products.map((product) => (
+                      <div key={product.modelId}>
+                        {product.modelName} * {product.count}
+                      </div>
+                    ))
+                  : 'Loading...'}
               </OrderContent>
             </Info>
             <HeaderFat>訂單金額</HeaderFat>
-            <Info $flex={2}>NT$ 3000</Info>
+            <Info $flex={2}>
+              NT$ {order.totalPrice || 'Loading...'}
+            </Info>
           </Li>
           <Li>
             <HeaderFat>收貨地點</HeaderFat>

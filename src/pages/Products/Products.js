@@ -133,7 +133,7 @@ export default function Products() {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
   const [sortFilter, setSortFilter] = useState('price');
-  const [order, setOrder] = useState('DESC');
+  const [order, setOrder] = useState('ASC');
 
   useEffect(() => dispatch(getProducts({ type, order, sort: sortFilter })), [
     dispatch,
@@ -169,12 +169,12 @@ export default function Products() {
       </FilterContainer>
       <FilterContainer>
         <DateFilter
-          $isAcitve={order === 'DESC'}
-          onClick={() => setOrder('DESC')}
+          $isAcitve={order === 'ASC'}
+          onClick={() => setOrder('ASC')}
         >
           升序
         </DateFilter>
-        <DateFilter $isAcitve={order === 'ASC'} onClick={() => setOrder('ASC')}>
+        <DateFilter $isAcitve={order === 'DESC'} onClick={() => setOrder('DESC')}>
           降序
         </DateFilter>
       </FilterContainer>
