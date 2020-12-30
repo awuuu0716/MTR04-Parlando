@@ -24,7 +24,6 @@ const HeaderContainer = styled.div`
   padding: 0 50px;
   background: ${(props) => props.theme.background};
 `;
-
 const LinkContainer = styled.div`
   width: ${(props) => props.$width}px;
   display: flex;

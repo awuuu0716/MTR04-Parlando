@@ -1,5 +1,5 @@
 import { getAuthToken } from './utils';
-const BASE_URL = 'http://18.236.235.107:3000';
+const BASE_URL = 'https://parlando.tw';
 
 // users
 export const signUp = ({ username, password, realName, email, phone }) =>
@@ -46,9 +46,11 @@ export const getMe = () => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  }).then((res) => {
-    return res.json();
-  });
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((err) => console.log(err));
 };
 
 export const updateUserData = ({ realName, email, phone }) => {
@@ -67,29 +69,90 @@ export const updateUserData = ({ realName, email, phone }) => {
 export const getProducts = ({ type, sort, order }) => {
   const token = getAuthToken();
   const authToken = token ? `Bearer ${token}` : '';
-
-  return fetch(
-    `${BASE_URL}/products?sort=${sort}&order=${order}&${
-      type === 'all' ? '' : `type=${type}`
-    }`,
-    {
-      method: 'GET',
-      headers: { Authorization: authToken },
-    }
-  ).then((res) => res.json());
+  return fetch(`${BASE_URL}/products?sort=${sort}&order=${order}&${type === 'all' ? '' : `type=${type}`}`, {
+    method: 'GET',
+    headers: { Authorization: authToken },
+  }).then((res) => res.json());
 };
 
 export const getProduct = (id) => {
   const token = getAuthToken();
   const authToken = token ? `Bearer ${token}` : '';
 
-  return fetch(
-    `${BASE_URL}/products/${id}`,
-    {
-      method: 'GET',
-      headers: { Authorization: authToken },
-    }
-  ).then((res) => res.json());
+  return fetch(`${BASE_URL}/products/${id}`, {
+    method: 'GET',
+    headers: { Authorization: authToken },
+  }).then((res) => res.json());
 };
 
+export const updateProductStatus = ({ id, isShow }) => {
+  const token = getAuthToken();
+  const authToken = `Bearer ${token}`;
 
+  return fetch(`${BASE_URL}/products/${id}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: authToken,
+      'content-type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({ isShow: isShow === 1 ? 0 : 1 }),
+  }).then((res) => res.json());
+};
+
+export const deleteProduct = (id) => {
+  const token = getAuthToken();
+  const authToken = token ? `Bearer ${token}` : '';
+  return fetch(`${BASE_URL}/products/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: authToken,
+    },
+  }).then((res) => {
+    if (res.status === 204) {
+      console.log('刪除成功！！');
+      return { success: true, message: '刪除成功！！' };
+    }
+    console.log('刪除失敗');
+    return { success: false, message: '刪除失敗' };
+  });
+};
+export const updateProduct = ({ id, productName, price, article, isShow, type }) => {
+  const token = getAuthToken();
+  const authToken = `Bearer ${token}`;
+  console.log(id, productName, price, article, isShow, type);
+
+  return fetch(`${BASE_URL}/products/${id}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: authToken,
+      'content-type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({ productName, price, article, isShow, type }),
+  }).then((res) => res.json());
+};
+
+export const addProductPhoto = (file) => {
+  const token = getAuthToken();
+  const authToken = `Bearer ${token}`;
+
+  return fetch(`${BASE_URL}/photos`, {
+    method: 'POST',
+    headers: {
+      Authorization: authToken,
+    },
+    body: file,
+  }).then((res) => res.json());
+};
+
+export const addArticlePhoto = (file) => {
+  const token = getAuthToken();
+  const authToken = `Bearer ${token}`;
+
+  return fetch(`${BASE_URL}/images`, {
+    method: 'POST',
+    headers: {
+      Authorization: authToken,
+    },
+    body: file,
+  }).then((res) => res.json());
+};

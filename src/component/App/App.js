@@ -1,12 +1,7 @@
 import React, { useEffect } from 'react';
 import Header from '../Header';
 import Footer from '../../component/Footer';
-import {
-  HashRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom';
+import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Info from '../../pages/Info';
 import CheckOrder from '../../pages/CheckOrder';
@@ -17,6 +12,14 @@ import ShoppingCartPage from '../../pages/ShoppingCartpage';
 import RecipientPage from '../../pages/RecipientPage';
 import TransactionPage from '../../pages/TransactionPage';
 import AllProductsPage from '../../pages/backstage/AllProductsPage';
+import AddProductsPage from '../../pages/backstage/AddProductsPage';
+import OrdersPage from '../../pages/backstage/OrdersPage';
+import SingleOrderPage from '../../pages/backstage/SingleOrderPage';
+import AddPhotoPage from '../../pages/backstage/AddPhotoPage';
+import AddProductsModelPage from '../../pages/backstage/AddProductsModelPage';
+import AllProductsModelPage from '../../pages/backstage/AllProductsModelPage';
+import EditProductPage from '../../pages/backstage/EditProductPage';
+
 import Themes from '../../style/Themes';
 import { ThemeProvider } from 'styled-components';
 import OrderInfo from '../../pages/OrderInfo';
@@ -33,9 +36,9 @@ function App() {
   const isAdmin = useSelector(selectIsAdmin);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (getAuthToken()) dispatch(getMe());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (getAuthToken()) dispatch(getMe());
+  // }, [dispatch]);
 
   return (
     <ThemeProvider theme={isBackstageMode ? Themes.backstage : Themes.customer}>
@@ -79,8 +82,30 @@ function App() {
           <Route exact path="/adminLogin">
             <AdminLogin />
           </Route>
-          <Route exact path="/backstage/product">
-            {isAdmin ? <AllProductsPage /> : <Redirect to="/adminLogin" />}
+          <Route exact path="/backstage/products">
+            {/* {isAdmin ? <AllProductsPage /> : <Redirect to="/adminLogin" />} */}
+            <AllProductsPage /> 
+          </Route>
+          <Route exact path="/backstage/edit-product/:id">
+            <EditProductPage /> 
+          </Route>
+          <Route exact path="/backstage/products-model">
+            <AllProductsModelPage /> 
+          </Route>
+          <Route exact path="/backstage/add-product">
+            <AddProductsPage />
+          </Route>
+          <Route exact path="/backstage/add-product/model">
+            <AddProductsModelPage />
+          </Route>
+          <Route exact path="/backstage/add-product/add-photo">
+            <AddPhotoPage />
+          </Route>
+          <Route exact path="/backstage/orders">
+            <OrdersPage />
+          </Route>
+          <Route exact path="/backstage/orders/00001">
+            <SingleOrderPage />
           </Route>
           <Redirect to="/" />
         </Switch>
