@@ -14,6 +14,7 @@ const H2 = styled.h2`
 const Option = styled(Link)`
   display: block;
   font-weight: bold;
+  font-size: 20px;
   text-decoration: none;
   color: #333;
   margin: 20px 0;

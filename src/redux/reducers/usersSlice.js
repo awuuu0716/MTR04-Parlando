@@ -3,7 +3,7 @@ import {
   signUp as signUpAPI,
   login as loginAPI,
   adminLogin as adminLoginAPI,
-  getMe as getMeAPI,
+  getMemberInfo as getMemberInfoAPI,
   updateUserData as updateUserDataAPI,
 } from '../../WebAPI';
 import { setAuthToken } from '../../utils';
@@ -11,31 +11,26 @@ import { setAuthToken } from '../../utils';
 export const usersSlice = createSlice({
   name: 'users',
   initialState: {
-    isLogin: false,
-    isAdmin: false,
+    userLevel: 'guest',
     userInfo: {},
     errorMessage: '',
   },
   reducers: {
-    setIsLogin: (state, action) => {
-      state.isLogin = action.payload;
-    },
-    setIsAdmin: (state, action) => {
-      state.isAdmin = action.payload;
+    setUserLevel: (state, action) => {
+      state.userLevel = action.payload;
     },
     setErrorMessage: (state, action) => {
       state.errorMessage = action.payload;
     },
     setUserInfo: (state, action) => {
-      state.userInfo = {...action.payload};
+      state.userInfo = { ...action.payload };
     },
   },
 });
 
 export const {
-  setIsLogin,
+  setUserLevel,
   setErrorMessage,
-  setIsAdmin,
   setUserInfo,
 } = usersSlice.actions;
 
@@ -49,7 +44,7 @@ export const signUp = ({ username, password, realName, email, phone }) => (
         dispatch(setErrorMessage(data.message));
         return;
       }
-      dispatch(setIsLogin(true));
+      dispatch(setUserLevel('member'));
       setAuthToken(data.token);
       return data.token;
     }
@@ -63,7 +58,7 @@ export const updateUserData = (userData) => (dispatch) => {
       dispatch(setErrorMessage(data.message));
       return;
     }
-    return data
+    return data;
   });
 };
 
@@ -75,8 +70,7 @@ export const adminLogin = ({ username, password }) => (dispatch) => {
       return;
     }
     setAuthToken(data.token);
-    dispatch(setIsLogin(true));
-    dispatch(setIsAdmin(true));
+    dispatch(setUserLevel('admin'));
     return data.token;
   });
 };
@@ -89,28 +83,26 @@ export const login = ({ username, password }) => (dispatch) => {
       return;
     }
     setAuthToken(data.token);
-    dispatch(setIsLogin(true));
+    dispatch(setUserLevel('member'));
     return data.token;
   });
 };
 
-export const getMe = () => (dispatch) => {
-  return getMeAPI().then((data) => {
+export const getMemberInfo = () => (dispatch) => {
+  return getMemberInfoAPI().then((data) => {
     if (data.message) {
       setAuthToken('');
       return;
-    } else if (data.user.username === 'Oliver') {
-      dispatch(setIsAdmin(true));
     }
+    if (data.admin) return dispatch(setUserLevel('admin'));
     dispatch(setUserInfo(data.user));
-    dispatch(setIsLogin(true));
+    dispatch(setUserLevel('member'));
   });
 };
 
 // selector
 export const selectErrorMessage = (state) => state.users.errorMessage;
-export const selectIsLogin = (state) => state.users.isLogin;
-export const selectIsAdmin = (state) => state.users.isAdmin;
+export const selectUserLevel = (state) => state.users.userLevel;
 export const selectUserInfo = (state) => state.users.userInfo;
 
 export default usersSlice.reducer;

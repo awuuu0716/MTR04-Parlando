@@ -63,14 +63,14 @@ export const updateModelStatus = (data) => (dispatch) =>
     return newData;
   });
 
-// export const updateModel = (data) => (dispatch) =>
-//   updateProductAPI(data).then((newData) => {
-//     if (newData.message) {
-//       dispatch(setErrorMessage(data.message));
-//       return newData;
-//     }
-//     return newData;
-//   });
+export const updateModel = (data) => (dispatch) =>
+  updateProductAPI(data).then((newData) => {
+    if (newData.message) {
+      dispatch(setErrorMessage(data.message));
+      return newData;
+    }
+    return newData;
+  });
 
 export const { setModels, setModel, setErrorMessage } = modelsSlice.actions;
 

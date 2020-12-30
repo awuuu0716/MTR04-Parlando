@@ -34,3 +34,12 @@ export const initFormErrorData = () => {
     phone: { valid: true, message: '' },
   };
 };
+
+export const handleDateFormat = (date) => {
+  const breakPoint = date.indexOf('T');
+  return date.slice(0, breakPoint);
+};
+
+export const findOrder = (orders, id) => {
+  return orders.filter((order) => order.id === id)[0];
+};

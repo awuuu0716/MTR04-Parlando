@@ -39,7 +39,7 @@ export const adminLogin = ({ username, password }) =>
     return res.json();
   });
 
-export const getMe = () => {
+export const getMemberInfo = () => {
   const token = getAuthToken();
   return fetch(`${BASE_URL}/users`, {
     method: 'GET',
@@ -75,13 +75,31 @@ export const getProducts = ({ type, sort, order }) => {
   }).then((res) => res.json());
 };
 
-export const getProduct = (id) => {
+export const getProduct = (uuid) => {
   const token = getAuthToken();
   const authToken = token ? `Bearer ${token}` : '';
 
-  return fetch(`${BASE_URL}/products/${id}`, {
+  return fetch(`${BASE_URL}/products/${uuid}`, {
     method: 'GET',
     headers: { Authorization: authToken },
+  }).then((res) => res.json());
+};
+
+export const getOrders = () => {
+  const token = getAuthToken();
+
+  return fetch(`${BASE_URL}/orders`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => res.json());
+};
+
+export const getOrder = (id) => {
+  const token = getAuthToken();
+
+  return fetch(`${BASE_URL}/orders/${id}`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 };
 
@@ -116,6 +134,7 @@ export const deleteProduct = (id) => {
     return { success: false, message: '刪除失敗' };
   });
 };
+
 export const updateProduct = ({ id, productName, price, article, isShow, type }) => {
   const token = getAuthToken();
   const authToken = `Bearer ${token}`;

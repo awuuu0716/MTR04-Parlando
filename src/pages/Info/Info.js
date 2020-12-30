@@ -2,21 +2,21 @@ import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import MemberNav from '../../component/MemberNav';
 import {
-  getMe,
+  getMemberInfo,
   selectUserInfo,
   updateUserData,
   selectErrorMessage,
   setUserInfo,
 } from '../../redux/reducers/usersSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { replaceInvalidWord, isPhoneValid, isEmailValid } from '../../utils';
+import { isPhoneValid, isEmailValid } from '../../utils';
 
 const Container = styled.div`
   display: flex;
   padding: 7% 10%;
 `;
 
-const H5 = styled.h5`
+const H3 = styled.h3`
   color: #07273c;
   font-weight: bold;
   margin: 0;
@@ -90,7 +90,7 @@ const BottomContainer = styled.div`
 `;
 
 const Input = styled.input`
-  margin-bottom: 18px;
+  margin-bottom: 33px;
   border: none;
   border-bottom: 2px solid #bbb;
 
@@ -169,7 +169,7 @@ const Editing = ({ userInfo, setIsEditing }) => {
     <InfoContainer>
       <form onSubmit={handleSubmit}>
         <Top>
-          <H5>會員資料</H5>
+          <H3>會員資料</H3>
         </Top>
         <Bottom>
           <TitleContainer>
@@ -225,7 +225,7 @@ const ShowInfo = ({ setIsEditing, userInfo }) => {
   return (
     <InfoContainer>
       <Top>
-        <H5>會員資料</H5>
+        <H3>會員資料</H3>
         <Button onClick={() => setIsEditing(true)}>編輯</Button>
       </Top>
       <Bottom>
@@ -252,7 +252,7 @@ export default function Info() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getMe());
+    dispatch(getMemberInfo());
   }, [dispatch]);
 
   return (

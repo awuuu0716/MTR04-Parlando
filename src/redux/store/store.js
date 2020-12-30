@@ -3,6 +3,7 @@ import themeReducer from '../reducers/themeSlice';
 import usersSlice from '../reducers/usersSlice';
 import productsSlice from '../reducers/productsSlice';
 import modelsSlice from '../reducers/modelsSlice';
+import ordersSlice from '../reducers/ordersSlice';
 
 export default configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
     users: usersSlice,
     products: productsSlice,
     models:modelsSlice,
+    orders: ordersSlice,
   },
 });
