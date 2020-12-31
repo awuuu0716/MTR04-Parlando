@@ -10,7 +10,6 @@ const Button = styled.button`
   box-shadow: 2px 2px 2px ${(props) => props.theme.shadow};
   cursor: pointer;
   transition: all 0.4s ease-in-out;
-  font-weight: bold;
   &:hover {
     background-color: ${(props) => props.theme.background}77;
   }

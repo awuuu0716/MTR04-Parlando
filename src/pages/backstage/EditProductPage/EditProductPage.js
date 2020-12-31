@@ -79,6 +79,7 @@ export default function EditProductPage() {
   const dispatch = useDispatch();
   const product = useSelector(selectProduct);
   const articleInit = useSelector(selectArticle);
+  
   const [productErrorMessage, setProductErrorMessage] = useState(productErrorMessageInit);
   const [productName, setProductName] = useState(product.productName);
   const [price, setPrice] = useState(product.price);
@@ -128,7 +129,7 @@ export default function EditProductPage() {
     }));
   };
   const updateTypeIsValid = (value) => {
-    if (!value) {
+    if (! value) {
       return setProductErrorMessage((productErrorMessage) => ({
         ...productErrorMessage,
         type: { valid: false, message: '請選擇類別' },
