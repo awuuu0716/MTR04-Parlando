@@ -62,7 +62,7 @@ const productErrorMessageInit = {
   article: { valid: true, message: '' },
   type: { valid: true, message: '' },
 };
-export default function AddProductsPage() {
+export default function AddProductPage() {
   let isValid = false;
   const [productErrorMessage, setProductErrorMessage] = useState(productErrorMessageInit);
   const [productName, setProductName] = useState('');
