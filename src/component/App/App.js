@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Header from '../Header';
 import Footer from '../../component/Footer';
-import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Info from '../../pages/Info';
 import CheckOrder from '../../pages/CheckOrder';
@@ -11,15 +11,17 @@ import Product from '../../pages/Product';
 import ShoppingCartPage from '../../pages/ShoppingCartpage';
 import RecipientPage from '../../pages/RecipientPage';
 import TransactionPage from '../../pages/TransactionPage';
-import AllProductsPage from '../../pages/backstage/AllProductsPage';
-import AddProductsPage from '../../pages/backstage/AddProductsPage';
-import OrdersPage from '../../pages/backstage/OrdersPage';
-import SingleOrderPage from '../../pages/backstage/SingleOrderPage';
-import AddPhotoPage from '../../pages/backstage/AddPhotoPage';
-import AddModelPage from '../../pages/backstage/AddModelPage';
-import ProductModelsPage from '../../pages/backstage/ProductModelsPage';
-import EditProductPage from '../../pages/backstage/EditProductPage';
-import EditModelPage from '../../pages/backstage/EditModelPage';
+import {
+  AddProductPage,
+  AddModelPage,
+  AllProductsPage,
+  OrdersPage,
+  SingleOrderPage,
+  AddPhotoPage,
+  ProductModelsPage,
+  EditProductPage,
+  EditModelPage,
+} from '../../pages/backstage';
 import Themes from '../../style/Themes';
 import { ThemeProvider } from 'styled-components';
 import OrderInfo from '../../pages/OrderInfo';
@@ -28,10 +30,7 @@ import AdminLogin from '../../pages/AdminLogin';
 import Signup from '../../pages/Signup';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIsBackstageMode } from '../../redux/reducers/themeSlice';
-import {
-  selectUserLevel,
-  getMemberInfo,
-} from '../../redux/reducers/usersSlice';
+import { selectUserLevel, getMemberInfo } from '../../redux/reducers/usersSlice';
 import { getAuthToken } from '../../utils';
 
 const Public = () => (
@@ -102,34 +101,35 @@ const Admin = () => (
     <Route exact path="/backstage/adminLogin">
       <AdminLogin />
     </Route>
-    <Route exact path="/backstage/product">
+    <Route exact path="/backstage/products">
       <AllProductsPage />
     </Route>
-    <Route exact path="/backstage/products">
-      <AllProductsPage /> 
+    <Route exact path="/backstage/add-product">
+      <AddProductPage />
+    </Route>
+    <Route exact path="/backstage/add-product/photo/:id">
+      <AddPhotoPage />
     </Route>
     <Route exact path="/backstage/edit-product/:id">
-      <EditProductPage /> 
+      <EditProductPage />
     </Route>
     <Route exact path="/backstage/product-models/:id">
-      <ProductModelsPage /> 
+      <ProductModelsPage />
     </Route>
     <Route exact path="/backstage/edit-model/:id">
       <EditModelPage />
     </Route>
-    <Route exact path="/backstage/add-model/:id">
+    <Route exact path="/backstage/add-model/:id/:action">
       <AddModelPage />
     </Route>
-    <Route exact path="/backstage/add-product/add-photo">
-      <AddPhotoPage />
-    </Route>
+
     <Route exact path="/backstage/orders">
       <OrdersPage />
     </Route>
-    <Route exact path="/backstage/orders/00001">
+    <Route exact path="/backstage/orders/:id">
       <SingleOrderPage />
     </Route>
-    <Redirect to="/backstage/product" />
+    <Redirect to="/backstage/products" />
   </Switch>
 );
 

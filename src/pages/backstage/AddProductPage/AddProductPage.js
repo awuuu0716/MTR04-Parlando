@@ -1,10 +1,14 @@
 import styled from 'styled-components';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Aside from '../../../component/Aside';
 import { ButtonLight } from '../../../component/Button';
 import { device } from '../../../style/breakpoints';
 import Input, { InputSelect, InputTitle, InputContainer, ErrorMessage, HeaderContainer } from '../../../component/Input';
 import Editor from '../../../component/Editor';
+import { useParams, useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProduct, selectProduct } from '../../../redux/reducers/productsSlice';
+import { isPriceValid, isProductNameValid } from '../../../utils';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -55,15 +59,24 @@ const SubmitBtn = styled(ButtonLight)`
     transform: unset;
   }
 `;
-const types = ['edw', 'fewe'];
+
 const productErrorMessageInit = {
   price: { valid: true, message: '' },
   productName: { valid: true, message: '' },
   article: { valid: true, message: '' },
   type: { valid: true, message: '' },
 };
-export default function AddProductsPage() {
+const types = [
+  { name: '耳罩式耳機', value: '耳罩式耳機' },
+  { name: '入耳式耳機', value: '入耳式耳機' },
+  { name: '音響', value: '音響' },
+  { name: '週邊配件', value: '週邊配件' },
+];
+export default function AddProductPage() {
   let isValid = false;
+  const isSubmit = useRef(false);
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [productErrorMessage, setProductErrorMessage] = useState(productErrorMessageInit);
   const [productName, setProductName] = useState('');
   const [price, setPrice] = useState('');
@@ -81,20 +94,20 @@ export default function AddProductsPage() {
       return setPrice(value);
     }
     if (name === 'type') {
-      console.log(value);
       updateTypeIsValid(value);
+      console.log(value);
       return setType(value);
     }
   };
-  const handleContentChange = (data) => {
+  const handleArticleChange = (data) => {
     updateArticleIsValid(data);
     setArticle(data);
   };
   const updateProductIsValid = (value) => {
-    if (!value) {
+    if (!isProductNameValid(value)) {
       return setProductErrorMessage((productErrorMessage) => ({
         ...productErrorMessage,
-        productName: { valid: false, message: '此處不得為空' },
+        productName: { valid: false, message: '請輸入正確格式' },
       }));
     }
     return setProductErrorMessage((productErrorMessage) => ({
@@ -115,10 +128,16 @@ export default function AddProductsPage() {
     }));
   };
   const updatePriceIsValid = (value) => {
-    if (!value) {
+    if (isPriceValid(value) === 0) {
       return setProductErrorMessage((productErrorMessage) => ({
         ...productErrorMessage,
-        price: { valid: false, message: '此處不得為空' },
+        price: { valid: false, message: '請輸入正確的格式且不得為空值' },
+      }));
+    }
+    if (isPriceValid(value) === 1) {
+      return setProductErrorMessage((productErrorMessage) => ({
+        ...productErrorMessage,
+        price: { valid: false, message: '價格上限為 29999' },
       }));
     }
     return setProductErrorMessage((productErrorMessage) => ({
@@ -148,21 +167,23 @@ export default function AddProductsPage() {
     }
     return false;
   };
-
   const handleAddProduct = (e) => {
     e.preventDefault();
     isValid = checkProductValid();
     if (!isValid) return;
-    console.log('hihi  work');
-    // addProduct({productName, price, article,type})
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //     if (data.ok === 0) {
-    //       setErrorMessage(data.message.toString())
-    //     }
-    // setProductId(data.info.productId)
-    //   });
+
+    isSubmit.current = true;
+    for (let prop in productErrorMessage) {
+      if (!productErrorMessage[prop].valid) {
+        return (isSubmit.current = false);
+      }
+    }
+    dispatch(addProduct({ productName, type, price, article: JSON.stringify(article) })).then((res) => {
+      
+      console.log(res);
+      console.log(res.product.id);
+      history.push(`/backstage/add-model/${res.product.id}/product`);
+    });
   };
 
   return (
@@ -171,45 +192,47 @@ export default function AddProductsPage() {
       <Container>
         <Title>新增商品</Title>
         <Form>
-          <HeaderContainer>
-            <InputContainer>
-              <Input
-                inputTitle={'名稱'}
-                inputType={'text'}
-                size={'90%'}
-                name={'productName'}
-                value={productName}
-                onChange={handleInputChange}
-                valid={productErrorMessage['productName'].valid}
-                errorMessage={productErrorMessage['productName'].message}
-              />
-              <Input
-                inputTitle={'定價'}
-                inputType={'text'}
-                size={'90%'}
-                name={'price'}
-                value={price}
-                onChange={handleInputChange}
-                valid={productErrorMessage['price'].valid}
-                errorMessage={productErrorMessage['price'].message}
-              />
-            </InputContainer>
-          </HeaderContainer>
-          <InputSelect
-            inputTitle={'類別'}
-            types={types}
-            size={'90%'}
-            name={'type'}
-            value={type}
-            onChange={handleInputChange}
-            valid={productErrorMessage['type'].valid}
-            errorMessage={productErrorMessage['type'].message}
-          />
+          <InputContainer>
+            <Input
+              inputTitle="名稱"
+              inputType="text"
+              size="90%"
+              name="productName"
+              value={productName}
+              onChange={handleInputChange}
+              valid={productErrorMessage['productName'].valid}
+              errorMessage={productErrorMessage['productName'].message}
+              placeholder="範例:Other-04"
+            />
+            <Input
+              inputTitle={'定價'}
+              inputType="number"
+              size="90%"
+              name="price"
+              value={price}
+              onChange={handleInputChange}
+              valid={productErrorMessage['price'].valid}
+              errorMessage={productErrorMessage['price'].message}
+              placeholder="不得超過 29999"
+            />
+          </InputContainer>
+          <InputContainer>
+            <InputSelect
+              inputTitle="類別"
+              types={types}
+              size="90%"
+              name="type"
+              value={type}
+              onChange={handleInputChange}
+              valid={productErrorMessage['type'].valid}
+              errorMessage={productErrorMessage['type'].message}
+            />
+          </InputContainer>
           <HeaderContainer>
             <InputTitle>文案</InputTitle>
             {!productErrorMessage['article'].valid && <ErrorMessage>{productErrorMessage['article'].message}</ErrorMessage>}
           </HeaderContainer>
-          <Editor onChange={handleContentChange} />
+          <Editor onChange={handleArticleChange} content={article} />
           <SubmitBtn onClick={handleAddProduct}>送出</SubmitBtn>
         </Form>
       </Container>

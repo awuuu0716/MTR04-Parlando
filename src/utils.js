@@ -25,17 +25,37 @@ export const isUsernameValid = (username) => {
   const rule = /\w{0,20}/;
   return rule.test(username);
 };
+
 export const isColorChipValid = (ColorChip) => {
-  const rule = /^[a-f1-9][a-f1-9]{5}$/;
+  const rule = /^[a-f0-9][a-f0-9]{5}$/;
   return rule.test(ColorChip);
 };
+
 export const isModelNameValid = (modelName) => {
   const rule = /^[A-Z]\w{0,14}-\w{4}$/;
   return rule.test(modelName);
 };
+
 export const isStorageValid = (store) => {
   const rule = /^[1-9]\d{0,2}$/;
   return rule.test(store);
+};
+
+export const isPriceValid = (price) => {
+  const rule = /^[1-9]\d{0,4}$/;
+  if(price>29999){
+    return 1
+  }
+  if(!rule.test(price)){
+    return 0
+  }
+  
+  return true
+};
+
+export const isProductNameValid = (productName) => {
+  const rule = /^[a-zA-Z]\w{0,11}-\w{2}$/;
+  return rule.test(productName);
 };
 
 export const initFormErrorData = () => {

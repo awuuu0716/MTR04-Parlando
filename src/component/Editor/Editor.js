@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useQuill } from 'react-quilljs';
 import ImageResize from 'quill-image-resize-module--fix-imports-error';
 import ImageUploader from 'quill-image-uploader';
-import { addArticlePhoto } from '../../WebAPI';
+import { addArticlePhoto, addProductPhoto } from '../../WebAPI';
 import 'quill/dist/quill.snow.css';
 import styled from 'styled-components';
 import { device } from '../../style/breakpoints';
@@ -59,6 +59,7 @@ export default function Editor({ onChange, content }) {
         return new Promise((resolve, reject) => {
           const formData = new FormData();
           formData.append('files', files);
+
           addArticlePhoto(formData)
             .then((result) => {
               console.log(result);

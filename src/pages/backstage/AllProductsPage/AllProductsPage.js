@@ -119,7 +119,6 @@ export default function AllProductsPage() {
     dispatch(updateProductStatus({ id, isShow }));
     setUpdate(!update);
   };
-  console.log(products);
   return (
     <Root>
       <Aside />

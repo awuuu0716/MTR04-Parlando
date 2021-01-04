@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Aside from '../../../component/Aside';
 import { ButtonLight } from '../../../component/Button';
 import { device } from '../../../style/breakpoints';
-import Input, { InputSelect, InputTitle, InputContainer, ErrorMessage, HeaderContainer } from '../../../component/Input';
-
+import { useParams, useHistory } from 'react-router';
+import { addProductPhoto, linkProductPhotos } from '../../../WebAPI';
 const Root = styled.div`
   max-width: 1280px;
   margin: 0 auto;
@@ -53,15 +53,41 @@ const SubmitBtn = styled(ButtonLight)`
     transform: unset;
   }
 `;
+const PhotosContainer = styled.div`
+  margin-top: 30px;
+`;
 
 export default function AddPhotoPage() {
-  const [values, setValues] = useState('');
+  let { id } = useParams();
+  const history = useHistory();
+  const [photos, setPhotos] = useState([]);
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    return new Promise((resolve, reject) => {
+      const formData = new FormData();
+      for (let i = 0; i < e.target.files.length; i += 1) {
+        formData.append('files', e.target.files[i]);
+      }
+      addProductPhoto(formData)
+        .then((result) => {
+          setPhotos([...photos, ...result.photos]);
+          resolve(result.photos);
+        })
+        .catch((error) => {
+          reject('Upload failed');
+          console.error('Error:', error);
+        });
+    });
   };
-  const handleContentChange = (data) => {};
-  const handleAddProduct = (e) => {
+
+  const handleAddProductPhotos = (e) => {
     e.preventDefault();
+    const photosIdArray = photos.map((photo) => photo.id);
+    linkProductPhotos({ id, photos: photosIdArray }).then((data)=>{
+      if(data.success){
+        alert(data.message)
+        history.push('/backstage/products')
+      }
+    });
   };
 
   return (
@@ -69,9 +95,12 @@ export default function AddPhotoPage() {
       <Aside />
       <Container>
         <Title>新增商品圖片</Title>
-        <Form>
-          <Input inputTitle={'新增圖片庫'} inputType={'flie'} size={'90%'} name={'photo'} onChange={handleInputChange} errorMessage={''} />
-          <SubmitBtn onClick={handleAddProduct}>送出</SubmitBtn>
+        <Form id="addPhotosForm">
+          <input type="file" multiple onChange={handleInputChange} />
+          <PhotosContainer>{photos && photos.map((photo) => <img key={photo.id} src={photo.url} width="100" height="80" />)}</PhotosContainer>
+        <SubmitBtn onClick={handleAddProductPhotos} type="submit" form="addPhotosForm">
+          送出
+        </SubmitBtn>
         </Form>
       </Container>
     </Root>

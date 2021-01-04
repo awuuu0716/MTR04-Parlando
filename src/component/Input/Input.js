@@ -34,7 +34,7 @@ export const InputTitle = styled.h3`
 `;
 export const ErrorMessage = styled.span`
   color: ${(props) => props.theme.errorText};
-  font-size: 0.7em;
+  font-size: 0.65em;
   padding-left: 18px;
 `;
 export const InputContainer = styled.div`
@@ -53,7 +53,7 @@ export const InputSelect = ({ inputTitle, types, value, size, name, errorMessage
         <InputTitle>{inputTitle}</InputTitle>
         {!valid && <ErrorMessage>{errorMessage}</ErrorMessage>}
       </HeaderContainer>
-      <select name={name} size={size} onChange={onChange} value={value} >
+      <select name={name} size={size} onChange={onChange} value={value}>
         {types.map((type, index) => (
           <option key={index} value={type.value}>
             {type.name}
@@ -63,14 +63,14 @@ export const InputSelect = ({ inputTitle, types, value, size, name, errorMessage
     </WrapperInput>
   );
 };
-export default function Input({ inputTitle, inputType, size, name, value, onChange, valid, errorMessage }) {
+export default function Input({ inputTitle, inputType, size, name, value, onChange, valid, errorMessage, placeholder }) {
   return (
     <WrapperInput>
       <HeaderContainer>
         <InputTitle>{inputTitle}</InputTitle>
         {!valid && <ErrorMessage>{errorMessage}</ErrorMessage>}
       </HeaderContainer>
-      <InputStyle name={name} type={inputType} size={size} value={value} onChange={onChange} />
+      <InputStyle name={name} type={inputType} size={size} value={value} onChange={onChange} placeholder={placeholder} />
     </WrapperInput>
   );
 }

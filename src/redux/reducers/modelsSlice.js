@@ -31,8 +31,11 @@ export const modelsSlice = createSlice({
 export const getModels = (id) => (dispatch) =>
   getProductAPI(id).then((data) => {
     if (data.message) {
+      dispatch(setModels([]));
       return data;
     }
+    console.log(data.product)
+    console.log('我在model reducx', data.product.Product_models)
     dispatch(setModels(data.product.Product_models));
     return data.product.Product_models;
   });
@@ -75,7 +78,7 @@ export const updateModel = (data) => (dispatch) =>
     return newData;
   });
 
-  export const addModel = (data) => (dispatch) =>
+export const addModel = (data) => (dispatch) =>
   addModelAPI(data).then((newData) => {
     if (newData.message) {
       dispatch(setErrorMessage(data.message));
