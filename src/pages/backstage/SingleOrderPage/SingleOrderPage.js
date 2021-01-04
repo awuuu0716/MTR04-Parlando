@@ -1,8 +1,12 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import Aside from '../../../component/Aside';
 import { ButtonLight } from '../../../component/Button';
 import { device } from '../../../style/breakpoints';
+import { useHistory,useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { selectOrder, getOrder } from '../../../redux/reducers/ordersSlice';
+import { handleDateFormat,handleOrderStatus } from '../../../utils';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -73,38 +77,51 @@ const ColumnValue = styled.div`
 `;
 
 export default function SingleOrderPage() {
+  const history = useHistory();
+  const { uuid } = useParams();
+  const dispatch = useDispatch();
+  const order = useSelector(selectOrder);
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(()=>{
+    dispatch(getOrder(uuid)).then(()=>setIsLoaded(true))
+  })
+
   return (
     <Root>
       <Aside />
       <Container>
         <Header>
           <Title>訂單內容</Title>
-          <Link to="/backstage/orders">
-            <ButtonLight $size={'s'}>Back</ButtonLight>
-          </Link>
+          <ButtonLight $size={'s'} onClick={() => history.goBack()}>
+            Back
+          </ButtonLight>
         </Header>
         <TableWrapper>
+          {isLoaded ?
           <StyledTable>
             <TableRow>
               <ColumnName>訂單編號</ColumnName>
-              <ColumnValue>xxxxx-12345</ColumnValue>
+          <ColumnValue>{uuid}</ColumnValue>
               <ColumnName>訂購人</ColumnName>
               <ColumnValue>Andy</ColumnValue>
             </TableRow>
             <TableRow>
               <ColumnName>訂購日期</ColumnName>
-              <ColumnValue>2020.10.19</ColumnValue>
+          <ColumnValue>{handleDateFormat(order.createdAt)}</ColumnValue>
               <ColumnName>付款方式</ColumnName>
               <ColumnValue>信用卡</ColumnValue>
             </TableRow>
             <TableRow>
               <ColumnName>訂單狀態</ColumnName>
-              <ColumnValue>未出貨</ColumnValue>
+          <ColumnValue>{handleOrderStatus(order.status)}</ColumnValue>
               <ColumnName>訂購內容</ColumnName>
               <ColumnValue>
-                product - 1 (經典白) * 1<br />
-                product - 2 (石曜黑) * 3 <br />
-                product - 3 (玫瑰金) * 2{' '}
+               {order.products.map((product)=>(
+                 <div>
+                   {product.modelName * product.count} 
+                   </div>
+               ))}
               </ColumnValue>
             </TableRow>
             <TableRow>
@@ -112,6 +129,8 @@ export default function SingleOrderPage() {
               <ColumnValue>台中市潭子區三三路 121 巷 97 號 7 樓</ColumnValue>
             </TableRow>
           </StyledTable>
+           :null } 
+           {!isLoaded ? 'Loading':null}
         </TableWrapper>
       </Container>
     </Root>
