@@ -75,11 +75,11 @@ export const getProducts = ({ type, sort, order }) => {
   }).then((res) => res.json());
 };
 
-export const getProduct = (uuid) => {
+export const getProduct = (id) => {
   const token = getAuthToken();
   const authToken = token ? `Bearer ${token}` : '';
 
-  return fetch(`${BASE_URL}/products/${uuid}`, {
+  return fetch(`${BASE_URL}/products/${id}`, {
     method: 'GET',
     headers: { Authorization: authToken },
   }).then((res) => res.json());
@@ -148,6 +148,20 @@ export const updateProduct = ({ id, productName, price, article, isShow, type })
   }).then((res) => res.json());
 };
 
+export const addProduct = ({ productName, price, article, type }) => {
+  const token = getAuthToken();
+  const authToken = `Bearer ${token}`;
+  console.log(productName, price, article, type);
+  return fetch(`${BASE_URL}/products/`, {
+    method: 'POST',
+    headers: {
+      Authorization: authToken,
+      'content-type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({ productName, price, article, type }),
+  }).then((res) => res.json());
+};
+
 export const addProductPhoto = (file) => {
   const token = getAuthToken();
   const authToken = `Bearer ${token}`;
@@ -172,6 +186,31 @@ export const addArticlePhoto = (file) => {
     },
     body: file,
   }).then((res) => res.json());
+};
+
+export const linkProductPhotos = ({ id, photos }) => {
+  const token = getAuthToken();
+  const authToken = `Bearer ${token}`;
+
+  return fetch(`${BASE_URL}/photos`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: authToken,
+      'content-type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({ productId: id, photos }),
+  }).then((res) => {
+    if (res.status >= 200 && res.status < 300) {
+      return {
+        success:true,
+        message:'新增成功'
+      };
+    }
+    return {
+      success:false,
+      message:res.message.toString()
+    };
+  });
 };
 
 //model
@@ -228,17 +267,15 @@ export const updateModel = ({ id, modelName, isShow, storage, colorChip }) => {
     body: JSON.stringify({ modelName, isShow, storage, colorChip }),
   }).then((res) => res.json());
 };
-
-export const addModel = ({ id, modelName, isShow, storage, colorChip }) => {
+export const addModel = ({ id, modelName, storage, colorChip }) => {
   const token = getAuthToken();
   const authToken = token ? `Bearer ${token}` : '';
-
   return fetch(`${BASE_URL}/models`, {
     method: 'POST',
     headers: {
       Authorization: authToken,
       'Content-Type': 'application/json;charset=utf-8',
     },
-    body: JSON.stringify({ productId: id, modelName, storage, colorChip, isShow, isDeleted:0 }),
+    body: JSON.stringify({ productId: id, modelName, storage, colorChip }),
   }).then((res) => res.json());
 };

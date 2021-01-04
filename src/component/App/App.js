@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Header from '../Header';
 import Footer from '../../component/Footer';
-import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Info from '../../pages/Info';
 import CheckOrder from '../../pages/CheckOrder';
@@ -107,7 +107,7 @@ const Admin = () => (
     <Route exact path="/backstage/add-product">
       <AddProductPage />
     </Route>
-    <Route exact path="/backstage/add-product/add-photo">
+    <Route exact path="/backstage/add-product/photo/:id">
       <AddPhotoPage />
     </Route>
     <Route exact path="/backstage/edit-product/:id">
@@ -119,14 +119,14 @@ const Admin = () => (
     <Route exact path="/backstage/edit-model/:id">
       <EditModelPage />
     </Route>
-    <Route exact path="/backstage/add-model/:id">
+    <Route exact path="/backstage/add-model/:id/:action">
       <AddModelPage />
     </Route>
 
     <Route exact path="/backstage/orders">
       <OrdersPage />
     </Route>
-    <Route exact path="/backstage/orders/00001">
+    <Route exact path="/backstage/orders/:id">
       <SingleOrderPage />
     </Route>
     <Redirect to="/backstage/products" />

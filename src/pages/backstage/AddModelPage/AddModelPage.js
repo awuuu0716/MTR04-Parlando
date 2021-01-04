@@ -8,7 +8,7 @@ import { isColorChipValid, isModelNameValid, isStorageValid } from '../../../uti
 import { useParams, useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { addModel } from '../../../redux/reducers/modelsSlice';
-import { getProduct,selectProduct } from '../../../redux/reducers/productsSlice';
+import { getProduct, selectProduct } from '../../../redux/reducers/productsSlice';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -66,11 +66,11 @@ const modelErrorMessageInit = {
   modelName: { valid: true, message: '' },
   colorChip: { valid: true, message: '' },
   storage: { valid: true, message: '' },
-  isShow: { valid: true, message: '' },
 };
 export default function AddModelPage() {
-  const { id } = useParams();
+  let { id, action } = useParams();
   const history = useHistory();
+  console.log(history);
   const isSubmit = useRef(false);
   const product = useSelector(selectProduct);
   const dispatch = useDispatch();
@@ -78,15 +78,16 @@ export default function AddModelPage() {
   const [modelName, setModelName] = useState('');
   const [colorChip, setColorChip] = useState('');
   const [storage, setStorage] = useState('');
-  const [isShow, setIsShow] = useState(0);
-  console.log(modelErrorMessage)
+
+  console.log(action);
+  console.log(modelErrorMessage);
   useEffect(() => {
     dispatch(getProduct(id));
-  }, [dispatch,id]);
+  }, [dispatch, id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(value)
+    console.log(value);
     if (name === 'modelName') {
       updateModelNameIsValid(value);
       return setModelName(value);
@@ -99,16 +100,10 @@ export default function AddModelPage() {
       updateStorageIsValid(value);
       return setStorage(value);
     }
-    if (name === 'isShow') {
-      if (value === '是') {
-        return setIsShow(1);
-      }
-      return setIsShow(0);
-    }
   };
 
   const updateModelNameIsValid = (value) => {
-    if (!value||value.length>2) {
+    if (!value || value.length > 2) {
       return setModelErrorMessage((modelErrorMessage) => ({
         ...modelErrorMessage,
         modelName: { valid: false, message: '請輸入色表兩碼縮寫' },
@@ -132,7 +127,7 @@ export default function AddModelPage() {
     }));
   };
   const updateStorageIsValid = (value) => {
-    console.log(isStorageValid(value))
+    console.log(isStorageValid(value));
     if (!isStorageValid(value)) {
       return setModelErrorMessage((modelErrorMessage) => ({
         ...modelErrorMessage,
@@ -154,8 +149,15 @@ export default function AddModelPage() {
       }
     }
     if (isSubmit) {
-      dispatch(addModel({ id, modelName, colorChip, storage }));
-      history.goBack();
+      dispatch(addModel({ id, modelName, colorChip, storage })).then((res) => console.log(res));
+      if (action === 'product') {
+        history.push(`/backstage/add-product/photo/${id}`);
+      }else{
+        history.goBack();
+      }
+
+      // 如果preLocation include 'product-models'，成功後自動callback
+      // 如果是add-product ，成功後轉到新增照片＝>連結照片
     }
   };
 
@@ -206,19 +208,6 @@ export default function AddModelPage() {
               errorMessage={modelErrorMessage['colorChip'].message}
               placeholder="請輸入色票 例如：aa22cc"
               required
-            />
-            <InputSelect
-              inputTitle="是否已上架"
-              types={[
-                { name: '是', value: 1 },
-                { name: '否', value: 0 },
-              ]}
-              size="90%"
-              name="isShow"
-              value={isShow ? '1' : '0'}
-              onChange={handleInputChange}
-              valid={modelErrorMessage['isShow'].valid}
-              errorMessage={modelErrorMessage['isShow'].message}
             />
           </InputContainer>
           <SubmitBtn onClick={handleAddModel} type="submit" form="addModelForm">

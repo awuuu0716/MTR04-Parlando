@@ -5,6 +5,8 @@ import {
   deleteProduct as deleteProductAPI,
   updateProductStatus as updateProductStatusAPI,
   updateProduct as updateProductAPI,
+  addProduct as addProductAPI,
+
 } from '../../WebAPI';
 
 export const productsSlice = createSlice({
@@ -77,6 +79,18 @@ export const updateProduct = (data) => (dispatch) =>
     }
     return newData;
   });
+
+export const addProduct = (data) => (dispatch) =>
+  addProductAPI(data).then((newData) => {
+    if (newData.message) {
+      dispatch(setErrorMessage(data.message));
+      return newData;
+    }
+    dispatch(setProduct(data.product))
+    return newData;
+  });
+
+
 export const { setProducts, setProduct, setErrorMessage,setArticle} = productsSlice.actions;
 
 export const selectProducts = (state) => state.products.products;
