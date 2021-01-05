@@ -7,7 +7,7 @@ import Input, { InputSelect, InputTitle, InputContainer, ErrorMessage, HeaderCon
 import Editor from '../../../component/Editor';
 import { useParams, useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProduct, updateProduct, selectProduct,selectArticle } from '../../../redux/reducers/productsSlice';
+import { getProduct, updateProduct, selectProduct, selectArticle } from '../../../redux/reducers/productsSlice';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -79,14 +79,16 @@ export default function EditProductPage() {
   const dispatch = useDispatch();
   const product = useSelector(selectProduct);
   const articleInit = useSelector(selectArticle);
+
   const [productErrorMessage, setProductErrorMessage] = useState(productErrorMessageInit);
   const [productName, setProductName] = useState(product.productName);
   const [price, setPrice] = useState(product.price);
   const [article, setArticle] = useState(articleInit);
   const [type, setType] = useState(product.type);
   const [isShow, setIsShow] = useState(product.isShow);
+  const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    dispatch(getProduct(id));
+    dispatch(getProduct(id)).then(() => setIsLoaded(true));
   }, [dispatch, id]);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -191,8 +193,8 @@ export default function EditProductPage() {
       <Aside />
       <Container>
         <Title>編輯商品</Title>
-        <Form>
-          <HeaderContainer>
+        {isLoaded ? (
+          <Form>
             <InputContainer>
               <Input
                 inputTitle="名稱"
@@ -215,37 +217,39 @@ export default function EditProductPage() {
                 errorMessage={productErrorMessage['price'].message}
               />
             </InputContainer>
-          </HeaderContainer>
-          <InputContainer>
-            <InputSelect
-              inputTitle={'類別'}
-              types={types}
-              size="90%"
-              name="type"
-              value={type}
-              onChange={handleInputChange}
-              valid={productErrorMessage['type'].valid}
-              errorMessage={productErrorMessage['type'].message}
-            />
-            <InputSelect
-              inputTitle="是否已上架"
-              types={[
-                { name: '是', value: 1 },
-                { name: '否', value: 0 },
-              ]}
-              size="90%"
-              name="isShow"
-              value={isShow}
-              onChange={handleInputChange}
-            />
-          </InputContainer>
-          <HeaderContainer>
-            <InputTitle>文案</InputTitle>
-            {!productErrorMessage['article'].valid && <ErrorMessage>{productErrorMessage['article'].message}</ErrorMessage>}
-          </HeaderContainer>
-          <Editor onChange={handleContentChange} content={article} />
-          <SubmitBtn onClick={handleEditProduct}>送出</SubmitBtn>
-        </Form>
+            <InputContainer>
+              <InputSelect
+                inputTitle={'類別'}
+                types={types}
+                size="90%"
+                name="type"
+                value={type}
+                onChange={handleInputChange}
+                valid={productErrorMessage['type'].valid}
+                errorMessage={productErrorMessage['type'].message}
+              />
+              <InputSelect
+                inputTitle="是否已上架"
+                types={[
+                  { name: '是', value: 1 },
+                  { name: '否', value: 0 },
+                ]}
+                size="90%"
+                name="isShow"
+                value={isShow}
+                onChange={handleInputChange}
+              />
+            </InputContainer>
+            <HeaderContainer>
+              <InputTitle>文案</InputTitle>
+              {!productErrorMessage['article'].valid && <ErrorMessage>{productErrorMessage['article'].message}</ErrorMessage>}
+            </HeaderContainer>
+            <Editor onChange={handleContentChange} content={article} />
+            <SubmitBtn onClick={handleEditProduct}>送出</SubmitBtn>
+          </Form>
+        ) : (
+          'Loading...'
+        )}
       </Container>
     </Root>
   );

@@ -5,6 +5,8 @@ import {
   deleteProduct as deleteProductAPI,
   updateProductStatus as updateProductStatusAPI,
   updateProduct as updateProductAPI,
+  addProduct as addProductAPI,
+
 } from '../../WebAPI';
 
 export const productsSlice = createSlice({
@@ -33,38 +35,36 @@ export const productsSlice = createSlice({
 
 export const getProducts = (filter) => (dispatch) =>
   getProductsAPI(filter).then((res) => {
-
     if (!res.success) {
-      return res.message;
+      dispatch(setProducts([]));
+      return res;
     }
     dispatch(setProducts(res.data.products));
-    return res;
+    return res.data.products;
   });
 
 export const getProduct = (id) => (dispatch) =>
   getProductAPI(id).then((res) => {
-    console.log(res);
     if (!res.success) {
       dispatch(setProduct({}));
-      return res.message;
+      return res;
     }
     dispatch(setProduct(res.data.product));
-    // dispatch(setArticle(JSON.parse(data.product.article)));
     return res.data.product;
   });
 
 export const deleteProduct = (id) => (dispatch) =>
-  deleteProductAPI(id).then((data) => {
-    if (!data.success) {
-      dispatch(setErrorMessage(data.message));
-      return data;
+  deleteProductAPI(id).then((res) => {
+    if (!res.success) {
+      dispatch(setErrorMessage(res.message));
+      return res;
     }
-    return data;
+    return res;
   });
 
 export const updateProductStatus = (data) => (dispatch) =>
   updateProductStatusAPI(data).then((newData) => {
-    if (newData.message) {
+    if (!newData.success) {
       dispatch(setErrorMessage(newData.message));
       return newData;
     }
@@ -73,12 +73,24 @@ export const updateProductStatus = (data) => (dispatch) =>
 
 export const updateProduct = (data) => (dispatch) =>
   updateProductAPI(data).then((newData) => {
-    if (newData.message) {
-      dispatch(setErrorMessage(data.message));
+    if (!newData.success) {
+      dispatch(setErrorMessage(newData.message));
       return newData;
     }
     return newData;
   });
+
+export const addProduct = (data) => (dispatch) =>
+  addProductAPI(data).then((newData) => {
+    if (!newData.success) {
+      dispatch(setErrorMessage(newData.message));
+      return newData;
+    }
+    dispatch(setProduct(newData.data.product))
+    return newData;
+  });
+
+
 export const { setProducts, setProduct, setErrorMessage,setArticle} = productsSlice.actions;
 
 export const selectProducts = (state) => state.products.products;

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { device } from '../../style/breakpoints';
 const AsideWrapper = styled.div`
   width: 250px;
@@ -108,8 +108,8 @@ export default function Aside() {
       <Container onMouseLeave={handleMouseLeave} $active={isShowAside}>
         <AsideTitle>後台管理</AsideTitle>
         <LinkContainer>
-          <Nav to="/backstage/orders">訂單管理</Nav>
           <Nav to="/backstage/products">商品管理</Nav>
+          <Nav to="/backstage/orders">訂單管理</Nav>
         </LinkContainer>
       </Container>
     </AsideWrapper>

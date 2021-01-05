@@ -59,6 +59,7 @@ export default function Editor({ onChange, content }) {
         return new Promise((resolve, reject) => {
           const formData = new FormData();
           formData.append('files', files);
+
           addArticlePhoto(formData)
             .then((result) => {
               console.log(result);

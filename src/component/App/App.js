@@ -16,14 +16,17 @@ import Product from '../../pages/Product';
 import ShoppingCartPage from '../../pages/ShoppingCartpage';
 import RecipientPage from '../../pages/RecipientPage';
 import TransactionPage from '../../pages/TransactionPage';
-import AllProductsPage from '../../pages/backstage/AllProductsPage';
-import AddProductsPage from '../../pages/backstage/AddProductsPage';
-import OrdersPage from '../../pages/backstage/OrdersPage';
-import SingleOrderPage from '../../pages/backstage/SingleOrderPage';
-import AddPhotoPage from '../../pages/backstage/AddPhotoPage';
-import AddProductsModelPage from '../../pages/backstage/AddProductsModelPage';
-import AllProductsModelPage from '../../pages/backstage/AllProductsModelPage';
-import EditProductPage from '../../pages/backstage/EditProductPage';
+import {
+  AddProductPage,
+  AddModelPage,
+  AllProductsPage,
+  OrdersPage,
+  SingleOrderPage,
+  AddPhotoPage,
+  ProductModelsPage,
+  EditProductPage,
+  EditModelPage,
+} from '../../pages/backstage';
 import Themes from '../../style/Themes';
 import { ThemeProvider } from 'styled-components';
 import OrderInfo from '../../pages/OrderInfo';
@@ -102,34 +105,35 @@ const Admin = () => (
     <Route exact path="/backstage/adminLogin">
       <AdminLogin />
     </Route>
-    <Route exact path="/backstage/product">
-      <AllProductsPage />
-    </Route>
     <Route exact path="/backstage/products">
       <AllProductsPage />
+    </Route>
+    <Route exact path="/backstage/add-product">
+      <AddProductPage />
+    </Route>
+    <Route exact path="/backstage/add-product/photo/:id">
+      <AddPhotoPage />
     </Route>
     <Route exact path="/backstage/edit-product/:id">
       <EditProductPage />
     </Route>
-    <Route exact path="/backstage/products-model">
-      <AllProductsModelPage />
+    <Route exact path="/backstage/product-models/:id">
+      <ProductModelsPage />
     </Route>
-    <Route exact path="/backstage/add-product">
-      <AddProductsPage />
+    <Route exact path="/backstage/edit-model/:id">
+      <EditModelPage />
     </Route>
-    <Route exact path="/backstage/add-product/model">
-      <AddProductsModelPage />
+    <Route exact path="/backstage/add-model/:id/:action">
+      <AddModelPage />
     </Route>
-    <Route exact path="/backstage/add-product/add-photo">
-      <AddPhotoPage />
-    </Route>
+
     <Route exact path="/backstage/orders">
       <OrdersPage />
     </Route>
-    <Route exact path="/backstage/orders/00001">
+    <Route exact path="/backstage/orders/:uuid">
       <SingleOrderPage />
     </Route>
-    <Redirect to="/backstage/product" />
+    <Redirect to="/backstage/products" />
   </Switch>
 );
 
