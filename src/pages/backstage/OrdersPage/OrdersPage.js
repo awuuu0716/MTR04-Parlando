@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Aside from '../../../component/Aside';
 import { ButtonLight } from '../../../component/Button';
-
+import { Ul, Li, Header, Info, OrderContent, HeaderFat } from '../../../component/Table';
 import { device } from '../../../style/breakpoints';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrders, selectOrders, updateOrderStatue } from '../../../redux/reducers/ordersSlice';
@@ -29,7 +29,7 @@ const Container = styled.div`
     width: 900px;
   }
 `;
-const Header = styled.div``;
+const TitleHeader = styled.div``;
 const Title = styled.h3`
   font-size: 24px;
   color: ${(props) => props.theme.titleColor};
@@ -77,6 +77,7 @@ const StyledTable = styled.table`
     }
   }
 `;
+const ProductsContainer = styled.div``;
 
 export default function OrdersPage() {
   const dispatch = useDispatch();
@@ -89,7 +90,6 @@ export default function OrdersPage() {
       setIsLoaded(true);
     });
   }, [dispatch, isUpdated]);
-  console.log(orders);
 
   const handleChangeStatus = (id) => {
     dispatch(updateOrderStatue(id)).then(() => setIsUpdated(!isUpdated));
@@ -98,56 +98,58 @@ export default function OrdersPage() {
     <Root>
       <Aside />
       <Container>
-        <Header>
+        <TitleHeader>
           <Title>查詢訂單</Title>
-        </Header>
-        <TableWrapper>
-          <StyledTable>
-            <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>UserId</th>
-                <th>Description</th>
-                <th>Price (NT$)</th>
-                <th>Order time</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {isLoaded
-                ? orders.map((order) => (
-                    <tr key={order.id}>
-                      <td>
-                        <Link to={`/backstage/orders/${order.UUID}`}>{order.UUID} </Link>
-                      </td>
-                      <td>{order.userId}</td>
-                      <td>
-                        {order.Product_models.map((product) => (
-                          <div key={product.id}>
-                            {product.modelName} * {product.Order_product.count}
-                          </div>
-                        ))}
-                      </td>
-                      <td>{order.totalPrice}</td>
-                      <td>{handleDateFormat(order.createdAt)}</td>
-                      <td>{handleOrderStatus(order.status)}</td>
-                      <td>
-                        {!order.status > 0 ? (
-                          <ButtonLight $size={'s'} onClick={() => handleChangeStatus(order.UUID)}>
-                            通知已出貨
-                          </ButtonLight>
-                        ) : (
-                          ''
-                        )}
-                      </td>
-                    </tr>
-                  ))
-                : null}
-            </tbody>
-            {!isLoaded ? 'Loading' : ''}
-          </StyledTable>
-        </TableWrapper>
+        </TitleHeader>
+
+        {!isLoaded ? (
+          'Loading'
+        ) : (
+          <TableWrapper>
+            <StyledTable>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>UserId</th>
+                  <th>Description</th>
+                  <th>Price (NT$)</th>
+                  <th>Order time</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order) => (
+                  <tr key={order.id}>
+                    <td>
+                      <Link to={`/backstage/orders/${order.UUID}`}>{order.UUID} </Link>
+                    </td>
+                    <td>{order.userId}</td>
+                    <td>
+                      {order.Product_models.map((product) => (
+                        <ProductsContainer key={product.id}>
+                          {product.modelName} * {product.Order_product.count}
+                        </ProductsContainer>
+                      ))}
+                    </td>
+                    <td>{order.totalPrice}</td>
+                    <td>{handleDateFormat(order.createdAt)}</td>
+                    <td>{handleOrderStatus(order.status)}</td>
+                    <td>
+                      {!order.status > 0 ? (
+                        <ButtonLight $size={'s'} onClick={() => handleChangeStatus(order.UUID)}>
+                          通知已出貨
+                        </ButtonLight>
+                      ) : (
+                        ''
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </StyledTable>
+          </TableWrapper>
+        )}
       </Container>
     </Root>
   );
