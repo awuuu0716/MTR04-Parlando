@@ -27,52 +27,50 @@ export const modelsSlice = createSlice({
     },
   },
 });
-
+// 待API修正
 export const getModels = (id) => (dispatch) =>
-  getProductAPI(id).then((data) => {
-    if (data.message) {
+  getProductAPI(id).then((res) => {
+    if (!res.success) {
       dispatch(setModels([]));
-      return data;
+      return res;
     }
-    console.log(data.product)
-    console.log('我在model reducx', data.product.Product_models)
-    dispatch(setModels(data.product.Product_models));
+    dispatch(setModels(res.data.product.Product_models));
     return data.product.Product_models;
   });
 
 export const getModel = (id) => (dispatch) =>
-  getModelAPI(id).then((data) => {
-    if (data.message) {
+  getModelAPI(id).then((res) => {
+    if (!res.success) {
       dispatch(setModel({}));
-      return data;
+      return res;
     }
-    dispatch(setModel(data.model));
-    return data.model;
+    dispatch(setModel(res.data.model));
+    return res.data;
   });
 
 export const deleteModel = (id) => (dispatch) =>
-  deleteModelAPI(id).then((data) => {
-    if (!data.success) {
-      dispatch(setErrorMessage(data.message));
-      return data;
+  deleteModelAPI(id).then((res) => {
+    if (!res.success) {
+      dispatch(setErrorMessage(res.message));
+      return res;
     }
-    return data;
+    return res;
   });
 
 export const updateModelStatus = (data) => (dispatch) =>
   updateModelStatusAPI(data).then((newData) => {
-    if (newData.message) {
+    if (!newData.success) {
       dispatch(setErrorMessage(newData.message));
       return newData;
     }
-    dispatch(setModel(newData));
+    dispatch(setModel(newData.data.model));
     return newData;
   });
 
 export const updateModel = (data) => (dispatch) =>
   updateModelAPI(data).then((newData) => {
-    if (newData.message) {
-      dispatch(setErrorMessage(data.message));
+    if (!newData.success) {
+      dispatch(setErrorMessage(newData.message));
       return newData;
     }
     return newData;
@@ -80,11 +78,11 @@ export const updateModel = (data) => (dispatch) =>
 
 export const addModel = (data) => (dispatch) =>
   addModelAPI(data).then((newData) => {
-    if (newData.message) {
-      dispatch(setErrorMessage(data.message));
+    if (!newData.success) {
+      dispatch(setErrorMessage(newData.message));
       return newData;
     }
-    return newData;
+    return newData.data;
   });
 
 

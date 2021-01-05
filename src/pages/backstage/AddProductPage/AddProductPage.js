@@ -179,9 +179,7 @@ export default function AddProductPage() {
       }
     }
     dispatch(addProduct({ productName, type, price, article: JSON.stringify(article) })).then((res) => {
-      
       console.log(res);
-      console.log(res.product.id);
       history.push(`/backstage/add-model/${res.product.id}/product`);
     });
   };
