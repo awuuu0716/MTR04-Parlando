@@ -108,14 +108,7 @@ export const updateOrderStatue = (id) => {
   return fetch(`${BASE_URL}/orders/${id}`, {
     method: 'PATCH',
     headers: { Authorization: `Bearer ${token}` },
-  }).then((res) => {
-    if (res.status === 204) {
-      console.log('更改狀態成功！！');
-      return { success: true, message: '更改狀態成功！！' };
-    }
-    console.log('更改狀態失敗');
-    return { success: false, message: '更改狀態失敗！！' };
-  });
+  }).then((res) => res.json());
 };
 
 export const updateProductStatus = ({ id, isShow }) => {
@@ -140,14 +133,7 @@ export const deleteProduct = (id) => {
     headers: {
       Authorization: authToken,
     },
-  }).then((res) => {
-    if (res.status === 204) {
-      console.log('刪除成功！！');
-      return { success: true, message: '刪除成功！！' };
-    }
-    console.log('刪除失敗');
-    return { success: false, message: '刪除失敗' };
-  });
+  }).then((res) => res.json());
 };
 
 export const updateProduct = ({ id, productName, price, article, isShow, type }) => {
@@ -214,18 +200,7 @@ export const linkProductPhotos = ({ id, photos }) => {
       'content-type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({ productId: id, photos }),
-  }).then((res) => {
-    if (res.status >= 200 && res.status < 300) {
-      return {
-        success: true,
-        message: '新增成功',
-      };
-    }
-    return {
-      success: false,
-      message: res.message.toString(),
-    };
-  });
+  }).then((res) => res.json());
 };
 
 //model
@@ -246,15 +221,7 @@ export const deleteModel = (id) => {
     headers: {
       Authorization: authToken,
     },
-  }).then((res) => {
-    console.log('status Code', res.status);
-    if (res.status === 204) {
-      console.log('刪除成功！！');
-      return { success: true, message: '刪除成功！！' };
-    }
-    console.log('刪除失敗');
-    return { success: false, message: '刪除失敗' };
-  });
+  }).then((res) =>res.json());
 };
 export const updateModelStatus = ({ id, isShow }) => {
   const token = getAuthToken();
