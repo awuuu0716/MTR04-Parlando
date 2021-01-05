@@ -1,5 +1,5 @@
 import { getAuthToken } from './utils';
-const BASE_URL = 'https://huiming.tw';
+const BASE_URL = 'https://huiming.tw/v1';
 
 // users
 export const signUp = ({ username, password, realName, email, phone }) =>

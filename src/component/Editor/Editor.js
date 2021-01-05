@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useQuill } from 'react-quilljs';
 import ImageResize from 'quill-image-resize-module--fix-imports-error';
 import ImageUploader from 'quill-image-uploader';
-import { addArticlePhoto, addProductPhoto } from '../../WebAPI';
+import { addArticlePhoto } from '../../WebAPI';
 import 'quill/dist/quill.snow.css';
 import styled from 'styled-components';
 import { device } from '../../style/breakpoints';

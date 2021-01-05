@@ -77,13 +77,6 @@ const StyledTable = styled.table`
     }
   }
 `;
-const ButtonGroup = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
-  min-width: 160px;
-`;
 
 export default function OrdersPage() {
   const dispatch = useDispatch();

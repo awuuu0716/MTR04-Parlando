@@ -39,63 +39,63 @@ export const signUp = ({ username, password, realName, email, phone }) => (
 ) => {
   dispatch(setErrorMessage(''));
   return signUpAPI({ username, password, realName, email, phone }).then(
-    (data) => {
-      if (data.ok === 0) {
-        dispatch(setErrorMessage(data.message));
+    (res) => {
+      if (!res.success) {
+        dispatch(setErrorMessage(res.message));
         return;
       }
       dispatch(setUserLevel('member'));
-      setAuthToken(data.token);
-      return data.token;
+      setAuthToken(res.data.token);
+      return res.data.token;
     }
   );
 };
 
 export const updateUserData = (userData) => (dispatch) => {
   dispatch(setErrorMessage(''));
-  return updateUserDataAPI(userData).then((data) => {
-    if (data.message) {
-      dispatch(setErrorMessage(data.message));
+  return updateUserDataAPI(userData).then((res) => {
+    if (!res.success) {
+      dispatch(setErrorMessage(res.message));
       return;
     }
-    return data;
+    return res;
   });
 };
 
 export const adminLogin = ({ username, password }) => (dispatch) => {
   dispatch(setErrorMessage(''));
-  return adminLoginAPI({ username, password }).then((data) => {
-    if (!data.token) {
-      dispatch(setErrorMessage(data.message));
+  return adminLoginAPI({ username, password }).then((res) => {
+    if (!res.success) {
+      dispatch(setErrorMessage(res.message));
       return;
     }
-    setAuthToken(data.token);
+    setAuthToken(res.data.token);
     dispatch(setUserLevel('admin'));
-    return data.token;
+    return res.data.token;
   });
 };
 
 export const login = ({ username, password }) => (dispatch) => {
   dispatch(setErrorMessage(''));
-  return loginAPI({ username, password }).then((data) => {
-    if (!data.token) {
-      dispatch(setErrorMessage(data.message));
+  return loginAPI({ username, password }).then((res) => {
+    if (!res.success) {
+      dispatch(setErrorMessage(res.message));
       return;
     }
-    setAuthToken(data.token);
+    setAuthToken(res.data.token);
     dispatch(setUserLevel('member'));
-    return data.token;
+    return res.data.token;
   });
 };
 
 export const getMemberInfo = () => (dispatch) => {
-  return getMemberInfoAPI().then((data) => {
-    if (data.message) {
+  return getMemberInfoAPI().then((res) => {
+    if (!res.success) {
       setAuthToken('');
       return;
     }
-    if (data.admin) return dispatch(setUserLevel('admin'));
-    dispatch(setUserInfo(data.user));
+    if (res.data.admin) return dispatch(setUserLevel('admin'));
+    dispatch(setUserInfo(res.data.user));
     dispatch(setUserLevel('member'));
   });
 };

@@ -3,8 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import Aside from '../../../component/Aside';
 import { ButtonLight } from '../../../component/Button';
 import { device } from '../../../style/breakpoints';
-import Input, { InputSelect, InputContainer } from '../../../component/Input';
-import { isColorChipValid, isModelNameValid, isStorageValid } from '../../../utils';
+import Input, { InputContainer } from '../../../component/Input';
+import { isColorChipValid, isStorageValid } from '../../../utils';
 import { useParams, useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { addModel } from '../../../redux/reducers/modelsSlice';
@@ -152,7 +152,7 @@ export default function AddModelPage() {
       dispatch(addModel({ id, modelName, colorChip, storage })).then((res) => console.log(res));
       if (action === 'product') {
         history.push(`/backstage/add-product/photo/${id}`);
-      }else{
+      } else {
         history.goBack();
       }
 

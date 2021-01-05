@@ -7,7 +7,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { selectOrder, getOrder } from '../../../redux/reducers/ordersSlice';
-import { handleDateFormat, handleOrderStatus } from '../../../utils';
+import { handleDateFormat } from '../../../utils';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -59,7 +59,7 @@ export default function SingleOrderPage() {
             <Header>訂單編號</Header>
             <Info $flex={3}> {uuid}</Info>
             <Header>訂單狀態</Header>
-            <Info $flex={2}>{handleOrderStatus(order.status) || 'loading...'}</Info>
+            <Info $flex={2}>{order.status || 'loading...'}</Info>
           </Li>
           <Li>
             <Header>訂購日期</Header>

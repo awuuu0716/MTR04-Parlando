@@ -77,10 +77,10 @@ export default function EditModelPage() {
   const [colorChip, setColorChip] = useState(model.colorChip);
   const [storage, setStorage] = useState(model.storage);
   const [isShow, setIsShow] = useState(model.isShow);
-
+  const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    dispatch(getModel(id));
-  }, [dispatch,id]);
+    dispatch(getModel(id)).then(() => setIsLoaded(true));
+  }, [dispatch, id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -165,62 +165,66 @@ export default function EditModelPage() {
             返回
           </ButtonLight>
         </Header>
-        <Form id="editModelForm">
-          <InputContainer>
-            <Input
-              inputTitle={'庫存'}
-              inputType={'number'}
-              size={'90%'}
-              name={'storage'}
-              value={storage}
-              onChange={handleInputChange}
-              errorMessage={modelErrorMessage['storage'].message}
-              required
-            />
-            <Input
-              inputTitle={'型號'}
-              inputType={'text'}
-              size={'90%'}
-              name={'modelName'}
-              value={modelName}
-              onChange={handleInputChange}
-              valid={modelErrorMessage['modelName'].valid}
-              errorMessage={modelErrorMessage['modelName'].message}
-              placeholder=""
-              required
-            />
-          </InputContainer>
-          <InputContainer>
-            <Input
-              inputTitle={'顏色'}
-              inputType={'text'}
-              size={'90%'}
-              name={'colorChip'}
-              value={colorChip}
-              onChange={handleInputChange}
-              valid={modelErrorMessage['colorChip'].valid}
-              errorMessage={modelErrorMessage['colorChip'].message}
-              placeholder="請輸入色票 例如：aa22cc"
-              required
-            />
-            <InputSelect
-              inputTitle="是否已上架"
-              types={[
-                { name: '是', value: 1 },
-                { name: '否', value: 0 },
-              ]}
-              size="90%"
-              name="isShow"
-              value={isShow ? '1' : '0'}
-              onChange={handleInputChange}
-              valid={modelErrorMessage['isShow'].valid}
-              errorMessage={modelErrorMessage['isShow'].message}
-            />
-          </InputContainer>
-          <SubmitBtn onClick={handleEditModel} type="submit" form="editModelForm">
-            送出
-          </SubmitBtn>
-        </Form>
+        {isLoaded ? (
+          <Form id="editModelForm">
+            <InputContainer>
+              <Input
+                inputTitle={'庫存'}
+                inputType={'number'}
+                size={'90%'}
+                name={'storage'}
+                value={storage}
+                onChange={handleInputChange}
+                errorMessage={modelErrorMessage['storage'].message}
+                required
+              />
+              <Input
+                inputTitle={'型號'}
+                inputType={'text'}
+                size={'90%'}
+                name={'modelName'}
+                value={modelName}
+                onChange={handleInputChange}
+                valid={modelErrorMessage['modelName'].valid}
+                errorMessage={modelErrorMessage['modelName'].message}
+                placeholder=""
+                required
+              />
+            </InputContainer>
+            <InputContainer>
+              <Input
+                inputTitle={'顏色'}
+                inputType={'text'}
+                size={'90%'}
+                name={'colorChip'}
+                value={colorChip}
+                onChange={handleInputChange}
+                valid={modelErrorMessage['colorChip'].valid}
+                errorMessage={modelErrorMessage['colorChip'].message}
+                placeholder="請輸入色票 例如：aa22cc"
+                required
+              />
+              <InputSelect
+                inputTitle="是否已上架"
+                types={[
+                  { name: '是', value: 1 },
+                  { name: '否', value: 0 },
+                ]}
+                size="90%"
+                name="isShow"
+                value={isShow ? '1' : '0'}
+                onChange={handleInputChange}
+                valid={modelErrorMessage['isShow'].valid}
+                errorMessage={modelErrorMessage['isShow'].message}
+              />
+            </InputContainer>
+            <SubmitBtn onClick={handleEditModel} type="submit" form="editModelForm">
+              送出
+            </SubmitBtn>
+          </Form>
+        ) : (
+          'Loading...'
+        )}
       </Container>
     </Root>
   );
