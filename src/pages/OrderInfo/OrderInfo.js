@@ -58,7 +58,7 @@ const Info = styled.div`
   flex: ${(props) => props.$flex};
 `;
 
-const OrderContent = styled.p`
+const OrderContent = styled.div`
   margin: 0;
   padding: 10px;
 `;
@@ -116,8 +116,7 @@ export default function OrderInfo() {
 
   useEffect(() => {
     dispatch(getOrder(id)).then(() => setIsLoaded(true));
-  }, [dispatch]);
-  console.log(order);
+  }, [dispatch, id]);
 
   return (
     <Container>
