@@ -102,6 +102,21 @@ export const getOrder = (id) => {
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 };
+export const updateOrderStatue = (id) => {
+  const token = getAuthToken();
+
+  return fetch(`${BASE_URL}/orders/${id}`, {
+    method: 'PATCH',
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => {
+    if (res.status === 204) {
+      console.log('更改狀態成功！！');
+      return { success: true, message: '更改狀態成功！！' };
+    }
+    console.log('更改狀態失敗');
+    return { success: false, message: '更改狀態失敗！！' };
+  });
+};
 
 export const updateProductStatus = ({ id, isShow }) => {
   const token = getAuthToken();
@@ -202,13 +217,13 @@ export const linkProductPhotos = ({ id, photos }) => {
   }).then((res) => {
     if (res.status >= 200 && res.status < 300) {
       return {
-        success:true,
-        message:'新增成功'
+        success: true,
+        message: '新增成功',
       };
     }
     return {
-      success:false,
-      message:res.message.toString()
+      success: false,
+      message: res.message.toString(),
     };
   });
 };

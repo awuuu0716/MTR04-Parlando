@@ -72,6 +72,16 @@ export const handleDateFormat = (date) => {
   return date.slice(0, breakPoint);
 };
 
+export const handleOrderStatus = (status) => {
+  switch (status) {
+    case 1:
+      return '處理中'
+    case 2:
+      return '已出貨'
+    default:
+    return '未付款'
+  }
+};
 export const findOrder = (orders, id) => {
   return orders.filter((order) => order.id === id)[0];
 };

@@ -1,8 +1,13 @@
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Aside from '../../../component/Aside';
 import { ButtonLight } from '../../../component/Button';
+
 import { device } from '../../../style/breakpoints';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrders, selectOrders, updateOrderStatue } from '../../../redux/reducers/ordersSlice';
+import { handleDateFormat, handleOrderStatus } from '../../../utils';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -20,6 +25,9 @@ const Container = styled.div`
   margin-bottom: 40px;
   font-size: 24px;
   transform: translate(-50%);
+  @media ${device.Tablets} {
+    width: 900px;
+  }
 `;
 const Header = styled.div``;
 const Title = styled.h3`
@@ -54,11 +62,17 @@ const StyledTable = styled.table`
     border-bottom: 1px solid ${(props) => props.theme.borderColor};
     tr td {
       background-color: white;
-      padding: 20px;
+      padding: 20px 10px;
       align-items: center;
       font-size: 1.2em;
       a:hover {
         text-decoration: none;
+      }
+      &:first-child {
+        max-width: 50px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
   }
@@ -71,15 +85,22 @@ const ButtonGroup = styled.div`
   min-width: 160px;
 `;
 
-const Buttons = () => {
-  return (
-    <ButtonGroup>
-      <ButtonLight $size={'s'}>通知已出貨</ButtonLight>
-      <ButtonLight $size={'s'}>刪除</ButtonLight>
-    </ButtonGroup>
-  );
-};
 export default function OrdersPage() {
+  const dispatch = useDispatch();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isUpdated, setIsUpdated] = useState(false);
+  const orders = useSelector(selectOrders);
+
+  useEffect(() => {
+    dispatch(getOrders()).then(() => {
+      setIsLoaded(true);
+    });
+  }, [dispatch, isUpdated]);
+  console.log(orders);
+
+  const handleChangeStatus = (id) => {
+    dispatch(updateOrderStatue(id)).then(() => setIsUpdated(!isUpdated));
+  };
   return (
     <Root>
       <Aside />
@@ -92,7 +113,7 @@ export default function OrdersPage() {
             <thead>
               <tr>
                 <th>Order ID</th>
-                <th>Username</th>
+                <th>UserId</th>
                 <th>Description</th>
                 <th>Price (NT$)</th>
                 <th>Order time</th>
@@ -101,39 +122,37 @@ export default function OrdersPage() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <Link to="/backstage/orders/00001">00001 </Link>
-                </td>
-                <td>Andy</td>
-                <td>
-                  product * 1<br />
-                  product * 1<br />
-                </td>
-                <td>1200</td>
-                <td>2020.11.02</td>
-                <td>未出貨</td>
-                <td>
-                  <Buttons />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <Link to="/backstage/orders/id">00002 </Link>
-                </td>
-                <td>HD-02</td>
-                <td>
-                  product * 2<br />
-                  product * 1<br />
-                </td>
-                <td>900</td>
-                <td>2020.11.30</td>
-                <td>未上架</td>
-                <td>
-                  <Buttons />
-                </td>
-              </tr>
+              {isLoaded
+                ? orders.map((order) => (
+                    <tr key={order.id}>
+                      <td>
+                        <Link to={`/backstage/orders/${order.UUID}`}>{order.UUID} </Link>
+                      </td>
+                      <td>{order.userId}</td>
+                      <td>
+                        {order.Product_models.map((product) => (
+                          <div key={product.id}>
+                            {product.modelName} * {product.Order_product.count}
+                          </div>
+                        ))}
+                      </td>
+                      <td>{order.totalPrice}</td>
+                      <td>{handleDateFormat(order.createdAt)}</td>
+                      <td>{handleOrderStatus(order.status)}</td>
+                      <td>
+                        {!order.status > 0 ? (
+                          <ButtonLight $size={'s'} onClick={() => handleChangeStatus(order.UUID)}>
+                            通知已出貨
+                          </ButtonLight>
+                        ) : (
+                          ''
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                : null}
             </tbody>
+            {!isLoaded ? 'Loading' : ''}
           </StyledTable>
         </TableWrapper>
       </Container>

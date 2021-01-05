@@ -126,7 +126,7 @@ const Admin = () => (
     <Route exact path="/backstage/orders">
       <OrdersPage />
     </Route>
-    <Route exact path="/backstage/orders/:id">
+    <Route exact path="/backstage/orders/:uuid">
       <SingleOrderPage />
     </Route>
     <Redirect to="/backstage/products" />
