@@ -1,5 +1,5 @@
 import { getAuthToken } from './utils';
-const BASE_URL = 'https://parlando.tw';
+const BASE_URL = 'https://huiming.tw/v1';
 
 // users
 export const signUp = ({ username, password, realName, email, phone }) =>
@@ -75,11 +75,11 @@ export const getProducts = ({ type, sort, order }) => {
   }).then((res) => res.json());
 };
 
-export const getProduct = (uuid) => {
+export const getProduct = (id) => {
   const token = getAuthToken();
   const authToken = token ? `Bearer ${token}` : '';
 
-  return fetch(`${BASE_URL}/products/${uuid}`, {
+  return fetch(`${BASE_URL}/products/${id}`, {
     method: 'GET',
     headers: { Authorization: authToken },
   }).then((res) => res.json());

@@ -21,21 +21,21 @@ export const ordersSlice = createSlice({
 });
 
 export const getOrders = () => (dispatch) =>
-  getOrdersAPI().then((data) => {
-    if (data.message) {
-      return data;
+  getOrdersAPI().then((res) => {
+    if (!res.success) {
+      return res.message;
     }
-    dispatch(setOrders(data.orders));
-    return data;
+    dispatch(setOrders(res.data.orders));
+    return res;
   });
 
 export const getOrder = (uuid) => (dispatch) =>
-  getOrderAPI(uuid).then((data) => {
-    if (data.message) {
-      return data;
+  getOrderAPI(uuid).then((res) => {
+    if (!res.success) {
+      return res.message;
     }
-    dispatch(setOrder(data.order));
-    return data;
+    dispatch(setOrder(res.data.order));
+    return res;
   });
 
 export const { setOrders, setOrder } = ordersSlice.actions;

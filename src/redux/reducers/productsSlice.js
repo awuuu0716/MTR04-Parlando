@@ -32,23 +32,25 @@ export const productsSlice = createSlice({
 });
 
 export const getProducts = (filter) => (dispatch) =>
-  getProductsAPI(filter).then((data) => {
-    if (data.message) {
-      return data;
+  getProductsAPI(filter).then((res) => {
+
+    if (!res.success) {
+      return res.message;
     }
-    dispatch(setProducts(data.products));
-    return data;
+    dispatch(setProducts(res.data.products));
+    return res;
   });
 
 export const getProduct = (id) => (dispatch) =>
-  getProductAPI(id).then((data) => {
-    if (data.message) {
+  getProductAPI(id).then((res) => {
+    console.log(res);
+    if (!res.success) {
       dispatch(setProduct({}));
-      return data;
+      return res.message;
     }
-    dispatch(setProduct(data.product));
-    dispatch(setArticle(JSON.parse(data.product.article)));
-    return data.product;
+    dispatch(setProduct(res.data.product));
+    // dispatch(setArticle(JSON.parse(data.product.article)));
+    return res.data.product;
   });
 
 export const deleteProduct = (id) => (dispatch) =>

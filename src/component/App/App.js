@@ -1,7 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Header from '../Header';
 import Footer from '../../component/Footer';
-import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Info from '../../pages/Info';
 import CheckOrder from '../../pages/CheckOrder';
@@ -25,13 +30,9 @@ import OrderInfo from '../../pages/OrderInfo';
 import Login from '../../pages/Login';
 import AdminLogin from '../../pages/AdminLogin';
 import Signup from '../../pages/Signup';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectIsBackstageMode } from '../../redux/reducers/themeSlice';
-import {
-  selectUserLevel,
-  getMemberInfo,
-} from '../../redux/reducers/usersSlice';
-import { getAuthToken } from '../../utils';
+import { selectUserLevel } from '../../redux/reducers/usersSlice';
 
 const Public = () => (
   <Switch>
@@ -105,13 +106,13 @@ const Admin = () => (
       <AllProductsPage />
     </Route>
     <Route exact path="/backstage/products">
-      <AllProductsPage /> 
+      <AllProductsPage />
     </Route>
     <Route exact path="/backstage/edit-product/:id">
-      <EditProductPage /> 
+      <EditProductPage />
     </Route>
     <Route exact path="/backstage/products-model">
-      <AllProductsModelPage /> 
+      <AllProductsModelPage />
     </Route>
     <Route exact path="/backstage/add-product">
       <AddProductsPage />
@@ -146,11 +147,6 @@ const AuthSwitch = ({ userLevel }) => {
 function App() {
   const isBackstageMode = useSelector(selectIsBackstageMode);
   const userLevel = useSelector(selectUserLevel);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (getAuthToken()) dispatch(getMemberInfo());
-  }, [dispatch]);
 
   return (
     <ThemeProvider theme={isBackstageMode ? Themes.backstage : Themes.customer}>
