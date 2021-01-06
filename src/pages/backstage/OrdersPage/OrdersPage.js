@@ -92,7 +92,7 @@ export default function OrdersPage() {
   }, [dispatch, isUpdated]);
 
   const handleChangeStatus = (id) => {
-    dispatch(updateOrderStatue(id)).then(() => setIsUpdated(!isUpdated));
+    dispatch(updateOrderStatue(id)).then(() => setIsUpdated(true));
   };
   return (
     <Root>

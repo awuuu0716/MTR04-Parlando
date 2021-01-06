@@ -122,15 +122,14 @@ export default function Promotion() {
         <TrapezoidTop></TrapezoidTop>
         <PromotionImgTop src={promotion_1} />
         <DescriptionContainerTop>
-          <H4>SOME MODEL</H4>
-          <H1>Heading</H1>
+          <H4>Wireless-01</H4>
+          <H1>真無線耳機</H1>
           <Divider />
           <DescriptionText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-            euismod bibendum
+            不受束博的音樂體驗
           </DescriptionText>
           <BuyNow to="/">
-            BUY NOW <Arrow />
+            了解更多 <Arrow />
           </BuyNow>
         </DescriptionContainerTop>
       </Container>
@@ -139,15 +138,14 @@ export default function Promotion() {
         <TrapezoidBottom></TrapezoidBottom>
         <PromotionImgBottom src={promotion_2} />
         <DescriptionContainerBottom>
-          <H4>SOME MODEL</H4>
-          <H1>Heading</H1>
+          <H4>耳罩式耳機</H4>
+          <H1>Headphone-01</H1>
           <Divider />
           <DescriptionText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-            euismod bibendum
+            最舒適的聆聽體驗。可以隨身帶著走的家庭劇院。
           </DescriptionText>
           <BuyNow to="/">
-            BUY NOW <Arrow />
+            了解更多 <Arrow />
           </BuyNow>
         </DescriptionContainerBottom>
       </Container>

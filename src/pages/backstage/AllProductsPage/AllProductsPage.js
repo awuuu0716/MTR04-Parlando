@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Aside from '../../../component/Aside';
 import { ButtonLight } from '../../../component/Button';
 import { device } from '../../../style/breakpoints';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts, updateProductStatus, deleteProduct, selectProducts,  } from '../../../redux/reducers/productsSlice';
+import { getProducts, updateProductStatus, deleteProduct, selectProducts } from '../../../redux/reducers/productsSlice';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -106,18 +106,23 @@ const Buttons = ({ isShow, handleProductDelete, id, handleProductIsShow }) => {
 export default function AllProductsPage() {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
+  const history = useHistory();
   const [sortFilter, setSortFilter] = useState('id');
   const [order, setOrder] = useState('DESC');
   const [type, setType] = useState('all');
   const [update, setUpdate] = useState(false);
   useEffect(() => dispatch(getProducts({ type, order, sort: sortFilter })), [update, dispatch, type, sortFilter, order]);
   const handleProductDelete = (id) => {
-    dispatch(deleteProduct(id));
-    setUpdate(!update);
+    dispatch(deleteProduct(id)).then(() => setUpdate(!update));
   };
   const handleProductIsShow = ({ id, isShow }) => {
-    dispatch(updateProductStatus({ id, isShow }));
-    setUpdate(!update);
+    dispatch(updateProductStatus({ id, isShow })).then((res) => {
+      if(!res.success){
+        alert(`請先確認型號已上架，系統將自動轉換`)
+       return history.push(`/backstage/product-models/${id}`);
+      }
+      setUpdate(!update)
+    });
   };
   return (
     <Root>

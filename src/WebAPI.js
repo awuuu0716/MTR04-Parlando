@@ -254,7 +254,6 @@ export const getOrder = (id) => {
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 };
-
 export const updateOrderStatue = (id) => {
   const token = getAuthToken();
 

@@ -66,10 +66,10 @@ const productErrorMessageInit = {
   type: { valid: true, message: '' },
 };
 const types = [
-  { name: '耳罩式耳機', value: 1 },
-  { name: '入耳式耳機', value: 2 },
-  { name: '音響', value: 3 },
-  { name: '週邊配件', value: 4 },
+  { name: '耳罩式耳機', value: '耳罩式耳機' },
+  { name: '入耳式耳機', value:'入耳式耳機' },
+  { name: '音響', value: '音響' },
+  { name: '週邊配件', value: '週邊配件' },
 ];
 export default function EditProductPage() {
   let isValid = false;
@@ -81,14 +81,21 @@ export default function EditProductPage() {
   const articleInit = useSelector(selectArticle);
 
   const [productErrorMessage, setProductErrorMessage] = useState(productErrorMessageInit);
-  const [productName, setProductName] = useState(product.productName);
-  const [price, setPrice] = useState(product.price);
+  const [productName, setProductName] = useState('');
+  const [price, setPrice] = useState(0);
   const [article, setArticle] = useState(articleInit);
-  const [type, setType] = useState(product.type);
-  const [isShow, setIsShow] = useState(product.isShow);
+  const [type, setType] = useState('');
+  const [isShow, setIsShow] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    dispatch(getProduct(id)).then(() => setIsLoaded(true));
+    dispatch(getProduct(id)).then((product) =>{
+      setPrice(product.price)
+      setProductName(product.productName)
+      setArticle(product.article)
+      setType(product.type)
+      setIsShow(product.isShow)
+      setIsLoaded(true)
+      });
   }, [dispatch, id]);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -106,7 +113,6 @@ export default function EditProductPage() {
       return setType(value);
     }
     if (name === 'isShow') {
-      console.log(value);
       if (value === '是') {
         return setIsShow(1);
       }
@@ -179,12 +185,8 @@ export default function EditProductPage() {
     e.preventDefault();
     isValid = checkProductValid();
     if (!isValid) return;
-    let switchValue = type;
-    if (!typeHasChange.current) {
-      switchValue = types.find((item) => item.name === type).value;
-      setType(switchValue.value);
-    }
-    dispatch(updateProduct({ id, productName, type: switchValue, price, article: JSON.stringify(article), isShow }));
+    
+    dispatch(updateProduct({ id, productName, type, price, article: JSON.stringify(article), isShow }));
     history.goBack();
   };
 

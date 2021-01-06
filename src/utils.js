@@ -1,5 +1,9 @@
 const TOKEN_NAME = 'token';
+<<<<<<< HEAD
 const TOKEN_CART = 'cart';
+=======
+const TOKEN_ORDER = 'order';
+>>>>>>> 95daf9dc5b0253b8e95460101467f9b5144069e6
 
 export const setAuthToken = (token) => {
   localStorage.setItem(TOKEN_NAME, token);
@@ -16,6 +20,13 @@ export const getCartToken = () => {
 export const setCartToken = (token) => {
   localStorage.setItem(TOKEN_CART, JSON.stringify(token));
 };
+
+
+export const setOrderList = (token) => {
+  localStorage.setItem(TOKEN_ORDER, token);
+};
+
+export const getOrderList = () => localStorage.getItem(TOKEN_ORDER);
 
 export const isLengthValid = (string) => string.length < 20;
 
@@ -59,12 +70,11 @@ export const isPriceValid = (price) => {
   if (!rule.test(price)) {
     return 0;
   }
-
-  return true;
+  return true
 };
 
 export const isProductNameValid = (productName) => {
-  const rule = /^[a-zA-Z]\w{0,11}-\w{2}$/;
+  const rule = /^[a-zA-Z]\w{0,15}$/;
   return rule.test(productName);
 };
 

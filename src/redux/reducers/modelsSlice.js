@@ -44,7 +44,7 @@ export const getModel = (id) => (dispatch) =>
       return res;
     }
     dispatch(setModel(res.data.model));
-    return res.data;
+    return res.data.model;
   });
 
 export const deleteModel = (id) => (dispatch) =>
