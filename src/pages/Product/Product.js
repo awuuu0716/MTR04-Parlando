@@ -8,7 +8,7 @@ import feature from '../../img/feature.jpg';
 import preload from '../../img/preload.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct, selectProduct } from '../../redux/reducers/productsSlice';
-import { handelStorageAmount } from '../../utils';
+import { handelStorageAmount, getCartToken, setCartToken } from '../../utils';
 import { device } from '../../style/breakpoints';
 
 const Container = styled.div`
@@ -58,7 +58,7 @@ const ProductContainer = styled.div`
   @media ${device.Tablets} {
     flex-direction: row;
   }
-  
+
   @media ${device.Desktops} {
     flex-direction: row;
   }
@@ -552,16 +552,21 @@ export default function Product() {
   const [nowPicIndex, setNowPicIndex] = useState(0);
   const [amount, setAmount] = useState(1);
   const [isShowModal, setIsShowModal] = useState(false);
+  const [selectedModelId, setSelectedModelId] = useState('');
   const [models, setModels] = useState([]);
   const [storage, setStorage] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const { pathname } = useLocation();
+  let cart = getCartToken();
 
   const handleShowModal = (state) => {
     setIsShowModal(state);
   };
 
-  const addAmount = () => setAmount(amount + 1);
+  const addAmount = () => {
+    if (amount === 9) return;
+    setAmount(amount + 1);
+  };
 
   const minusAmount = () => setAmount(amount - 1 <= 0 ? 1 : amount - 1);
 
@@ -618,20 +623,30 @@ export default function Product() {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getProduct(id)).then((res) => {
-      
       setPicList(
         res.photos.map((url, index) => {
-          if (index === 0)
-            return { src: url, isActive: true, id: `photo-${index}` };
+          if (index === 0) return { src: url, isActive: true, id: `photo-${index}` };
           return { src: url, isActive: false, id: `photo-${index}` };
         })
       );
       setModels(res.models);
       setSelectedModel(res.models[0].colorChip);
+      setSelectedModelId(res.models[0].id);
       setStorage(res.models[0].storage);
     });
+    return () => {
+      setModels([]);
+      setSelectedModel('');
+      setSelectedModelId('');
+      setStorage('');
+    };
   }, [dispatch, id]);
 
+  const handleAddCart = () => {
+    cart.push({ modelId: selectedModelId, count: amount });
+    console.log(cart);
+    setCartToken(cart);
+  };
   return (
     <>
       <Container>
@@ -644,18 +659,11 @@ export default function Product() {
         <ProductContainer>
           <PhotosContainer>
             {picList.map((data, index) => (
-              <Thumbnail
-                $active={data.isActive}
-                src={data.src}
-                onClick={() => handleChangePic(index)}
-                key={data.id}
-              />
+              <Thumbnail $active={data.isActive} src={data.src} onClick={() => handleChangePic(index)} key={data.id} />
             ))}
           </PhotosContainer>
 
-          <ProductImgContainer
-            $url={picList.length > 0 ? picList[nowPicIndex].src : preload}
-          >
+          <ProductImgContainer $url={picList.length > 0 ? picList[nowPicIndex].src : preload}>
             <ArrowLeft onClick={prePic} />
             <ArrowRight onClick={nextPic} />
           </ProductImgContainer>
@@ -672,6 +680,7 @@ export default function Product() {
                   $active={selectedModel === model.colorChip}
                   onClick={() => {
                     setSelectedModel(model.colorChip);
+                    setSelectedModelId(model.id);
                     setStorage(model.storage);
                   }}
                   key={`model-${model.colorChip}`}
@@ -685,9 +694,7 @@ export default function Product() {
               <AmountButton onClick={addAmount}>+</AmountButton>
             </Amount>
             <div>
-              <AddToCart onClick={() => handleShowModal(true)}>
-                ADD TO CART
-              </AddToCart>
+              <AddToCart onClick={() => handleAddCart()}>ADD TO CART</AddToCart>
               <Buy to="/">BUY</Buy>
             </div>
           </ProductInfomationContainer>

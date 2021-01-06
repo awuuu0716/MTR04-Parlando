@@ -85,32 +85,6 @@ export const getProduct = (id) => {
   }).then((res) => res.json());
 };
 
-export const getOrders = () => {
-  const token = getAuthToken();
-
-  return fetch(`${BASE_URL}/orders`, {
-    method: 'GET',
-    headers: { Authorization: `Bearer ${token}` },
-  }).then((res) => res.json());
-};
-
-export const getOrder = (id) => {
-  const token = getAuthToken();
-
-  return fetch(`${BASE_URL}/orders/${id}`, {
-    method: 'GET',
-    headers: { Authorization: `Bearer ${token}` },
-  }).then((res) => res.json());
-};
-export const updateOrderStatue = (id) => {
-  const token = getAuthToken();
-
-  return fetch(`${BASE_URL}/orders/${id}`, {
-    method: 'PATCH',
-    headers: { Authorization: `Bearer ${token}` },
-  }).then((res) => res.json());
-};
-
 export const updateProductStatus = ({ id, isShow }) => {
   const token = getAuthToken();
   const authToken = `Bearer ${token}`;
@@ -203,7 +177,7 @@ export const linkProductPhotos = ({ id, photos }) => {
   }).then((res) => res.json());
 };
 
-//model
+// model
 export const getModel = (id) => {
   const token = getAuthToken();
   const authToken = token ? `Bearer ${token}` : '';
@@ -221,7 +195,7 @@ export const deleteModel = (id) => {
     headers: {
       Authorization: authToken,
     },
-  }).then((res) =>res.json());
+  }).then((res) => res.json());
 };
 export const updateModelStatus = ({ id, isShow }) => {
   const token = getAuthToken();
@@ -259,5 +233,84 @@ export const addModel = ({ id, modelName, storage, colorChip }) => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({ productId: id, modelName, storage, colorChip }),
+  }).then((res) => res.json());
+};
+
+// order
+export const getOrders = () => {
+  const token = getAuthToken();
+
+  return fetch(`${BASE_URL}/orders`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => res.json());
+};
+
+export const getOrder = (id) => {
+  const token = getAuthToken();
+
+  return fetch(`${BASE_URL}/orders/${id}`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => res.json());
+};
+
+export const updateOrderStatue = (id) => {
+  const token = getAuthToken();
+
+  return fetch(`${BASE_URL}/orders/${id}`, {
+    method: 'PATCH',
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => res.json());
+};
+
+export const addOrder = ({ products }) => {
+  const token = getAuthToken();
+  const authToken = token ? `Bearer ${token}` : '';
+  return fetch(`${BASE_URL}/models`, {
+    method: 'POST',
+    headers: {
+      Authorization: authToken,
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({ products }),
+  }).then((res) => res.json());
+};
+
+export const addRecipient = ({ orderId, name, phone, email, address, cityId, districtId }) => {
+  const token = getAuthToken();
+  const authToken = token ? `Bearer ${token}` : '';
+  return fetch(`${BASE_URL}/models`, {
+    method: 'POST',
+    headers: {
+      Authorization: authToken,
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({ orderId, name, phone, email, address, cityId, districtId }),
+  }).then((res) => res.json());
+};
+export const payment = (uuid) => {
+  const token = getAuthToken();
+  const authToken = `Bearer ${token}`;
+
+  return fetch(`${BASE_URL}/payment/${uuid}`, {
+    method: 'POST',
+    headers: {
+      Authorization: authToken,
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  }).then((res) => res.json());
+};
+
+// address
+export const getCities = () => {
+  return fetch(`${BASE_URL}/cities`, {
+    method: 'GET',
+  }).then((res) => res.json());
+};
+
+export const getDistricts = (id) => {
+  return fetch(`${BASE_URL}/districts?cityId=${id}`, {
+    method: 'GET'
   }).then((res) => res.json());
 };

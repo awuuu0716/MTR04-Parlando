@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getOrders as getOrdersAPI, getOrder as getOrderAPI, updateOrderStatue as updateOrderStatueAPI } from '../../WebAPI';
+import { getOrders as getOrdersAPI, getOrder as getOrderAPI, updateOrderStatue as updateOrderStatueAPI, addOrder as addOrderAPI } from '../../WebAPI';
 
 export const ordersSlice = createSlice({
   name: 'orders',
   initialState: {
     orders: [],
     order: {},
+    cart:[],
   },
   reducers: {
     setOrders: (state, action) => {
@@ -22,7 +23,6 @@ export const getOrders = () => (dispatch) =>
     if (!res.success) {
       dispatch(setOrders([]));
       return res;
-
     }
     dispatch(setOrders(res.data.orders));
     return res;
@@ -35,7 +35,16 @@ export const getOrder = (uuid) => (dispatch) =>
     }
     dispatch(setOrder(res.data.order));
     return res;
+  });
 
+export const addOrder = (data) => (dispatch) =>
+  addOrderAPI(data).then((newData) => {
+    if (!newData.success) {
+      dispatch(setOrder({}));
+      return newData;
+    }
+    dispatch(setOrder(newData.data.order));
+    return newData;
   });
 
 export const updateOrderStatue = (uuid) => (dispatch) =>

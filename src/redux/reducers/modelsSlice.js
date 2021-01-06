@@ -27,7 +27,6 @@ export const modelsSlice = createSlice({
     },
   },
 });
-// 待API修正
 export const getModels = (id) => (dispatch) =>
   getProductAPI(id).then((res) => {
     if (!res.success) {
@@ -35,7 +34,7 @@ export const getModels = (id) => (dispatch) =>
       return res;
     }
     dispatch(setModels(res.data.product.Product_models));
-    return data.product.Product_models;
+    return res.data.product.Product_models;
   });
 
 export const getModel = (id) => (dispatch) =>

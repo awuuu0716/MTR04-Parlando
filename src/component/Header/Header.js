@@ -4,17 +4,10 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 import logo from '../../img/logo.svg';
 import cart from '../../img/cart.svg';
 import member from '../../img/member.svg';
-import {
-  selectIsBackstageMode,
-  setIsBackstageMode,
-} from '../../redux/reducers/themeSlice';
-import {
-  selectUserLevel,
-  setUserLevel,
-  getMemberInfo,
-} from '../../redux/reducers/usersSlice';
+import { selectIsBackstageMode, setIsBackstageMode } from '../../redux/reducers/themeSlice';
+import { selectUserLevel, setUserLevel, getMemberInfo } from '../../redux/reducers/usersSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken, getAuthToken } from '../../utils';
+import { setAuthToken, getAuthToken, getCartToken, setCartToken } from '../../utils';
 
 const HeaderContainer = styled.div`
   height: 80px;
@@ -54,7 +47,12 @@ const Logo = styled(Link)`
   cursor: pointer;
 `;
 
+const IconCartContainer = styled.div`
+  position: relative;
+`;
+
 const IconCart = styled(Link)`
+  display: inline-block;
   width: 40px;
   height: 40px;
   cursor: pointer;
@@ -97,11 +95,7 @@ const BackstageHeader = ({ isLogin, handleLogOut }) => {
   return (
     <HeaderContainer>
       <Logo to="/" />
-      {isLogin ? (
-        <LogOut onClick={handleLogOut}>登出</LogOut>
-      ) : (
-        <Nav to="/backstage/adminLogin">登入</Nav>
-      )}
+      {isLogin ? <LogOut onClick={handleLogOut}>登出</LogOut> : <Nav to="/backstage/adminLogin">登入</Nav>}
     </HeaderContainer>
   );
 };
@@ -116,9 +110,22 @@ const LogOut = styled.div`
     text-decoration: none;
   }
 `;
+const CartTotal = styled.div`
+  text-align: center;
+  background-color: red;
+  border-radius: 50%;
+  color: white;
+  width: 20px;
+  height: 20px;
+  font-size: 18px;
+  position: absolute;
+  top: -8px;
+  right: -10px;
+`;
 
 export default function Header() {
   const [isShowProducts, setIsShowProducts] = useState(false);
+  const [ordersCart, setOrdersCart] = useState('');
   const isBackstageMode = useSelector(selectIsBackstageMode);
   const userLevel = useSelector(selectUserLevel);
   const history = useHistory();
@@ -135,6 +142,7 @@ export default function Header() {
   const handleLogOut = () => {
     dispatch(setUserLevel('guest'));
     setAuthToken('');
+    setCartToken('');
     history.push('/');
   };
 
@@ -152,14 +160,16 @@ export default function Header() {
         if (res.success) history.push('/');
       });
   }, [dispatch, history]);
+  useEffect(() => {
+    const cart = getCartToken();
+    if (cart) {
+      setOrdersCart(cart.length);
+    }
+  });
+
   return (
     <>
-      {isBackstageMode && (
-        <BackstageHeader
-          handleLogOut={handleLogOut}
-          isLogin={userLevel === 'admin'}
-        />
-      )}
+      {isBackstageMode && <BackstageHeader handleLogOut={handleLogOut} isLogin={userLevel === 'admin'} />}
       {!isBackstageMode && (
         <>
           <HeaderContainer>
@@ -172,18 +182,16 @@ export default function Header() {
               </Nav>
             </LinkContainer>
             <IconContainer $isLogin={userLevel === 'member'}>
-              <IconCart to="/shopping-cart" />
+              <IconCartContainer>
+                <IconCart to="/shopping-cart" />
+                {ordersCart ? <CartTotal>{ordersCart}</CartTotal> : ''}
+              </IconCartContainer>
               <IconMember to="/membership/info" />
-              {userLevel === 'member' && (
-                <LogOut onClick={handleLogOut}>登出</LogOut>
-              )}
+              {userLevel === 'member' && <LogOut onClick={handleLogOut}>登出</LogOut>}
             </IconContainer>
           </HeaderContainer>
 
-          <HoverContainer
-            $isShow={isShowProducts}
-            onMouseLeave={handleMouseLeave}
-          >
+          <HoverContainer $isShow={isShowProducts} onMouseLeave={handleMouseLeave}>
             <LinkContainer $width={550} $marginLeft={110}>
               <Nav to="/products/1">耳罩式耳機</Nav>
               <Nav to="/products/2">入耳式耳機</Nav>
