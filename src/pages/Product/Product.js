@@ -8,7 +8,7 @@ import feature from '../../img/feature.jpg';
 import preload from '../../img/preload.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct, selectProduct } from '../../redux/reducers/productsSlice';
-import { handelStorageAmount } from '../../utils';
+import { getArticle } from '../../utils';
 import { device } from '../../style/breakpoints';
 
 const Container = styled.div`
@@ -57,6 +57,11 @@ const ProductContainer = styled.div`
   }
 
   @media ${device.Tablets} {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media ${device.Laptop} {
     flex-direction: row;
     justify-content: space-around;
     padding: 2% 6%;
@@ -65,7 +70,7 @@ const ProductContainer = styled.div`
   @media ${device.Desktops} {
     flex-direction: row;
     justify-content: space-around;
-    padding: 2% 15%;
+    padding: 2% 10%;
   }
 `;
 
@@ -115,6 +120,19 @@ const ProductImg = styled.img`
     height: 470px;
   }
 `;
+
+const PhotosContainer = styled.div`
+  flex-wrap: wrap;
+  max-width: 180px;
+
+  @media ${device.Mobiles} {
+    display: none;
+  }
+  @media ${device.Desktops} {
+    display: flex;
+  }
+`;
+
 const PrePicContainer = styled.div`
   position: absolute;
   display: flex;
@@ -168,6 +186,7 @@ const Arrow = styled.div`
 
 const ProductInfomationContainer = styled.div`
   display: flex;
+
   @media ${device.Mobiles} {
     width: 100%;
     flex-direction: column;
@@ -175,11 +194,17 @@ const ProductInfomationContainer = styled.div`
   }
   @media ${device.Tablets} {
     justify-content: space-between;
-    width: 300px;
+    width: auto;
+    height: 400px;
+    margin-top: 50px;
+  }
+  @media ${device.Laptop} {
+    justify-content: space-between;
     height: 500px;
+    margin-top: 0;
   }
   @media ${device.Desktops} {
-    width: 300px;
+    width: 400px;
   }
 `;
 
@@ -322,15 +347,14 @@ const AddToCart = styled.button`
   height: 40px;
   margin-top: 20px;
   color: #07273c;
-  background: #07273c14;
+  background: rgba(7, 39, 60, 0.2);
   border: none;
   border-radius: 5px;
   font-size: 16px;
   font-weight: bold;
-  transition: all 0.2s linear;
-  box-shadow: 0 0px 0px #c1c1c1;
 
   &:hover {
+    background: rgba(7, 39, 60, 0.3);
     box-shadow: 0 0px 3px #c1c1c1;
   }
 
@@ -355,10 +379,9 @@ const Buy = styled.button`
   border: none;
   border-radius: 5px;
   font-size: 16px;
-  transition: all 0.2s linear;
-  box-shadow: 0 0px 0px #c1c1c1;
 
   &:hover {
+    background: rgba(7, 39, 60, 0.9);
     box-shadow: 0 0px 3px #c1c1c1;
   }
 
@@ -540,18 +563,12 @@ const Actions = styled.div`
   display: flex;
 `;
 
-const PhotosContainer = styled.div`
-  flex-wrap: wrap;
-  max-width: 180px;
+const Article = (article) => ({ __html: article });
 
-  @media ${device.Mobiles} {
-    display: none;
-  }
-  @media ${device.Desktops} {
-    display: flex;
-  }
+const ArticleContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
-
 export default function Product() {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -562,6 +579,7 @@ export default function Product() {
   const [isShowModal, setIsShowModal] = useState(false);
   const [models, setModels] = useState([]);
   const [storage, setStorage] = useState('');
+  const [article, setArticle] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const { pathname } = useLocation();
 
@@ -633,9 +651,13 @@ export default function Product() {
           return { src: url, isActive: false, id: `photo-${index}` };
         })
       );
-      setModels(res.models);
-      setSelectedModel(res.models[0].colorChip);
-      setStorage(res.models[0].storage);
+      const modelsData = res.models;
+      const defaultColor = res.models.length > 0 ? res.models[0].colorChip : '';
+      const defaultStorage = res.models.length > 0 ? modelsData[0].storage : '';
+      setArticle(getArticle(res.article));
+      setModels(modelsData);
+      setSelectedModel(defaultColor);
+      setStorage(defaultStorage);
     });
   }, [dispatch, id]);
 
@@ -677,17 +699,19 @@ export default function Product() {
             <Price>NT${product.price}</Price>
             <Label>Model</Label>
             <Alternative>
-              {models.map((model) => (
-                <Option
-                  $color={model.colorChip}
-                  $active={selectedModel === model.colorChip}
-                  onClick={() => {
-                    setSelectedModel(model.colorChip);
-                    setStorage(model.storage);
-                  }}
-                  key={`model-${model.colorChip}`}
-                />
-              ))}
+              {models.length > 0
+                ? models.map((model) => (
+                    <Option
+                      $color={model.colorChip}
+                      $active={selectedModel === model.colorChip}
+                      onClick={() => {
+                        setSelectedModel(model.colorChip);
+                        setStorage(model.storage);
+                      }}
+                      key={`model-${model.colorChip}`}
+                    />
+                  ))
+                : ''}
             </Alternative>
             <Storage>庫存狀況: {storage}</Storage>
             <Amount>
@@ -705,7 +729,7 @@ export default function Product() {
         </ProductContainer>
       </Container>
 
-      {/* <ProductNav>
+      <ProductNav>
         <Anchor to={`${pathname}#feature`}>概觀</Anchor>
         <Anchor to={`${pathname}#spec`}>規格</Anchor>
         <Anchor to={`${pathname}#support`}>支援</Anchor>
@@ -713,8 +737,9 @@ export default function Product() {
 
       <Container>
         <div>
-          <Feature id="feature">FEATURES</Feature>
-          <FeatureDescription>
+          {/* <Feature id="feature">FEATURES</Feature> */}
+          <ArticleContainer dangerouslySetInnerHTML={Article(article)} />
+          {/* <FeatureDescription>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
             euismod bibendum laoreet. Proin gravida dolor sit amet lacus
             accumsan et viverra justo commodo.
@@ -725,7 +750,7 @@ export default function Product() {
             <FeaturImgSmall src={product_pic_1} />
             <FeaturImgSmall src={product_pic_3} />
             <FeaturImgSmall src={product_pic_1} />
-          </FeatureImgsContainer>
+          </FeatureImgsContainer> */}
 
           <TitleContainer id="spec">
             <Title>規格</Title>
@@ -734,16 +759,13 @@ export default function Product() {
           <Specification>
             <SpecificationTopic>尺寸 / 重量</SpecificationTopic>
             <SpecificationContent>
-              耳機: 高 10 公分 x 寬 10 公分 x 深 10 公分 (150 公克)
-              USB 連接線: 30 公分
+              耳機: 高 10 公分 x 寬 10 公分 x 深 10 公分 (150 公克) USB 連接線:
+              30 公分
             </SpecificationContent>
-            
+
             <SpecificationTopic>包裝盒內容物</SpecificationTopic>
             <SpecificationContent>
-              耳機
-              USB 充電連接線
-              音頻連接線
-              攜帶盒
+              耳機 USB 充電連接線 音頻連接線 攜帶盒
             </SpecificationContent>
           </Specification>
 
@@ -766,7 +788,7 @@ export default function Product() {
           </CloseModalButton>
           <CheckoutButton to="/">結帳</CheckoutButton>
         </Actions>
-      </Modal> */}
+      </Modal>
     </>
   );
 }

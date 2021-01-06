@@ -1,3 +1,5 @@
+const QuillDeltaToHtmlConverter = require('quill-delta-to-html')
+  .QuillDeltaToHtmlConverter;
 const TOKEN_NAME = 'token';
 
 export const setAuthToken = (token) => {
@@ -43,14 +45,14 @@ export const isStorageValid = (store) => {
 
 export const isPriceValid = (price) => {
   const rule = /^[1-9]\d{0,4}$/;
-  if(price>29999){
-    return 1
+  if (price > 29999) {
+    return 1;
   }
-  if(!rule.test(price)){
-    return 0
+  if (!rule.test(price)) {
+    return 0;
   }
-  
-  return true
+
+  return true;
 };
 
 export const isProductNameValid = (productName) => {
@@ -75,13 +77,21 @@ export const handleDateFormat = (date) => {
 export const handleOrderStatus = (status) => {
   switch (status) {
     case 1:
-      return '處理中'
+      return '處理中';
     case 2:
-      return '已出貨'
+      return '已出貨';
     default:
-    return '未付款'
+      return '未付款';
   }
 };
+
 export const findOrder = (orders, id) => {
   return orders.filter((order) => order.id === id)[0];
+};
+
+export const getArticle = (data) => {
+  const cfg = {};
+  const deltaOps = JSON.parse(data).ops; 
+  const converter = new QuillDeltaToHtmlConverter(deltaOps, cfg);
+  return converter.convert()
 };
