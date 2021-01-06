@@ -94,9 +94,13 @@ export const getMemberInfo = () => (dispatch) => {
       setAuthToken('');
       return;
     }
-    if (res.data.admin) return dispatch(setUserLevel('admin'));
+    if (res.data.admin) {
+      dispatch(setUserLevel('admin'));
+      return res
+    }
     dispatch(setUserInfo(res.data.user));
     dispatch(setUserLevel('member'));
+    return res;
   });
 };
 

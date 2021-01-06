@@ -22,6 +22,7 @@ export const getOrders = () => (dispatch) =>
     if (!res.success) {
       dispatch(setOrders([]));
       return res;
+
     }
     dispatch(setOrders(res.data.orders));
     return res;
@@ -30,11 +31,11 @@ export const getOrders = () => (dispatch) =>
 export const getOrder = (uuid) => (dispatch) =>
   getOrderAPI(uuid).then((res) => {
     if (!res.success) {
-      dispatch(setOrder(res.message))
-      return res;
+      return res.message;
     }
     dispatch(setOrder(res.data.order));
     return res;
+
   });
 
 export const updateOrderStatue = (uuid) => (dispatch) =>

@@ -9,7 +9,7 @@ const Themes = {
     textColor: color.white,
     textHover: color.wheat,
     mediaIcon: color.dark,
-    errorText:color.danger,
+    errorText: color.danger,
   },
   backstage: {
     background: color.secondary,
@@ -20,9 +20,8 @@ const Themes = {
     textColor: color.primary,
     textHover: color.wheat,
     mediaIcon: color.dark,
-    errorText:color.danger,
+    errorText: color.danger,
   },
-}
-
+};
 
 export default Themes;
