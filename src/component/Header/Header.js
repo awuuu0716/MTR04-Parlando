@@ -8,9 +8,13 @@ import {
   selectIsBackstageMode,
   setIsBackstageMode,
 } from '../../redux/reducers/themeSlice';
-import { selectUserLevel, setUserLevel } from '../../redux/reducers/usersSlice';
+import {
+  selectUserLevel,
+  setUserLevel,
+  getMemberInfo,
+} from '../../redux/reducers/usersSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken } from '../../utils';
+import { setAuthToken, getAuthToken } from '../../utils';
 
 const HeaderContainer = styled.div`
   height: 80px;
@@ -128,6 +132,12 @@ export default function Header() {
 
   const handleMouseLeave = () => setIsShowProducts(false);
 
+  const handleLogOut = () => {
+    dispatch(setUserLevel('guest'));
+    setAuthToken('');
+    history.push('/');
+  };
+
   useEffect(() => {
     if (location.pathname.includes('/backstage')) {
       dispatch(setIsBackstageMode(true));
@@ -136,12 +146,12 @@ export default function Header() {
     }
   }, [location.pathname, dispatch]);
 
-  const handleLogOut = () => {
-    dispatch(setUserLevel('guest'));
-    setAuthToken('');
-    history.push('/');
-  };
-
+  useEffect(() => {
+    if (getAuthToken())
+      dispatch(getMemberInfo()).then((res) => {
+        if (res.success) history.push('/');
+      });
+  }, [dispatch, history]);
   return (
     <>
       {isBackstageMode && (

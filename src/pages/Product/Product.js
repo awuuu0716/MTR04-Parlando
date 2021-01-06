@@ -9,19 +9,35 @@ import preload from '../../img/preload.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct, selectProduct } from '../../redux/reducers/productsSlice';
 import { handelStorageAmount } from '../../utils';
+import { device } from '../../style/breakpoints';
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  padding: 20px;
+  @media ${device.Mobiles} {
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 0;
+  }
 `;
 
 const BreadcrumbContainer = styled.div`
   font-weight: bold;
-  padding: 40px;
-
+  text-align: center;
   a {
     color: #07273c;
+  }
+
+  @media ${device.Mobiles} {
+    padding: 20px;
+  }
+  @media ${device.Tablets} {
+    text-align: left;
+  }
+  @media ${device.Desktops} {
+    padding: 40px;
   }
 `;
 
@@ -31,13 +47,28 @@ const Breadcrumb = styled(Link)`
 
 const ProductContainer = styled.div`
   display: flex;
+  width: 100%;
   justify-content: center;
+
+  @media ${device.Mobiles} {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media ${device.Tablets} {
+    flex-direction: row;
+  }
+  
+  @media ${device.Desktops} {
+    flex-direction: row;
+  }
 `;
 
 const Thumbnail = styled.img`
   display: block;
   width: 80px;
   height: 80px;
+  margin: 2px;
   object-fit: cover;
   cursor: pointer;
   filter: ${(props) => (props.$active ? 'brightness(1)' : 'brightness(0.3)')};
@@ -46,19 +77,39 @@ const Thumbnail = styled.img`
 const ProductImgContainer = styled.div`
   position: relative;
   flex: 2;
+  height: 450px;
+  background: ${(props) => `url(${props.$url}) center/cover no-repeat`};
+
+  @media ${device.Mobiles} {
+    text-align: center;
+  }
+
+  @media ${device.Tablets} {
+    flex: 1;
+  }
 `;
 
 const ProductImg = styled.img`
-  width: 540px;
-  height: 470px;
-  margin-right: 60px;
   object-fit: cover;
+
+  @media ${device.Mobiles} {
+    margin-bottom: 30px;
+    width: 100%;
+    height: 320px;
+  }
+  @media ${device.Tablets} {
+    height: 370px;
+    padding-left: 20px;
+  }
+  @media ${device.Desktops} {
+    padding-left: 0;
+    width: 540px;
+    height: 470px;
+  }
 `;
 
 const ArrowLeft = styled.div`
   position: absolute;
-  top: 215px;
-  left: 20px;
   width: 30px;
   height: 30px;
   border-top: 5px solid #ddd;
@@ -71,6 +122,21 @@ const ArrowLeft = styled.div`
     transform: rotate(-45deg) scale(1.1);
     border-top: 5px solid white;
     border-left: 5px solid white;
+  }
+
+  @media ${device.Mobiles} {
+    top: 40%;
+    left: 5%;
+  }
+
+  @media ${device.Tablets} {
+    top: 40%;
+    left: 5%;
+  }
+
+  @media ${device.Desktops} {
+    top: 45%;
+    left: 5%;
   }
 `;
 
@@ -91,10 +157,29 @@ const ArrowRight = styled.div`
     border-top: 5px solid white;
     border-right: 5px solid white;
   }
+
+  @media ${device.Mobiles} {
+    top: 40%;
+    right: 5%;
+  }
+  @media ${device.Desktops} {
+    top: 45%;
+    right: 15%;
+  }
 `;
 
 const ProductInfomationContainer = styled.div`
+  display: flex;
   flex: 1;
+  @media ${device.Mobiles} {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Desktops} {
+  }
 `;
 
 const Name = styled.h1`
@@ -102,6 +187,13 @@ const Name = styled.h1`
   margin-top: -10px;
   margin-bottom: 0;
   color: #333333;
+  @media ${device.Mobiles} {
+    margin-bottom: 20px;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Desktops} {
+  }
 `;
 
 const SubName = styled.p`
@@ -110,9 +202,17 @@ const SubName = styled.p`
 `;
 
 const Label = styled.label`
+  display: block;
   font-size: 18px;
   margin-bottom: 0;
   color: #333333;
+  @media ${device.Mobiles} {
+    display: none;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Desktops} {
+  }
 `;
 
 const Price = styled.h2`
@@ -123,8 +223,16 @@ const Price = styled.h2`
 const Alternative = styled.div`
   display: flex;
   margin-bottom: 20px;
+  align-items: center;
   flex-wrap: wrap;
   width: 500px;
+  @media ${device.Mobiles} {
+    width: auto;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Desktops} {
+  }
 `;
 
 const Storage = styled.div`
@@ -133,23 +241,32 @@ const Storage = styled.div`
 `;
 
 const Option = styled.button`
-  margin: 10px;
-  margin-left: 0;
+  display: block;
+  width: ${(props) => (props.$active ? 35 : 20)}px;
+  height: ${(props) => (props.$active ? 35 : 20)}px;
+  border-radius: 50%;
   padding: 5px 10px;
-  background: ${(props) => (props.$active ? '#07273c' : 'white')};
-  color: ${(props) => (props.$active ? 'white' : '#333333')};
-  border: 1px solid #07273c;
-  border-radius: 5px;
-  box-shadow: 0 0px 6px #ababab;
-  font-size: 16px;
-
+  background: #${(props) => props.$color};
+  border: ${(props) => (props.$active ? '3px solid black' : 'none')};
   &:focus {
     outline: none;
+  }
+
+  & + & {
+    margin-left: 10px;
   }
 `;
 
 const Amount = styled.div`
   display: flex;
+
+  @media ${device.Mobiles} {
+    margin-bottom: 20px;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Desktops} {
+  }
 `;
 
 const AmountButton = styled.button`
@@ -169,6 +286,15 @@ const AmountButton = styled.button`
   &:focus {
     outline: none;
   }
+
+  @media ${device.Mobiles} {
+    width: 40px;
+    height: 40px;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Desktops} {
+  }
 `;
 
 const AmountShow = styled.div`
@@ -179,6 +305,15 @@ const AmountShow = styled.div`
   height: 50px;
   font-size: 24px;
   font-weight: bold;
+
+  @media ${device.Mobiles} {
+    height: 40px;
+    font-size: 20px;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Desktops} {
+  }
 `;
 
 const AddToCart = styled.button`
@@ -187,10 +322,22 @@ const AddToCart = styled.button`
   margin-top: 20px;
   color: #07273c;
   background: rgb(251, 209, 168);
-  box-shadow: 0 0px 3px #c1c1c1;
   border: none;
   border-radius: 5px;
   font-size: 16px;
+  font-weight: bold;
+  @media ${device.Mobiles} {
+    font-size: 14px;
+    width: 120px;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Desktops} {
+  }
+
+  &:hover {
+    box-shadow: 0 0px 3px #c1c1c1;
+  }
 `;
 
 const Buy = styled.button`
@@ -200,11 +347,20 @@ const Buy = styled.button`
   margin-left: 20px;
   color: white;
   font-weight: bold;
-  background: #495f6e;
+  background: #07273c;
   box-shadow: 0 0px 3px #c1c1c1;
   border: none;
   border-radius: 5px;
   font-size: 16px;
+
+  @media ${device.Mobiles} {
+    font-size: 14px;
+    width: 120px;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Desktops} {
+  }
 `;
 
 const ProductNav = styled.nav`
@@ -376,11 +532,16 @@ const Actions = styled.div`
 `;
 
 const PhotosContainer = styled.div`
-  display: flex;
   flex-wrap: wrap;
   margin-right: 20px;
-  justify-content: space-between;
-  width: 180px;
+  max-width: 180px;
+
+  @media ${device.Mobiles} {
+    display: none;
+  }
+  @media ${device.Desktops} {
+    display: flex;
+  }
 `;
 
 export default function Product() {
@@ -457,84 +618,80 @@ export default function Product() {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getProduct(id)).then((res) => {
+      
       setPicList(
-        res.Photos.map((photo, index) => {
+        res.photos.map((url, index) => {
           if (index === 0)
-            return { src: photo.url, isActive: true, id: photo.id };
-          return { src: photo.url, isActive: false, id: photo.id };
+            return { src: url, isActive: true, id: `photo-${index}` };
+          return { src: url, isActive: false, id: `photo-${index}` };
         })
       );
-      setModels(res.Product_models);
-      setSelectedModel(res.Product_models[0].modelName);
-      setStorage(res.Product_models[0].storage);
+      setModels(res.models);
+      setSelectedModel(res.models[0].colorChip);
+      setStorage(res.models[0].storage);
     });
   }, [dispatch, id]);
 
   return (
     <>
       <Container>
-        <div>
-          {/* <BreadcrumbContainer>
-            <Breadcrumb to="/products/all">Products</Breadcrumb>
-            <span> &#062; </span>
-            <Breadcrumb to={pathname}>{product.productName}</Breadcrumb>
-          </BreadcrumbContainer> */}
+        <BreadcrumbContainer>
+          <Breadcrumb to="/products/all">Products</Breadcrumb>
+          <span> &#062; </span>
+          <Breadcrumb to={pathname}>{product.productName}</Breadcrumb>
+        </BreadcrumbContainer>
 
-          <ProductContainer>
-            <PhotosContainer>
-              {picList.map((data, index) => (
-                <Thumbnail
-                  $active={data.isActive}
-                  src={data.src}
-                  onClick={() => handleChangePic(index)}
-                  key={`photo-${data.id}`}
+        <ProductContainer>
+          <PhotosContainer>
+            {picList.map((data, index) => (
+              <Thumbnail
+                $active={data.isActive}
+                src={data.src}
+                onClick={() => handleChangePic(index)}
+                key={data.id}
+              />
+            ))}
+          </PhotosContainer>
+
+          <ProductImgContainer
+            $url={picList.length > 0 ? picList[nowPicIndex].src : preload}
+          >
+            <ArrowLeft onClick={prePic} />
+            <ArrowRight onClick={nextPic} />
+          </ProductImgContainer>
+
+          <ProductInfomationContainer>
+            <Name>{product.productName}</Name>
+            <Label>Price</Label>
+            <Price>NT${product.price}</Price>
+            <Label>Model</Label>
+            <Alternative>
+              {models.map((model) => (
+                <Option
+                  $color={model.colorChip}
+                  $active={selectedModel === model.colorChip}
+                  onClick={() => {
+                    setSelectedModel(model.colorChip);
+                    setStorage(model.storage);
+                  }}
+                  key={`model-${model.colorChip}`}
                 />
               ))}
-            </PhotosContainer>
-
-            <ProductImgContainer>
-              <ArrowLeft onClick={prePic} />
-              <ProductImg
-                src={picList.length > 0 ? picList[nowPicIndex].src : preload}
-              ></ProductImg>
-              <ArrowRight onClick={nextPic} />
-            </ProductImgContainer>
-
-            <ProductInfomationContainer>
-              <Name>{product.productName}</Name>
-              <SubName>{product.type}</SubName>
-              <Label>Price</Label>
-              <Price>NT${product.price}</Price>
-              <Label>Model</Label>
-              <Alternative>
-                {models.map((model) => (
-                  <Option
-                    $active={selectedModel === model.modelName}
-                    onClick={() => {
-                      setSelectedModel(model.modelName);
-                      setStorage(model.storage);
-                    }}
-                    key={`model-${model.id}`}
-                  >
-                    {model.modelName}
-                  </Option>
-                ))}
-              </Alternative>
-              <Storage>庫存狀況: {storage}</Storage>
-              <Amount>
-                <AmountButton onClick={minusAmount}>-</AmountButton>
-                <AmountShow>{amount}</AmountShow>
-                <AmountButton onClick={addAmount}>+</AmountButton>
-              </Amount>
-              <div>
-                <AddToCart onClick={() => handleShowModal(true)}>
-                  ADD TO CART
-                </AddToCart>
-                <Buy to="/">BUY</Buy>
-              </div>
-            </ProductInfomationContainer>
-          </ProductContainer>
-        </div>
+            </Alternative>
+            <Storage>庫存狀況: {storage}</Storage>
+            <Amount>
+              <AmountButton onClick={minusAmount}>-</AmountButton>
+              <AmountShow>{amount}</AmountShow>
+              <AmountButton onClick={addAmount}>+</AmountButton>
+            </Amount>
+            <div>
+              <AddToCart onClick={() => handleShowModal(true)}>
+                ADD TO CART
+              </AddToCart>
+              <Buy to="/">BUY</Buy>
+            </div>
+          </ProductInfomationContainer>
+        </ProductContainer>
       </Container>
 
       {/* <ProductNav>

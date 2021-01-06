@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,6 +6,8 @@ import {
   getProducts,
   selectProducts,
 } from '../../redux/reducers/productsSlice';
+import preload from '../../img/preload.svg';
+import noImage from '../../img/noImage.svg';
 
 const Container = styled.div`
   width: 80vw;
@@ -72,7 +74,7 @@ const Product = styled(Link)`
 const Img = styled.img`
   width: 400px;
   height: 300px;
-  object-fit: cover;
+  object-fit: ${(props) => (props.$isNoImage ? 'contain' : 'cover')};
 `;
 
 const Name = styled.h4`
@@ -134,13 +136,13 @@ export default function Products() {
   const products = useSelector(selectProducts);
   const [sortFilter, setSortFilter] = useState('price');
   const [order, setOrder] = useState('ASC');
+  const isLoading = useRef(true);
 
-  useEffect(() => dispatch(getProducts({ type, order, sort: sortFilter })), [
-    dispatch,
-    type,
-    sortFilter,
-    order,
-  ]);
+  useEffect(() => {
+    dispatch(getProducts({ type, order, sort: sortFilter })).then(() => {
+      isLoading.current = false;
+    });
+  }, [dispatch, type, sortFilter, order]);
 
   return (
     <Container>
@@ -168,27 +170,32 @@ export default function Products() {
         </PriceFilter>
       </FilterContainer>
       <FilterContainer>
-        <DateFilter
-          $isAcitve={order === 'ASC'}
-          onClick={() => setOrder('ASC')}
-        >
+        <DateFilter $isAcitve={order === 'ASC'} onClick={() => setOrder('ASC')}>
           升序
         </DateFilter>
-        <DateFilter $isAcitve={order === 'DESC'} onClick={() => setOrder('DESC')}>
+        <DateFilter
+          $isAcitve={order === 'DESC'}
+          onClick={() => setOrder('DESC')}
+        >
           降序
         </DateFilter>
       </FilterContainer>
       <Divider />
 
       <ProductContainer>
-        {products.map((data) => (
-          <Product to={`/product/${data.id}`} key={data.id}>
-            <Img src={data.Photos[0].url} alt={data.type} />
-            <Name>{data.productName}</Name>
-            <Description>DESCROPTION DESCRIPION</Description>
-            <Price>NT${data.price}</Price>
-          </Product>
-        ))}
+        {products.map((data) => {
+          return (
+            <Product to={`/product/${data.id}`} key={data.id}>
+              <Img
+                src={data.photos.length === 0 ? noImage : data.photos[0].url}
+                alt={data.type}
+                $isNoImage={data.photos.length === 0}
+              />
+              <Name>{data.productName}</Name>
+              <Price>NT${data.price}</Price>
+            </Product>
+          );
+        })}
       </ProductContainer>
     </Container>
   );
