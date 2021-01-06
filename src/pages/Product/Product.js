@@ -457,16 +457,17 @@ export default function Product() {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getProduct(id)).then((res) => {
+      console.log(res.photos)
       setPicList(
-        res.Photos.map((photo, index) => {
+        res.photos.map((photo, index) => {
           if (index === 0)
-            return { src: photo.url, isActive: true, id: photo.id };
-          return { src: photo.url, isActive: false, id: photo.id };
+            return { src: photo.url, isActive: true  };
+          return { src: photo.url, isActive: false };
         })
       );
-      setModels(res.Product_models);
-      setSelectedModel(res.Product_models[0].modelName);
-      setStorage(res.Product_models[0].storage);
+      setModels(res.models);
+      setSelectedModel(res.models[0].colorChip);
+      setStorage(res.models[0].storage);
     });
   }, [dispatch, id]);
 
@@ -487,7 +488,7 @@ export default function Product() {
                   $active={data.isActive}
                   src={data.src}
                   onClick={() => handleChangePic(index)}
-                  key={`photo-${data.id}`}
+                  key={`photo-${index}`}
                 />
               ))}
             </PhotosContainer>

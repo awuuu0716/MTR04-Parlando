@@ -183,7 +183,7 @@ export default function Products() {
       <ProductContainer>
         {products.map((data) => (
           <Product to={`/product/${data.id}`} key={data.id}>
-            <Img src={data.Photos[0].url} alt={data.type} />
+            <Img src={data.photos[0].url} alt={data.type} />
             <Name>{data.productName}</Name>
             <Description>DESCROPTION DESCRIPION</Description>
             <Price>NT${data.price}</Price>

@@ -6,7 +6,7 @@ import { device } from '../../../style/breakpoints';
 import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { selectOrder, getOrder } from '../../../redux/reducers/ordersSlice';
+import { selectOrder, getOrder, setOrder } from '../../../redux/reducers/ordersSlice';
 import { handleDateFormat } from '../../../utils';
 
 const Root = styled.div`
@@ -42,8 +42,10 @@ export default function SingleOrderPage() {
 
   useEffect(() => {
     dispatch(getOrder(uuid)).then(() => setIsLoaded(true));
+    return () => dispatch(setOrder({}));
   }, [dispatch, uuid]);
 
+  console.log(order);
   return (
     <Root>
       <Aside />
@@ -59,13 +61,13 @@ export default function SingleOrderPage() {
             <Header>訂單編號</Header>
             <Info $flex={3}> {uuid}</Info>
             <Header>訂單狀態</Header>
-            <Info $flex={2}>{order.status || 'loading...'}</Info>
+            <Info $flex={2}>{isLoaded ? order.status : 'loading...'}</Info>
           </Li>
           <Li>
             <Header>訂購日期</Header>
             <Info $flex={3}>{isLoaded ? handleDateFormat(order.createdAt) : 'loading...'}</Info>
             <Header>訂購人</Header>
-            <Info $flex={2}> {'ANDY' || 'Loading...'}</Info>
+            <Info $flex={2}> {isLoaded ? order.recipient[0].name : 'Loading...'}</Info>
           </Li>
           <Li>
             <HeaderFat>訂單內容</HeaderFat>
@@ -73,9 +75,10 @@ export default function SingleOrderPage() {
               <OrderContent>
                 {isLoaded
                   ? order.products.map((product) => (
-                      <div key={product.modelId}>
+                      <span key={product.modelId}>
                         {product.modelName} * {product.count}
-                      </div>
+                        <br />
+                      </span>
                     ))
                   : 'Loading...'}
               </OrderContent>
@@ -85,7 +88,7 @@ export default function SingleOrderPage() {
           </Li>
           <Li>
             <HeaderFat>收貨地點</HeaderFat>
-            <Info $flex={6}>台中市潭子區三三路 121 巷 97 號 7 樓</Info>
+            <Info $flex={6}>{isLoaded ? order.recipient[0].address : 'Loading'}</Info>
           </Li>
         </Ul>
       </Container>

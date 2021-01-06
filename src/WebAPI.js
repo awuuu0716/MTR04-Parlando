@@ -85,32 +85,6 @@ export const getProduct = (id) => {
   }).then((res) => res.json());
 };
 
-export const getOrders = () => {
-  const token = getAuthToken();
-
-  return fetch(`${BASE_URL}/orders`, {
-    method: 'GET',
-    headers: { Authorization: `Bearer ${token}` },
-  }).then((res) => res.json());
-};
-
-export const getOrder = (id) => {
-  const token = getAuthToken();
-
-  return fetch(`${BASE_URL}/orders/${id}`, {
-    method: 'GET',
-    headers: { Authorization: `Bearer ${token}` },
-  }).then((res) => res.json());
-};
-export const updateOrderStatue = (id) => {
-  const token = getAuthToken();
-
-  return fetch(`${BASE_URL}/orders/${id}`, {
-    method: 'PATCH',
-    headers: { Authorization: `Bearer ${token}` },
-  }).then((res) => res.json());
-};
-
 export const updateProductStatus = ({ id, isShow }) => {
   const token = getAuthToken();
   const authToken = `Bearer ${token}`;
@@ -259,5 +233,60 @@ export const addModel = ({ id, modelName, storage, colorChip }) => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({ productId: id, modelName, storage, colorChip }),
+  }).then((res) => res.json());
+};
+
+// order
+export const getOrders = () => {
+  const token = getAuthToken();
+
+  return fetch(`${BASE_URL}/orders`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => res.json());
+};
+
+export const getOrder = (id) => {
+  const token = getAuthToken();
+
+  return fetch(`${BASE_URL}/orders/${id}`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => res.json());
+};
+export const updateOrderStatue = (id) => {
+  const token = getAuthToken();
+
+  return fetch(`${BASE_URL}/orders/${id}`, {
+    method: 'PATCH',
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => res.json());
+};
+
+export const addOrder = ({ productName, price, article, type }) => {
+  const token = getAuthToken();
+  const authToken = `Bearer ${token}`;
+
+  return fetch(`${BASE_URL}/products/`, {
+    method: 'POST',
+    headers: {
+      Authorization: authToken,
+      'content-type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({ productName, price, article, type }),
+  }).then((res) => res.json());
+};
+
+export const addRecipient = ({ productName, price, article, type }) => {
+  const token = getAuthToken();
+  const authToken = `Bearer ${token}`;
+  
+  return fetch(`${BASE_URL}/products/`, {
+    method: 'POST',
+    headers: {
+      Authorization: authToken,
+      'content-type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({ productName, price, article, type }),
   }).then((res) => res.json());
 };
