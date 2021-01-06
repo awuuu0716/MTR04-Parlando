@@ -96,12 +96,10 @@ export default function ProductModelsPage() {
   const errorMessage = useSelector(selectErrorMessage);
   const [update, setUpdate] = useState(false);
   const handleModelDelete = (id) => {
-    dispatch(deleteModel(id));
-    setUpdate(!update);
+    dispatch(deleteModel(id)).then(() => setUpdate(!update));
   };
   const handleModelIsShow = ({ id, isShow }) => {
-    dispatch(updateModelStatus({ id, isShow }));
-    setUpdate(!update);
+    dispatch(updateModelStatus({ id, isShow })).then(() => setUpdate(!update));
   };
   useEffect(() => dispatch(getModels(id)), [dispatch, id, update]);
   return (
@@ -151,8 +149,8 @@ export default function ProductModelsPage() {
                     )
                 )}
             </tbody>
-            {models.length === 0 && <p>{'無資料' || errorMessage}</p>}
           </StyledTable>
+          {models.length === 0 && <p>{'無資料' || errorMessage}</p>}
         </TableWrapper>
       </Container>
     </Root>

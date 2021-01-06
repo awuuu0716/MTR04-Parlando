@@ -95,7 +95,6 @@ export default function AddProductPage() {
     }
     if (name === 'type') {
       updateTypeIsValid(value);
-      console.log(value);
       return setType(value);
     }
   };
@@ -171,16 +170,8 @@ export default function AddProductPage() {
     e.preventDefault();
     isValid = checkProductValid();
     if (!isValid) return;
-
-    isSubmit.current = true;
-    for (let prop in productErrorMessage) {
-      if (!productErrorMessage[prop].valid) {
-        return (isSubmit.current = false);
-      }
-    }
     dispatch(addProduct({ productName, type, price, article: JSON.stringify(article) })).then((res) => {
-      console.log(res);
-      history.push(`/backstage/add-model/${res.product.id}/product`);
+      history.push(`/backstage/add-model/${res.data.product.id}/product`);
     });
   };
 

@@ -57,12 +57,11 @@ export const isPriceValid = (price) => {
   if(!rule.test(price)){
     return 0
   }
-  
   return true
 };
 
 export const isProductNameValid = (productName) => {
-  const rule = /^[a-zA-Z]\w{0,11}-\w{2}$/;
+  const rule = /^[a-zA-Z]\w{0,15}$/;
   return rule.test(productName);
 };
 

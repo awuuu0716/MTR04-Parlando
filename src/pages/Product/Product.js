@@ -618,21 +618,12 @@ export default function Product() {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getProduct(id)).then((res) => {
-<<<<<<< HEAD
-      console.log(res.photos)
-      setPicList(
-        res.photos.map((photo, index) => {
-          if (index === 0)
-            return { src: photo.url, isActive: true  };
-          return { src: photo.url, isActive: false };
-=======
       
       setPicList(
         res.photos.map((url, index) => {
           if (index === 0)
             return { src: url, isActive: true, id: `photo-${index}` };
           return { src: url, isActive: false, id: `photo-${index}` };
->>>>>>> 7bf173a5a16989417faf14ebdb92e88cf03865ce
         })
       );
       setModels(res.models);
