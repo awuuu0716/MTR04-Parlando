@@ -35,7 +35,7 @@ export const getModels = (id) => (dispatch) =>
       return res;
     }
     dispatch(setModels(res.data.product.Product_models));
-    return data.product.Product_models;
+    return res.data.product.Product_models;
   });
 
 export const getModel = (id) => (dispatch) =>

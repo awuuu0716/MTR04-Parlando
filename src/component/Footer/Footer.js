@@ -39,16 +39,20 @@ const Container = styled.footer`
 
 const LeftContainer = styled.div`
   display: flex;
-  width: 575px;
   justify-content: space-between;
   align-items: center;
 `;
+
+const Contacts = styled.div`
+  margin-left: 20px;
+`
 
 const Location = styled.div`
   margin-bottom: 10px;
 
   span {
     margin-left: 20px;
+    white-space: nowrap;
   }
 `;
 
@@ -86,16 +90,16 @@ export default function Footer() {
       <FooterTop>
         <LeftContainer>
           <Logo to="/" />
-          <div>
+          <Contacts>
             <Location>
               <img src={location} alt="Address" />
-              <span>Lorem ipsum dolor sit</span>
+              <span>天上地下天堂路三分之一里六段 520 號</span>
             </Location>
             <Email>
               <img src={mail} alt="Email" />
-              <span>aaa.xxxxx@aaa.com</span>
+              <span>service@mail.com</span>
             </Email>
-          </div>
+          </Contacts>
         </LeftContainer>
 
         <RightContainer>

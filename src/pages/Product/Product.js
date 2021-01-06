@@ -618,7 +618,7 @@ export default function Product() {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getProduct(id)).then((res) => {
-      
+
       setPicList(
         res.photos.map((url, index) => {
           if (index === 0)
@@ -721,18 +721,18 @@ export default function Product() {
           </TitleContainer>
 
           <Specification>
-            <SpecificationTopic>TOPIC</SpecificationTopic>
-            <SpecificationMinorTopic>MINOR TOPIC</SpecificationMinorTopic>
+            <SpecificationTopic>尺寸 / 重量</SpecificationTopic>
             <SpecificationContent>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-              euismod bibendum laoreet.
+              耳機: 高 10 公分 x 寬 10 公分 x 深 10 公分 (150 公克)
+              USB 連接線: 30 公分
             </SpecificationContent>
-
-            <SpecificationTopic>TOPIC</SpecificationTopic>
-            <SpecificationMinorTopic>MINOR TOPIC</SpecificationMinorTopic>
+            
+            <SpecificationTopic>包裝盒內容物</SpecificationTopic>
             <SpecificationContent>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-              euismod bibendum laoreet.
+              耳機
+              USB 充電連接線
+              音頻連接線
+              攜帶盒
             </SpecificationContent>
           </Specification>
 

@@ -50,21 +50,18 @@ const LearnMoreButton = styled(Link)`
   margin-top: 100px;
   border: 1px solid #333;
   border-radius: 50px;
+  padding: 5px 0;
   text-align: center;
   font-size: 36px;
   font-weight: bold;
-  color: #07273c;
-  background: linear-gradient(
-    0deg,
-    rgba(0, 51, 51, 1) -216%,
-    rgba(242, 242, 242, 1) 54%,
-    rgba(0, 51, 51, 1) 267%,
-    rgba(0, 51, 51, 1) 267%
-  );
+  color: #fff;
+  background: #07273C;
 
   &:hover {
-    color: #1f5980;
+    box-shadow: 2px 2px 10px 5px rgba(0, 0, 0, 0.2);
+    color: #FFF;
     text-decoration: none;
+    transform: scale(1.01)
   }
 `;
 
