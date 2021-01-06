@@ -48,6 +48,7 @@ const Breadcrumb = styled(Link)`
 const ProductContainer = styled.div`
   display: flex;
   width: 100%;
+
   justify-content: center;
 
   @media ${device.Mobiles} {
@@ -57,10 +58,14 @@ const ProductContainer = styled.div`
 
   @media ${device.Tablets} {
     flex-direction: row;
+    justify-content: space-around;
+    padding: 2% 6%;
   }
-  
+
   @media ${device.Desktops} {
     flex-direction: row;
+    justify-content: space-around;
+    padding: 2% 15%;
   }
 `;
 
@@ -76,16 +81,19 @@ const Thumbnail = styled.img`
 
 const ProductImgContainer = styled.div`
   position: relative;
-  flex: 2;
   height: 450px;
   background: ${(props) => `url(${props.$url}) center/cover no-repeat`};
 
   @media ${device.Mobiles} {
     text-align: center;
   }
-
   @media ${device.Tablets} {
-    flex: 1;
+    height: 500px;
+    width: 500px;
+  }
+  @media ${device.Desktops} {
+    height: 500px;
+    width: 600px;
   }
 `;
 
@@ -107,78 +115,71 @@ const ProductImg = styled.img`
     height: 470px;
   }
 `;
-
-const ArrowLeft = styled.div`
+const PrePicContainer = styled.div`
   position: absolute;
-  width: 30px;
-  height: 30px;
-  border-top: 5px solid #ddd;
-  border-left: 5px solid #ddd;
-  transform: rotate(-45deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  width: 12%;
+  height: 100%;
+  transition: all 0.3s ease-in-out;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
 
   &:hover {
-    transform: rotate(-45deg) scale(1.1);
-    border-top: 5px solid white;
-    border-left: 5px solid white;
-  }
-
-  @media ${device.Mobiles} {
-    top: 40%;
-    left: 5%;
-  }
-
-  @media ${device.Tablets} {
-    top: 40%;
-    left: 5%;
-  }
-
-  @media ${device.Desktops} {
-    top: 45%;
-    left: 5%;
+    background: #0000001c;
   }
 `;
 
-const ArrowRight = styled.div`
+const NextPicContainer = styled.div`
   position: absolute;
-  top: 215px;
-  right: 85px;
-  width: 30px;
-  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 0;
+  width: 12%;
+  height: 100%;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background: #0000001c;
+  }
+`;
+
+const Arrow = styled.div`
+  width: 20px;
+  height: 20px;
   border-top: 5px solid #ddd;
-  border-right: 5px solid #ddd;
-  transform: rotate(45deg);
+  border-left: 5px solid #ddd;
+  transform: rotate(${(props) => (props.$direction === 'left' ? -45 : 135)}deg);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    transform: rotate(45deg) scale(1.1);
+    transform: rotate(
+        ${(props) => (props.$direction === 'left' ? -45 : 135)}deg
+      )
+      scale(1.1);
     border-top: 5px solid white;
-    border-right: 5px solid white;
-  }
-
-  @media ${device.Mobiles} {
-    top: 40%;
-    right: 5%;
-  }
-  @media ${device.Desktops} {
-    top: 45%;
-    right: 15%;
+    border-left: 5px solid white;
   }
 `;
 
 const ProductInfomationContainer = styled.div`
   display: flex;
-  flex: 1;
   @media ${device.Mobiles} {
     width: 100%;
     flex-direction: column;
     align-items: center;
   }
   @media ${device.Tablets} {
+    justify-content: space-between;
+    width: 300px;
+    height: 500px;
   }
   @media ${device.Desktops} {
+    width: 300px;
   }
 `;
 
@@ -321,11 +322,18 @@ const AddToCart = styled.button`
   height: 40px;
   margin-top: 20px;
   color: #07273c;
-  background: rgb(251, 209, 168);
+  background: #07273c14;
   border: none;
   border-radius: 5px;
   font-size: 16px;
   font-weight: bold;
+  transition: all 0.2s linear;
+  box-shadow: 0 0px 0px #c1c1c1;
+
+  &:hover {
+    box-shadow: 0 0px 3px #c1c1c1;
+  }
+
   @media ${device.Mobiles} {
     font-size: 14px;
     width: 120px;
@@ -333,10 +341,6 @@ const AddToCart = styled.button`
   @media ${device.Tablets} {
   }
   @media ${device.Desktops} {
-  }
-
-  &:hover {
-    box-shadow: 0 0px 3px #c1c1c1;
   }
 `;
 
@@ -348,10 +352,15 @@ const Buy = styled.button`
   color: white;
   font-weight: bold;
   background: #07273c;
-  box-shadow: 0 0px 3px #c1c1c1;
   border: none;
   border-radius: 5px;
   font-size: 16px;
+  transition: all 0.2s linear;
+  box-shadow: 0 0px 0px #c1c1c1;
+
+  &:hover {
+    box-shadow: 0 0px 3px #c1c1c1;
+  }
 
   @media ${device.Mobiles} {
     font-size: 14px;
@@ -533,7 +542,6 @@ const Actions = styled.div`
 
 const PhotosContainer = styled.div`
   flex-wrap: wrap;
-  margin-right: 20px;
   max-width: 180px;
 
   @media ${device.Mobiles} {
@@ -618,7 +626,6 @@ export default function Product() {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getProduct(id)).then((res) => {
-
       setPicList(
         res.photos.map((url, index) => {
           if (index === 0)
@@ -656,8 +663,12 @@ export default function Product() {
           <ProductImgContainer
             $url={picList.length > 0 ? picList[nowPicIndex].src : preload}
           >
-            <ArrowLeft onClick={prePic} />
-            <ArrowRight onClick={nextPic} />
+            <PrePicContainer onClick={prePic}>
+              <Arrow $direction="left" />
+            </PrePicContainer>
+            <NextPicContainer onClick={nextPic}>
+              <Arrow $direction="right" />
+            </NextPicContainer>
           </ProductImgContainer>
 
           <ProductInfomationContainer>
