@@ -73,13 +73,19 @@ export default function EditModelPage() {
   const model = useSelector(selectModel);
   const dispatch = useDispatch();
   const [modelErrorMessage, setModelErrorMessage] = useState(modelErrorMessageInit);
-  const [modelName, setModelName] = useState(model.modelName);
-  const [colorChip, setColorChip] = useState(model.colorChip);
-  const [storage, setStorage] = useState(model.storage);
-  const [isShow, setIsShow] = useState(model.isShow);
+  const [modelName, setModelName] = useState('');
+  const [colorChip, setColorChip] = useState('');
+  const [storage, setStorage] = useState('');
+  const [isShow, setIsShow] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    dispatch(getModel(id)).then(() => setIsLoaded(true));
+    dispatch(getModel(id)).then((data) =>{
+      setModelName(data.modelName)
+      setColorChip(data.colorChip)
+      setStorage(data.storage)
+      setIsShow(data.isShow)
+      setIsLoaded(true)
+    });
   }, [dispatch, id]);
 
   const handleInputChange = (e) => {

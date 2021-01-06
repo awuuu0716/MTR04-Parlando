@@ -69,7 +69,7 @@ export default function AddPhotoPage() {
       }
       addProductPhoto(formData)
         .then((result) => {
-          setPhotos([...photos, ...result.photos]);
+          setPhotos([...photos, ...result.data.photos]);
           resolve(result.photos);
         })
         .catch((error) => {
@@ -82,10 +82,10 @@ export default function AddPhotoPage() {
   const handleAddProductPhotos = (e) => {
     e.preventDefault();
     const photosIdArray = photos.map((photo) => photo.id);
-    linkProductPhotos({ id, photos: photosIdArray }).then((data)=>{
-      if(data.success){
-        alert(data.message)
-        history.push('/backstage/products')
+    linkProductPhotos({ id, photos: photosIdArray }).then((data) => {
+      if (data.success) {
+        alert('新增商品成功！！');
+        history.push('/backstage/products');
       }
     });
   };
@@ -98,9 +98,9 @@ export default function AddPhotoPage() {
         <Form id="addPhotosForm">
           <input type="file" multiple onChange={handleInputChange} />
           <PhotosContainer>{photos && photos.map((photo) => <img key={photo.id} src={photo.url} width="100" height="80" />)}</PhotosContainer>
-        <SubmitBtn onClick={handleAddProductPhotos} type="submit" form="addPhotosForm">
-          送出
-        </SubmitBtn>
+          <SubmitBtn onClick={handleAddProductPhotos} type="submit" form="addPhotosForm">
+            送出
+          </SubmitBtn>
         </Form>
       </Container>
     </Root>

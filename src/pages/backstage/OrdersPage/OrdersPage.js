@@ -89,10 +89,9 @@ export default function OrdersPage() {
       setIsLoaded(true);
     });
   }, [dispatch, isUpdated]);
-  console.log(orders);
 
   const handleChangeStatus = (id) => {
-    dispatch(updateOrderStatue(id)).then(() => setIsUpdated(!isUpdated));
+    dispatch(updateOrderStatue(id)).then(() => setIsUpdated(true));
   };
   return (
     <Root>
@@ -131,9 +130,9 @@ export default function OrdersPage() {
                       </td>
                       <td>{order.totalPrice}</td>
                       <td>{handleDateFormat(order.createdAt)}</td>
-                      <td>{handleOrderStatus(order.status)}</td>
+                      <td>{order.status}</td>
                       <td>
-                        {!order.status > 0 ? (
+                        {order.status !== '已出貨' ? (
                           <ButtonLight $size={'s'} onClick={() => handleChangeStatus(order.UUID)}>
                             通知已出貨
                           </ButtonLight>
