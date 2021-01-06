@@ -6,11 +6,26 @@ import mail from '../../img/mail.svg';
 import fb from '../../img/fb.svg';
 import ig from '../../img/ig.svg';
 import github from '../../img/github.svg';
+import { device } from '../../style/breakpoints';
 
 const FooterTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media ${device.Mobiles} {
+    flex-direction: column;
+  }
+  @media ${device.Tablets} {
+    height: 160px;
+    flex-direction: column;
+  }
+  @media ${device.Laptop} {
+    height: auto;
+    flex-direction: row;
+  }
+  @media ${device.Desktops} {
+  }
 `;
 
 const Logo = styled(Link)`
@@ -28,24 +43,47 @@ const FooterBottom = styled.div`
 
 const Container = styled.footer`
   width: 100%;
-  padding: 50px 180px;
-  padding-bottom: 0;
   margin-top: 200px;
   background: ${(props) => props.theme.background};
   color: white;
   font-size: 18px;
   font-weight: bold;
+  @media ${device.Mobiles} {
+  }
+  @media ${device.Tablets} {
+    padding: 30px;
+    padding-bottom: 0;
+  }
+  @media ${device.Laptop} {
+  }
+  @media ${device.Desktops} {
+    padding: 30px 50px;
+    padding-bottom: 0;
+  }
 `;
 
 const LeftContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+
+  @media ${device.Mobiles} {
+    height: 220px;
+    justify-content: center;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Laptop} {
+    height: auto;
+  }
+  @media ${device.Desktops} {
+  }
 `;
 
 const Contacts = styled.div`
   margin-left: 20px;
-`
+`;
 
 const Location = styled.div`
   margin-bottom: 10px;
@@ -112,3 +150,12 @@ export default function Footer() {
     </Container>
   );
 }
+// @media ${device.Mobiles} {
+
+// }
+// @media ${device.Tablets} {
+
+// }
+// @media ${device.Desktops} {
+
+// }

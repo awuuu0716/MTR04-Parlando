@@ -15,20 +15,30 @@ import {
 } from '../../redux/reducers/usersSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, getAuthToken } from '../../utils';
+import { device } from '../../style/breakpoints';
 
 const HeaderContainer = styled.div`
+  position: relative;
   height: 80px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0 50px;
   background: ${(props) => props.theme.background};
+
+  @media ${device.Mobiles} {
+  }
+  @media ${device.Tablets} {
+    padding: 20px;
+  }
+  @media ${device.Desktops} {
+  }
 `;
 const LinkContainer = styled.div`
   width: ${(props) => props.$width}px;
   display: flex;
   justify-content: space-between;
-  margin-left: ${(props) => props.$marginLeft}px;
+  margin-left: ${(props) => (props.$marginLeft ? props.$marginLeft : 0)}px;
 `;
 
 const IconContainer = styled.div`
@@ -117,8 +127,57 @@ const LogOut = styled.div`
   }
 `;
 
+const FullHeaderContainer = styled.div`
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+  @media ${device.Mobiles} {
+    display: none;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Laptop} {
+    display: flex;
+  }
+`;
+
+const HamburgerContainer = styled.div`
+  @media ${device.Mobiles} {
+    display: block;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Laptop} {
+    display: none;
+  }
+`;
+
+const MenuModal = styled.div`
+  position: absolute;
+  display: ${(props) => (props.$isShow ? 'flex' : 'none')};
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  top: 80px;
+  right: 0px;
+  width: 200px;
+  background: #07273c;
+  z-index: 5;
+  transition: all 0.4s ease-in-out;
+`;
+
+const Hamburger = () => (
+  <svg viewBox="0 0 100 80" width="40" height="40" style={{ fill: 'white' }}>
+    <rect width="100" height="15" rx="8"></rect>
+    <rect y="30" width="100" height="15" rx="8"></rect>
+    <rect y="60" width="100" height="15" rx="8"></rect>
+  </svg>
+);
+
 export default function Header() {
   const [isShowProducts, setIsShowProducts] = useState(false);
+  const [isShowModal, setIsShowModal] = useState(false);
   const isBackstageMode = useSelector(selectIsBackstageMode);
   const userLevel = useSelector(selectUserLevel);
   const history = useHistory();
@@ -152,6 +211,7 @@ export default function Header() {
         if (res.success) history.push('/');
       });
   }, [dispatch, history]);
+
   return (
     <>
       {isBackstageMode && (
@@ -163,21 +223,62 @@ export default function Header() {
       {!isBackstageMode && (
         <>
           <HeaderContainer>
-            <Logo to="/" />
-            <LinkContainer $width={400}>
-              <Nav to="/about">關於我們</Nav>
-              <Nav to="/news">最新消息</Nav>
-              <Nav to="/products/all" onMouseEnter={handleMouseEnter}>
+            <FullHeaderContainer>
+              <Logo to="/" />
+              <LinkContainer $width={400}>
+                <Nav to="/about">關於我們</Nav>
+                <Nav to="/news">最新消息</Nav>
+                <Nav to="/products/all" onMouseEnter={handleMouseEnter}>
+                  選購商品
+                </Nav>
+              </LinkContainer>
+              <IconContainer $isLogin={userLevel === 'member'}>
+                <IconCart to="/shopping-cart" />
+                <IconMember to="/membership/info" />
+                {userLevel === 'member' && (
+                  <LogOut onClick={handleLogOut}>登出</LogOut>
+                )}
+              </IconContainer>
+            </FullHeaderContainer>
+            <HamburgerContainer onClick={() => setIsShowModal(!isShowModal)}>
+              <Hamburger />
+            </HamburgerContainer>
+            <MenuModal $isShow={isShowModal}>
+              <Nav to="/about" onClick={() => setIsShowModal(!isShowModal)}>
+                關於我們
+              </Nav>
+              <Nav to="/news" onClick={() => setIsShowModal(!isShowModal)}>
+                最新消息
+              </Nav>
+              <Nav
+                to="/products/all"
+                onClick={() => setIsShowModal(!isShowModal)}
+              >
                 選購商品
               </Nav>
-            </LinkContainer>
-            <IconContainer $isLogin={userLevel === 'member'}>
-              <IconCart to="/shopping-cart" />
-              <IconMember to="/membership/info" />
+              <Nav
+                to="/shopping-cart"
+                onClick={() => setIsShowModal(!isShowModal)}
+              >
+                購物車
+              </Nav>
+              <Nav
+                to="/membership/info"
+                onClick={() => setIsShowModal(!isShowModal)}
+              >
+                會員專區
+              </Nav>
               {userLevel === 'member' && (
-                <LogOut onClick={handleLogOut}>登出</LogOut>
+                <LogOut
+                  onClick={() => {
+                    handleLogOut();
+                    setIsShowModal(!isShowModal);
+                  }}
+                >
+                  登出
+                </LogOut>
               )}
-            </IconContainer>
+            </MenuModal>
           </HeaderContainer>
 
           <HoverContainer
