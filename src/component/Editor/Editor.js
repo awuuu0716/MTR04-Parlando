@@ -74,15 +74,15 @@ export default function Editor({ onChange, content }) {
     },
   };
 
+
   const { quill, quillRef, Quill } = useQuill({ modules });
   if (Quill && !quill) {
     Quill.debug('error')
     Quill.register({ 'modules/imageResize': ImageResize, 'modules/imageUploader': ImageUploader });
   }
-
   useEffect(() => {
     if (quill) {
-      quill.setContents(content ? content : contentInit);
+      quill.setContents(content ? JSON.parse(content): contentInit);
       quill.on('text-change', () => {
         const text = quill.getContents();
         console.log(text);

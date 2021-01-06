@@ -82,7 +82,9 @@ export default function AddModelPage() {
   console.log(action);
   console.log(modelErrorMessage);
   useEffect(() => {
-    dispatch(getProduct(id));
+    if (action !== 'product') {
+      dispatch(getProduct(id));
+    }
   }, [dispatch, id]);
 
   const handleInputChange = (e) => {
