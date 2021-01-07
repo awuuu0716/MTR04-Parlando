@@ -70,7 +70,7 @@ export default function HomePage() {
     <>
       <BannerCarousel />
       <Promotion />
-      <ProductsContainer to="/">
+      {/* <ProductsContainer to="/">
         <ImgContainer to="/">
           <ImgFilter>PRODUCT</ImgFilter>
           <ProductImg src={homepage_products_1} />
@@ -83,8 +83,8 @@ export default function HomePage() {
           <ImgFilter>PRODUCT</ImgFilter>
           <ProductImg src={homepage_products_3} />
         </ImgContainer>
-      </ProductsContainer>
-      <LearnMoreButton to="/">LEARN MORE</LearnMoreButton>
+      </ProductsContainer> */}
+      {/* <LearnMoreButton to="/">LEARN MORE</LearnMoreButton> */}
     </>
   );
 }

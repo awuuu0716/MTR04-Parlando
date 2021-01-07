@@ -139,6 +139,7 @@ export default function Products() {
   const isLoading = useRef(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(getProducts({ type, order, sort: sortFilter })).then(() => {
       isLoading.current = false;
     });
