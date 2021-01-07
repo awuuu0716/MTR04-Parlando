@@ -81,7 +81,7 @@ const Member = () => (
     <Route exact path="/shopping-cart">
       <ShoppingCartPage />
     </Route>
-    <Route exact path="/recipient">
+    <Route exact path="/recipient/:id">
       <RecipientPage />
     </Route>
     <Route exact path="/transaction">

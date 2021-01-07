@@ -263,16 +263,17 @@ export const updateOrderStatue = (id) => {
   }).then((res) => res.json());
 };
 
-export const addOrder = ({ products }) => {
+export const addOrder = (products) => {
+  console.log(products);
   const token = getAuthToken();
   const authToken = token ? `Bearer ${token}` : '';
-  return fetch(`${BASE_URL}/models`, {
+  return fetch(`${BASE_URL}/orders`, {
     method: 'POST',
     headers: {
       Authorization: authToken,
       'Content-Type': 'application/json;charset=utf-8',
     },
-    body: JSON.stringify({ products }),
+    body: JSON.stringify({ products:products }),
   }).then((res) => res.json());
 };
 
@@ -310,6 +311,6 @@ export const getCities = () => {
 
 export const getDistricts = (id) => {
   return fetch(`${BASE_URL}/districts?cityId=${id}`, {
-    method: 'GET'
+    method: 'GET',
   }).then((res) => res.json());
 };

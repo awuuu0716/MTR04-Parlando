@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { memo } from 'react';
+import { getCities, getDistricts } from '../../WebAPI'
 const Root = styled.div`
   margin: 0 auto;
 `;
@@ -148,6 +149,8 @@ const StyledInput = ({ inputTitle, inputType, required, size }) => {
 const cities = ['台中市', '台北市', '新北市', '桃園市'];
 const towns = ['西屯區', '潭子區', '中區', '南區'];
 export default function Recipient() {
+
+
   return (
     <Root>
       <Container>

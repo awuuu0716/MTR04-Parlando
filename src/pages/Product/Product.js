@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import product_pic_1 from '../../img/product_pic_1.webp';
 import product_pic_3 from '../../img/carousel_4.webp';
@@ -8,7 +8,8 @@ import feature from '../../img/feature.jpg';
 import preload from '../../img/preload.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct, selectProduct } from '../../redux/reducers/productsSlice';
-import { handelStorageAmount, getCartToken, setCartToken } from '../../utils';
+import { updateCart } from '../../redux/reducers/ordersSlice';
+import { getCartToken, setCartToken } from '../../utils';
 import { device } from '../../style/breakpoints';
 
 const Container = styled.div`
@@ -546,6 +547,7 @@ const PhotosContainer = styled.div`
 
 export default function Product() {
   const { id } = useParams();
+  const history = useHistory();
   const dispatch = useDispatch();
   const product = useSelector(selectProduct);
   const [picList, setPicList] = useState([]);
@@ -642,10 +644,30 @@ export default function Product() {
     };
   }, [dispatch, id]);
 
-  const handleAddCart = () => {
-    cart.push({ modelId: selectedModelId, count: amount });
-    console.log(cart);
-    setCartToken(cart);
+  const handleAddCart = (goPayment) => {
+    const checkHasOrder = cart.filter((item) => item.modelId === selectedModelId);
+    if (checkHasOrder.length !== 0) {
+      const NewCart = cart.map((data, index) => {
+        if (data.modelId === selectedModelId) {
+          return {
+            ...data,
+            count: data.count + amount,
+          };
+        }
+        if (data.modelId !== selectedModelId && index === cart.length - 1) {
+          return { productId:id, modelId: selectedModelId, count: amount };
+        }
+        return data;
+      });
+      setCartToken(NewCart);
+    } else {
+      cart.push({ productId:id ,modelId: selectedModelId, count: amount });
+      setCartToken(cart);
+      dispatch(updateCart());
+    }
+    if (goPayment) {
+      history.push('/shopping-cart');
+    }
   };
   return (
     <>
@@ -694,8 +716,10 @@ export default function Product() {
               <AmountButton onClick={addAmount}>+</AmountButton>
             </Amount>
             <div>
-              <AddToCart onClick={() => handleAddCart()}>ADD TO CART</AddToCart>
-              <Buy to="/">BUY</Buy>
+              <AddToCart onClick={() => handleAddCart(false)}>ADD TO CART</AddToCart>
+              <Buy to="/" onClick={() => handleAddCart(true)}>
+                BUY
+              </Buy>
             </div>
           </ProductInfomationContainer>
         </ProductContainer>

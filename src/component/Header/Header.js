@@ -6,6 +6,8 @@ import cart from '../../img/cart.svg';
 import member from '../../img/member.svg';
 import { selectIsBackstageMode, setIsBackstageMode } from '../../redux/reducers/themeSlice';
 import { selectUserLevel, setUserLevel, getMemberInfo } from '../../redux/reducers/usersSlice';
+import { selectCart, updateCart } from '../../redux/reducers/ordersSlice';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, getAuthToken, getCartToken, setCartToken } from '../../utils';
 
@@ -51,7 +53,7 @@ const IconCartContainer = styled.div`
   position: relative;
 `;
 
-const IconCart = styled(Link)`
+const IconCart = styled.div`
   display: inline-block;
   width: 40px;
   height: 40px;
@@ -112,7 +114,7 @@ const LogOut = styled.div`
 `;
 const CartTotal = styled.div`
   text-align: center;
-  background-color: red;
+  background-color: #f65e60;
   border-radius: 50%;
   color: white;
   width: 20px;
@@ -121,11 +123,13 @@ const CartTotal = styled.div`
   position: absolute;
   top: -8px;
   right: -10px;
+  line-height: 1em;
 `;
 
 export default function Header() {
   const [isShowProducts, setIsShowProducts] = useState(false);
-  const [ordersCart, setOrdersCart] = useState('');
+
+  const cart = useSelector(selectCart);
   const isBackstageMode = useSelector(selectIsBackstageMode);
   const userLevel = useSelector(selectUserLevel);
   const history = useHistory();
@@ -138,11 +142,21 @@ export default function Header() {
   };
 
   const handleMouseLeave = () => setIsShowProducts(false);
-
+  const handleGoShoppingCart = () => {
+    if (userLevel !== 'member') {
+      alert('請先登入會員！');
+      return history.push('/login');
+    }
+    if (!cart) {
+      alert('目前購物車是空的，請先去購物唷！');
+      return history.push('/products/all');
+    }
+    return history.push('/shopping-cart');
+  };
   const handleLogOut = () => {
     dispatch(setUserLevel('guest'));
     setAuthToken('');
-    setCartToken('');
+    setCartToken([]);
     history.push('/');
   };
 
@@ -160,11 +174,9 @@ export default function Header() {
         if (res.success) history.push('/');
       });
   }, [dispatch, history]);
+
   useEffect(() => {
-    const cart = getCartToken();
-    if (cart) {
-      setOrdersCart(cart.length);
-    }
+    dispatch(updateCart());
   });
 
   return (
@@ -183,8 +195,8 @@ export default function Header() {
             </LinkContainer>
             <IconContainer $isLogin={userLevel === 'member'}>
               <IconCartContainer>
-                <IconCart to="/shopping-cart" />
-                {ordersCart ? <CartTotal>{ordersCart}</CartTotal> : ''}
+                <IconCart onClick={handleGoShoppingCart} />
+                {cart ? <CartTotal>{cart}</CartTotal> : ''}
               </IconCartContainer>
               <IconMember to="/membership/info" />
               {userLevel === 'member' && <LogOut onClick={handleLogOut}>登出</LogOut>}
