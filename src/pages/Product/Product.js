@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
@@ -87,9 +87,14 @@ const Thumbnail = styled.img`
 const ProductImgContainer = styled.div`
   position: relative;
   height: 450px;
-  background: ${(props) => `url(${props.$url}) center/cover no-repeat`};
+  background: ${(props) =>
+    props.$isLoading
+      ? `url(${props.$url}) center/contain no-repeat`
+      : `url(${props.$url}) center/cover no-repeat`};
 
   @media ${device.Mobiles} {
+    height: 500px;
+    width: 100%;
     text-align: center;
   }
   @media ${device.Tablets} {
@@ -188,6 +193,7 @@ const ProductInfomationContainer = styled.div`
   display: flex;
 
   @media ${device.Mobiles} {
+    margin-top: 50px;
     width: 100%;
     flex-direction: column;
     align-items: center;
@@ -196,7 +202,6 @@ const ProductInfomationContainer = styled.div`
     justify-content: space-between;
     width: auto;
     height: 400px;
-    margin-top: 50px;
   }
   @media ${device.Laptop} {
     justify-content: space-between;
@@ -468,7 +473,7 @@ const TitleContainer = styled.div`
   background: #9bb7ca;
 `;
 
-const Title = styled.h2`
+const Title = styled.h3`
   color: white;
   font-weight: bold;
   text-shadow: 2px 2px 2px #737373;
@@ -582,6 +587,7 @@ export default function Product() {
   const [article, setArticle] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const { pathname } = useLocation();
+  const isLoading = useRef(true);
 
   const handleShowModal = (state) => {
     setIsShowModal(state);
@@ -602,6 +608,7 @@ export default function Product() {
   };
 
   const nextPic = () => {
+    if (isLoading.current) return
     if (nowPicIndex + 1 >= picList.length) {
       setPicList(
         picList.map((data, index) => {
@@ -622,6 +629,7 @@ export default function Product() {
   };
 
   const prePic = () => {
+    if (isLoading.current) return;
     if (nowPicIndex - 1 < 0) {
       setPicList(
         picList.map((data, index) => {
@@ -643,7 +651,9 @@ export default function Product() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    isLoading.current = true;
     dispatch(getProduct(id)).then((res) => {
+      isLoading.current = false;
       setPicList(
         res.photos.map((url, index) => {
           if (index === 0)
@@ -684,6 +694,7 @@ export default function Product() {
 
           <ProductImgContainer
             $url={picList.length > 0 ? picList[nowPicIndex].src : preload}
+            $isLoading={isLoading.current}
           >
             <PrePicContainer onClick={prePic}>
               <Arrow $direction="left" />
@@ -737,21 +748,7 @@ export default function Product() {
 
       <Container>
         <div>
-          {/* <Feature id="feature">FEATURES</Feature> */}
           <ArticleContainer dangerouslySetInnerHTML={Article(article)} />
-          {/* <FeatureDescription>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-            euismod bibendum laoreet. Proin gravida dolor sit amet lacus
-            accumsan et viverra justo commodo.
-          </FeatureDescription>
-          <FeaturImgBig src={feature} />
-          <FeatureImgsContainer>
-            <FeaturImgSmall src={product_pic_3} />
-            <FeaturImgSmall src={product_pic_1} />
-            <FeaturImgSmall src={product_pic_3} />
-            <FeaturImgSmall src={product_pic_1} />
-          </FeatureImgsContainer> */}
-
           <TitleContainer id="spec">
             <Title>規格</Title>
           </TitleContainer>

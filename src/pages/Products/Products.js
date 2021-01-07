@@ -6,7 +6,6 @@ import {
   getProducts,
   selectProducts,
 } from '../../redux/reducers/productsSlice';
-import preload from '../../img/preload.svg';
 import noImage from '../../img/noImage.svg';
 
 const Container = styled.div`
@@ -47,9 +46,10 @@ const ProductsOption = styled(Link)`
 `;
 
 const ProductContainer = styled.div`
-  display: flex;
-  width: 80vw;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 480px);
+  grid-gap: 16px;
+  justify-content: center;
   margin-top: 100px;
 `;
 
@@ -139,6 +139,7 @@ export default function Products() {
   const isLoading = useRef(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(getProducts({ type, order, sort: sortFilter })).then(() => {
       isLoading.current = false;
     });
