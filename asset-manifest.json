@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/MTR04-Parlando/static/js/main.d353f5cd.chunk.js",
-    "main.js.map": "/MTR04-Parlando/static/js/main.d353f5cd.chunk.js.map",
+    "main.js": "/MTR04-Parlando/static/js/main.2e5c3443.chunk.js",
+    "main.js.map": "/MTR04-Parlando/static/js/main.2e5c3443.chunk.js.map",
     "runtime-main.js": "/MTR04-Parlando/static/js/runtime-main.84194655.js",
     "runtime-main.js.map": "/MTR04-Parlando/static/js/runtime-main.84194655.js.map",
     "static/css/2.83d8d302.chunk.css": "/MTR04-Parlando/static/css/2.83d8d302.chunk.css",
@@ -20,9 +20,6 @@
     "static/media/fb.689b6bcd.svg": "/MTR04-Parlando/static/media/fb.689b6bcd.svg",
     "static/media/feature.12fd841e.jpg": "/MTR04-Parlando/static/media/feature.12fd841e.jpg",
     "static/media/github.834914c7.svg": "/MTR04-Parlando/static/media/github.834914c7.svg",
-    "static/media/homepage_products_1.b24e9874.webp": "/MTR04-Parlando/static/media/homepage_products_1.b24e9874.webp",
-    "static/media/homepage_products_2.893c9089.webp": "/MTR04-Parlando/static/media/homepage_products_2.893c9089.webp",
-    "static/media/homepage_products_3.d47ca34e.webp": "/MTR04-Parlando/static/media/homepage_products_3.d47ca34e.webp",
     "static/media/ig.f5274a3c.svg": "/MTR04-Parlando/static/media/ig.f5274a3c.svg",
     "static/media/location.be2bfbf4.svg": "/MTR04-Parlando/static/media/location.be2bfbf4.svg",
     "static/media/logo.b9f04e91.svg": "/MTR04-Parlando/static/media/logo.b9f04e91.svg",
@@ -32,14 +29,14 @@
     "static/media/preload.c157a33f.svg": "/MTR04-Parlando/static/media/preload.c157a33f.svg",
     "static/media/product.13317730.jpg": "/MTR04-Parlando/static/media/product.13317730.jpg",
     "static/media/product_pic_1.bdb11097.webp": "/MTR04-Parlando/static/media/product_pic_1.bdb11097.webp",
-    "static/media/promotion_1.b5a52759.jpg": "/MTR04-Parlando/static/media/promotion_1.b5a52759.jpg",
-    "static/media/promotion_2.e2733e24.jpg": "/MTR04-Parlando/static/media/promotion_2.e2733e24.jpg",
+    "static/media/promotion_new1.b0f56999.jpg": "/MTR04-Parlando/static/media/promotion_new1.b0f56999.jpg",
+    "static/media/promotion_new2.b62c2a69.jpg": "/MTR04-Parlando/static/media/promotion_new2.b62c2a69.jpg",
     "static/media/trash.bb8494aa.svg": "/MTR04-Parlando/static/media/trash.bb8494aa.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.84194655.js",
     "static/css/2.83d8d302.chunk.css",
     "static/js/2.2f82a4c1.chunk.js",
-    "static/js/main.d353f5cd.chunk.js"
+    "static/js/main.2e5c3443.chunk.js"
   ]
 }
