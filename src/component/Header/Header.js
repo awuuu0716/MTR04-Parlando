@@ -23,10 +23,11 @@ const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0 50px;
+
   background: ${(props) => props.theme.background};
 
   @media ${device.Mobiles} {
+    padding: 0 10px;
   }
   @media ${device.Tablets} {
     padding: 20px;
@@ -58,6 +59,7 @@ const Nav = styled(Link)`
 `;
 
 const Logo = styled(Link)`
+  display: block;
   width: 200px;
   height: 55px;
   background: url(${logo}) no-repeat;
@@ -142,11 +144,12 @@ const FullHeaderContainer = styled.div`
   }
 `;
 
-const HamburgerContainer = styled.div`
+const MobileNavContainer = styled.div`
+  width: 100%;
+  justify-content: space-between;
+  align-items:center;
   @media ${device.Mobiles} {
-    display: block;
-  }
-  @media ${device.Tablets} {
+    display: flex;
   }
   @media ${device.Laptop} {
     display: none;
@@ -240,9 +243,14 @@ export default function Header() {
                 )}
               </IconContainer>
             </FullHeaderContainer>
-            <HamburgerContainer onClick={() => setIsShowModal(!isShowModal)}>
-              <Hamburger />
-            </HamburgerContainer>
+
+            <MobileNavContainer>
+              <Logo to="/" />
+              <div onClick={() => setIsShowModal(!isShowModal)}>
+                <Hamburger />
+              </div>
+            </MobileNavContainer>
+
             <MenuModal $isShow={isShowModal}>
               <Nav to="/about" onClick={() => setIsShowModal(!isShowModal)}>
                 關於我們

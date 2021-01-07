@@ -93,6 +93,8 @@ const ProductImgContainer = styled.div`
       : `url(${props.$url}) center/cover no-repeat`};
 
   @media ${device.Mobiles} {
+    height: 500px;
+    width: 100%;
     text-align: center;
   }
   @media ${device.Tablets} {
@@ -191,6 +193,7 @@ const ProductInfomationContainer = styled.div`
   display: flex;
 
   @media ${device.Mobiles} {
+    margin-top: 50px;
     width: 100%;
     flex-direction: column;
     align-items: center;
@@ -199,7 +202,6 @@ const ProductInfomationContainer = styled.div`
     justify-content: space-between;
     width: auto;
     height: 400px;
-    margin-top: 50px;
   }
   @media ${device.Laptop} {
     justify-content: space-between;

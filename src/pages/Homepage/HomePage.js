@@ -1,34 +1,41 @@
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getProducts } from '../../redux/reducers/productsSlice';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import BannerCarousel from '../../component/BannerCarousel';
 import Promotion from '../../component/Promotion';
-import homepage_products_1 from '../../img/homepage_products_1.webp';
-import homepage_products_2 from '../../img/homepage_products_2.webp';
-import homepage_products_3 from '../../img/homepage_products_3.webp';
+import { device } from '../../style/breakpoints';
 
 const ProductsContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 80%;
-  margin: 200px auto;
+  display: grid;
+  grid-gap: 1%;
+  width: 77%;
+  margin: 100px auto;
   margin-bottom: 0;
+  cursor: pointer;
+
+  @media ${device.Mobiles} {
+    grid-template-columns: repeat(auto-fit, 100%);
+  }
+  @media ${device.Laptop} {
+    grid-template-columns: repeat(auto-fit, 32%);
+  }
+
 `;
 
-const ProductImg = styled.img`
-  width: 450px;
-  height: 530px;
-  object-fit: cover;
-`;
-
-const ImgContainer = styled.div`
+const ImgContainer = styled(Link)`
   position: relative;
+  width: 100%;
+  height: 480px;
+  background: url(${(props) => props.$url}) center/cover no-repeat;
 `;
 
 const ImgFilter = styled.div`
   position: absolute;
   display: flex;
-  width: 450px;
-  height: 530px;
+  width: 100%;
+  height: 100%;
   justify-content: center;
   align-items: center;
   font-size: 48px;
@@ -45,7 +52,7 @@ const ImgFilter = styled.div`
 const LearnMoreButton = styled(Link)`
   display: block;
   text-decoration: none;
-  width: 620px;
+
   margin: 0 auto;
   margin-top: 100px;
   border: 1px solid #333;
@@ -55,36 +62,51 @@ const LearnMoreButton = styled(Link)`
   font-size: 36px;
   font-weight: bold;
   color: #fff;
-  background: #07273C;
+  background: #07273c;
 
   &:hover {
     box-shadow: 2px 2px 10px 5px rgba(0, 0, 0, 0.2);
-    color: #FFF;
+    color: #fff;
     text-decoration: none;
-    transform: scale(1.01)
+    transform: scale(1.01);
+  }
+
+  @media ${device.Mobiles} {
+    width: 320px;
+  }
+  @media ${device.Laptop} {
+    width: 620px;
   }
 `;
 
 export default function HomePage() {
+  const dispatch = useDispatch();
+  const [promotionProducts, setPromotionProducts] = useState([]);
+
+  useEffect(() => {
+    dispatch(getProducts({ type: 'all', order: 'ASC', sort: 'price' })).then(
+      (res) => {
+        setPromotionProducts(res.slice(0, 3));
+      }
+    );
+  }, [dispatch]);
+
   return (
     <>
       <BannerCarousel />
       <Promotion />
-      {/* <ProductsContainer to="/">
-        <ImgContainer to="/">
-          <ImgFilter>PRODUCT</ImgFilter>
-          <ProductImg src={homepage_products_1} />
-        </ImgContainer>
-        <ImgContainer to="/">
-          <ImgFilter>PRODUCT</ImgFilter>
-          <ProductImg src={homepage_products_2} />
-        </ImgContainer>
-        <ImgContainer to="/">
-          <ImgFilter>PRODUCT</ImgFilter>
-          <ProductImg src={homepage_products_3} />
-        </ImgContainer>
-      </ProductsContainer> */}
-      {/* <LearnMoreButton to="/">LEARN MORE</LearnMoreButton> */}
+      <ProductsContainer>
+        {promotionProducts.map((product) => (
+          <ImgContainer
+            $url={product.photos[0].url}
+            to={`/product/${product.id}`}
+            key={product.id}
+          >
+            <ImgFilter>{product.productName}</ImgFilter>
+          </ImgContainer>
+        ))}
+      </ProductsContainer>
+      <LearnMoreButton to="/products/all">LEARN MORE</LearnMoreButton>
     </>
   );
 }
