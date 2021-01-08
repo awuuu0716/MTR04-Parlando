@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { ReactComponent as Trash } from '../../img/trash.svg';
 import { device } from '../../style/breakpoints';
-import { Button } from '../../component/Button';
 import { useDispatch } from 'react-redux';
 import { getProduct } from '../../redux/reducers/productsSlice';
 import { getCartToken, setCartToken } from '../../utils';
@@ -114,13 +113,25 @@ const ProductImg = styled.div`
   width: 200px;
   height: 100px;
 `;
-const NextBtn = styled(Button)`
+const NextBtn = styled.button`
   position: absolute;
-  bottom: -80px;
   right: 0;
   margin-top: 40px;
   display: inline-block;
   cursor: pointer;
+  color: #07273c;
+  font-size: 22px;
+  box-shadow: 5px 5px 5px #0e4e7c;
+  border-radius: 5px;
+  border: 2px solid #07273c;
+  padding: 0.5em 1.3em;
+  text-decoration: none;
+  background-color: white;
+  &:hover {
+    color: white;
+    background-color: #07273c;
+    text-decoration: none;
+  }
 `;
 
 export default function ShoppingCartTable() {

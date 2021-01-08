@@ -115,7 +115,8 @@ export default function OrdersPage() {
                   <th>Price (NT$)</th>
                   <th>Order time</th>
                   <th>Status</th>
-                  <th></th>
+                  <th>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -136,7 +137,7 @@ export default function OrdersPage() {
                     <td>{handleDateFormat(order.createdAt)}</td>
                     <td>{order.status}</td>
                     <td>
-                      {!order.status > 0 ? (
+                      {order.status === '處理中' ? (
                         <ButtonLight $size={'s'} onClick={() => handleChangeStatus(order.UUID)}>
                           通知已出貨
                         </ButtonLight>

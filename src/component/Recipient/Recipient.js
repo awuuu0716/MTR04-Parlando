@@ -4,15 +4,15 @@ import { memo, useState, useEffect, useRef } from 'react';
 import { getCities, getDistricts, addRecipient } from '../../WebAPI';
 import { isEmailValid, isPhoneValid, initRecipientFormErrorData } from '../../utils';
 import { HeaderContainer, ErrorMessage } from '../../component/Input';
-import { selectUserInfo } from '../../redux/reducers/usersSlice';
+import { selectUserInfo, getMemberInfo } from '../../redux/reducers/usersSlice';
 import { updateCart } from '../../redux/reducers/ordersSlice';
 import { setCartToken } from '../../utils';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 const Root = styled.div`
   margin: 0 auto;
 `;
 const Container = styled.div`
-  max-width: 80vw;
+  max-width: 60vw;
   margin: 80px auto;
   margin-bottom: 40px;
   position: relative;
@@ -49,15 +49,15 @@ const WrapperInput = styled.label`
   }
 `;
 const RadioInputContent = styled.span`
-  font-size: 1.5em;
+  font-size: 1rem;
 `;
 const InputTitle = styled.h5`
-  font-size: 1.3rem;
+  font-size: 1rem;
   padding-top: 1em;
   font-weight: bold;
 `;
 const InputStyle = styled.input`
-  font-size: 1.5em;
+  font-size: 1rem;
   border: 1px solid #797979;
   padding: 0.5em;
   width: ${(props) => props.size};
@@ -100,7 +100,7 @@ const NextBtn = styled.button`
   display: inline-block;
   cursor: pointer;
   color: #07273c;
-  font-size: 26px;
+  font-size: 22px;
   box-shadow: 5px 5px 5px #0e4e7c;
   border-radius: 5px;
   border: 2px solid #07273c;
@@ -188,8 +188,9 @@ export default function Recipient() {
   const userInfo = useSelector(selectUserInfo);
 
   useEffect(() => {
-    setCartToken([])
-    dispatch(updateCart())
+    dispatch(getMemberInfo())
+    setCartToken([]);
+    dispatch(updateCart());
     getCities()
       .then((res) => {
         setCities(res.data.cities);
@@ -237,14 +238,13 @@ export default function Recipient() {
     });
   };
   const checkNameValid = (value) => {
-    
-    if (!value ) {
+    if (!value) {
       return setErrorMessage({
         ...errorMessage,
         name: { valid: false, message: '請輸入姓名' },
       });
     }
-    if ( value.length > 20 ) {
+    if (value.length > 20) {
       return setErrorMessage({
         ...errorMessage,
         name: { valid: false, message: '字數限制為20' },
@@ -258,7 +258,7 @@ export default function Recipient() {
   const handleInputChange = (e) => {
     const { value, name } = e.target;
     if (name === 'name') {
-      checkNameValid(value)
+      checkNameValid(value);
       return setName(value);
     }
     if (name === 'phone') {
@@ -279,22 +279,20 @@ export default function Recipient() {
       return setSelectedDistrict(value);
     }
     if (name === 'sameRecipient') {
-      setSameRecipient(!sameRecipient);
-      if (!sameRecipient) {
-        setName(userInfo.realName);
-        setPhone(userInfo.phone);
-        setEmail(userInfo.email);
-        return;
-      }
+      console.log(value);
+      if (value !== 'on') return
+      setName(userInfo.realName);
+      setPhone(userInfo.phone);
+      setEmail(userInfo.email);
     }
   };
   const checkProductValid = () => {
-    checkEmailValid(email)
-    checkPhoneValid(phone)
-    checkNameValid(name)
+    checkEmailValid(email);
+    checkPhoneValid(phone);
+    checkNameValid(name);
   };
   const handleAddRecipient = (e) => {
-    checkProductValid()
+    checkProductValid();
     isSubmit.current = true;
     for (let prop in errorMessage) {
       if (!errorMessage[prop].valid) {
