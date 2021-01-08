@@ -505,8 +505,7 @@ const Actions = styled.div`
 const Article = (article) => ({ __html: article });
 
 const ArticleContainer = styled.div`
-  display: flex;
-  justify-content: center;
+  text-align: center;
 `;
 
 export default function Product() {
@@ -549,7 +548,7 @@ export default function Product() {
   };
 
   const nextPic = () => {
-    if (isLoading.current) return
+    if (isLoading.current) return;
     if (nowPicIndex + 1 >= picList.length) {
       setPicList(
         picList.map((data, index) => {
@@ -597,14 +596,14 @@ export default function Product() {
       isLoading.current = false;
       setPicList(
         res.photos.map((url, index) => {
-          if (index === 0) return { src: url, isActive: true, id: `photo-${index}` };
+          if (index === 0)
+            return { src: url, isActive: true, id: `photo-${index}` };
           return { src: url, isActive: false, id: `photo-${index}` };
         })
       );
       const modelsData = res.models;
       const defaultColor = res.models.length > 0 ? res.models[0].colorChip : '';
-      const defaultModelId =
-        res.models.length > 0 ? res.models[0].id : '';
+      const defaultModelId = res.models.length > 0 ? res.models[0].id : '';
       const defaultStorage = res.models.length > 0 ? modelsData[0].storage : '';
 
       setSelectedModelId(defaultModelId);
@@ -622,7 +621,9 @@ export default function Product() {
   }, [dispatch, id]);
 
   const handleAddCart = (goPayment) => {
-    const checkHasOrder = cart.filter((item) => item.modelId === selectedModelId);
+    const checkHasOrder = cart.filter(
+      (item) => item.modelId === selectedModelId
+    );
     if (checkHasOrder.length !== 0) {
       const NewCart = cart.map((data, index) => {
         if (data.modelId === selectedModelId) {
@@ -632,18 +633,18 @@ export default function Product() {
           };
         }
         if (data.modelId !== selectedModelId && index === cart.length - 1) {
-          return { productId:id, modelId: selectedModelId, count: amount };
+          return { productId: id, modelId: selectedModelId, count: amount };
         }
         return data;
       });
       setCartToken(NewCart);
-      setIsShowModal(true)
-      console.log(isShowModal)
+      setIsShowModal(true);
+      console.log(isShowModal);
     } else {
-      cart.push({ productId:id ,modelId: selectedModelId, count: amount });
+      cart.push({ productId: id, modelId: selectedModelId, count: amount });
       setCartToken(cart);
       dispatch(updateCart());
-      setIsShowModal(true)
+      setIsShowModal(true);
     }
     if (goPayment) {
       history.push('/shopping-cart');
@@ -661,7 +662,12 @@ export default function Product() {
         <ProductContainer>
           <PhotosContainer>
             {picList.map((data, index) => (
-              <Thumbnail $active={data.isActive} src={data.src} onClick={() => handleChangePic(index)} key={data.id} />
+              <Thumbnail
+                $active={data.isActive}
+                src={data.src}
+                onClick={() => handleChangePic(index)}
+                key={data.id}
+              />
             ))}
           </PhotosContainer>
 
@@ -705,7 +711,9 @@ export default function Product() {
               <AmountButton onClick={addAmount}>+</AmountButton>
             </Amount>
             <div>
-              <AddToCart onClick={() => handleAddCart(false)}>ADD TO CART</AddToCart>
+              <AddToCart onClick={() => handleAddCart(false)}>
+                ADD TO CART
+              </AddToCart>
               <Buy to="/" onClick={() => handleAddCart(true)}>
                 BUY
               </Buy>
