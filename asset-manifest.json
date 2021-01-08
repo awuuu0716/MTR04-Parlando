@@ -1,16 +1,17 @@
 {
   "files": {
-    "main.js": "/static/js/main.4673ee76.chunk.js",
-    "main.js.map": "/static/js/main.4673ee76.chunk.js.map",
+    "main.js": "/static/js/main.0527dd1f.chunk.js",
+    "main.js.map": "/static/js/main.0527dd1f.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.b96b6a36.js",
     "runtime-main.js.map": "/static/js/runtime-main.b96b6a36.js.map",
     "static/css/2.83d8d302.chunk.css": "/static/css/2.83d8d302.chunk.css",
-    "static/js/2.b933c3bf.chunk.js": "/static/js/2.b933c3bf.chunk.js",
-    "static/js/2.b933c3bf.chunk.js.map": "/static/js/2.b933c3bf.chunk.js.map",
+    "static/js/2.19f20300.chunk.js": "/static/js/2.19f20300.chunk.js",
+    "static/js/2.19f20300.chunk.js.map": "/static/js/2.19f20300.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.83d8d302.chunk.css.map": "/static/css/2.83d8d302.chunk.css.map",
-    "static/js/2.b933c3bf.chunk.js.LICENSE.txt": "/static/js/2.b933c3bf.chunk.js.LICENSE.txt",
+    "static/js/2.19f20300.chunk.js.LICENSE.txt": "/static/js/2.19f20300.chunk.js.LICENSE.txt",
     "static/media/arrow.be1000be.svg": "/static/media/arrow.be1000be.svg",
+    "static/media/awu.43427984.jpg": "/static/media/awu.43427984.jpg",
     "static/media/carousel_1.b6585451.webp": "/static/media/carousel_1.b6585451.webp",
     "static/media/carousel_2.ef876008.webp": "/static/media/carousel_2.ef876008.webp",
     "static/media/carousel_3.13aebf47.webp": "/static/media/carousel_3.13aebf47.webp",
@@ -19,6 +20,7 @@
     "static/media/cart.3736886f.svg": "/static/media/cart.3736886f.svg",
     "static/media/fb.689b6bcd.svg": "/static/media/fb.689b6bcd.svg",
     "static/media/github.834914c7.svg": "/static/media/github.834914c7.svg",
+    "static/media/huiming.2a7be650.jpg": "/static/media/huiming.2a7be650.jpg",
     "static/media/ig.f5274a3c.svg": "/static/media/ig.f5274a3c.svg",
     "static/media/location.be2bfbf4.svg": "/static/media/location.be2bfbf4.svg",
     "static/media/logo.b9f04e91.svg": "/static/media/logo.b9f04e91.svg",
@@ -28,12 +30,13 @@
     "static/media/preload.c157a33f.svg": "/static/media/preload.c157a33f.svg",
     "static/media/promotion_new1.b0f56999.jpg": "/static/media/promotion_new1.b0f56999.jpg",
     "static/media/promotion_new2.b62c2a69.jpg": "/static/media/promotion_new2.b62c2a69.jpg",
+    "static/media/summer.36f3fe1f.jpg": "/static/media/summer.36f3fe1f.jpg",
     "static/media/trash.bb8494aa.svg": "/static/media/trash.bb8494aa.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.b96b6a36.js",
     "static/css/2.83d8d302.chunk.css",
-    "static/js/2.b933c3bf.chunk.js",
-    "static/js/main.4673ee76.chunk.js"
+    "static/js/2.19f20300.chunk.js",
+    "static/js/main.0527dd1f.chunk.js"
   ]
 }
