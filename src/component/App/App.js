@@ -15,8 +15,6 @@ import Products from '../../pages/Products';
 import Product from '../../pages/Product';
 import ShoppingCartPage from '../../pages/ShoppingCartpage';
 import RecipientPage from '../../pages/RecipientPage';
-import Payments from '../../component/Payments';
-
 import TransactionPage from '../../pages/TransactionPage';
 import {
   AddProductPage,
@@ -85,9 +83,6 @@ const Member = () => (
     </Route>
     <Route exact path="/recipient/:id">
       <RecipientPage />
-    </Route>
-    <Route exact path="/payments/:id">
-      {/* <Payments /> */}
     </Route>
     <Route exact path="/transaction/:id">
       <TransactionPage />

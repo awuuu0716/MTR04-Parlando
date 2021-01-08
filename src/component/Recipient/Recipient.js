@@ -1,11 +1,13 @@
 import styled from 'styled-components';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { memo, useState, useEffect, useRef } from 'react';
-import { getCities, getDistricts, addRecipient, payment } from '../../WebAPI';
+import { getCities, getDistricts, addRecipient } from '../../WebAPI';
 import { isEmailValid, isPhoneValid, initRecipientFormErrorData } from '../../utils';
 import { HeaderContainer, ErrorMessage } from '../../component/Input';
 import { selectUserInfo } from '../../redux/reducers/usersSlice';
-import { useSelector } from 'react-redux';
+import { updateCart } from '../../redux/reducers/ordersSlice';
+import { setCartToken } from '../../utils';
+import { useSelector,useDispatch } from 'react-redux';
 const Root = styled.div`
   margin: 0 auto;
 `;
@@ -171,7 +173,7 @@ const StyledInput = ({ inputTitle, name, inputType, required, size, onChange, va
 export default function Recipient() {
   const isSubmit = useRef(false);
   const { id } = useParams();
-  const history =useHistory();
+  const dispatch = useDispatch();
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [selectedCity, setSelectedCity] = useState('');
@@ -186,6 +188,8 @@ export default function Recipient() {
   const userInfo = useSelector(selectUserInfo);
 
   useEffect(() => {
+    setCartToken([])
+    dispatch(updateCart())
     getCities()
       .then((res) => {
         setCities(res.data.cities);
@@ -207,15 +211,6 @@ export default function Recipient() {
       return;
     });
   }, [selectedCity]);
-
-  // const handleNameIsValid = (value) => {};
-  // useEffect (()=>{
-  //   console.log(isSubmit.current)
-  //   if(isSubmit.current){
-  //     window.location.assign(`https://huiming.tw/v1/payments/${id}`);
-  //   }
-
-  // })
 
   const checkPhoneValid = (value) => {
     if (!isPhoneValid(value)) {
@@ -241,9 +236,29 @@ export default function Recipient() {
       email: { valid: true, message: '' },
     });
   };
+  const checkNameValid = (value) => {
+    
+    if (!value ) {
+      return setErrorMessage({
+        ...errorMessage,
+        name: { valid: false, message: '請輸入姓名' },
+      });
+    }
+    if ( value.length > 20 ) {
+      return setErrorMessage({
+        ...errorMessage,
+        name: { valid: false, message: '字數限制為20' },
+      });
+    }
+    setErrorMessage({
+      ...errorMessage,
+      name: { valid: true, message: '' },
+    });
+  };
   const handleInputChange = (e) => {
     const { value, name } = e.target;
     if (name === 'name') {
+      checkNameValid(value)
       return setName(value);
     }
     if (name === 'phone') {
@@ -264,7 +279,6 @@ export default function Recipient() {
       return setSelectedDistrict(value);
     }
     if (name === 'sameRecipient') {
-      console.log(userInfo);
       setSameRecipient(!sameRecipient);
       if (!sameRecipient) {
         setName(userInfo.realName);
@@ -274,16 +288,13 @@ export default function Recipient() {
       }
     }
   };
-  // const checkProductValid = () => {
-  //   checkEmailValid(email)
-  //   checkPhoneValid(phone)
-  //   if (name && phone && email && address && selectedCity && selectedDistrict) {
-  //     return true;
-  //   }
-  //   return false;
-  // };
+  const checkProductValid = () => {
+    checkEmailValid(email)
+    checkPhoneValid(phone)
+    checkNameValid(name)
+  };
   const handleAddRecipient = (e) => {
-    e.preventDefault();
+    checkProductValid()
     isSubmit.current = true;
     for (let prop in errorMessage) {
       if (!errorMessage[prop].valid) {
@@ -298,16 +309,13 @@ export default function Recipient() {
           alert(res.message.toString());
           return;
         }
-        // return history.push(`https://huiming.tw/v1/payments/${id}`)
         return window.location.assign(`https://huiming.tw/v1/payments/${id}`);
-        
       });
     }
   };
   return (
     <Root>
       <Container>
-        <a href="google.com">wdw</a>
         <H3>配送資訊</H3>
         <ReceiverInfoForm>
           <FormHeader>
