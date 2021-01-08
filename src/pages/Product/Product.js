@@ -2,9 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import product_pic_1 from '../../img/product_pic_1.webp';
-import product_pic_3 from '../../img/carousel_4.webp';
-import feature from '../../img/feature.jpg';
 import preload from '../../img/preload.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct, selectProduct } from '../../redux/reducers/productsSlice';
@@ -17,6 +14,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   padding: 20px;
+
   @media ${device.Mobiles} {
     flex-direction: column;
     justify-content: center;
@@ -49,7 +47,6 @@ const Breadcrumb = styled(Link)`
 const ProductContainer = styled.div`
   display: flex;
   width: 100%;
-
   justify-content: center;
 
   @media ${device.Mobiles} {
@@ -105,25 +102,6 @@ const ProductImgContainer = styled.div`
   @media ${device.Desktops} {
     height: 500px;
     width: 600px;
-  }
-`;
-
-const ProductImg = styled.img`
-  object-fit: cover;
-
-  @media ${device.Mobiles} {
-    margin-bottom: 30px;
-    width: 100%;
-    height: 320px;
-  }
-  @media ${device.Tablets} {
-    height: 370px;
-    padding-left: 20px;
-  }
-  @media ${device.Desktops} {
-    padding-left: 0;
-    width: 540px;
-    height: 470px;
   }
 `;
 
@@ -226,11 +204,6 @@ const Name = styled.h1`
   }
   @media ${device.Desktops} {
   }
-`;
-
-const SubName = styled.p`
-  color: #333333;
-  margin-bottom: 40px;
 `;
 
 const Label = styled.label`
@@ -430,40 +403,6 @@ const Anchor = styled(HashLink)`
   }
 `;
 
-const Feature = styled.h1`
-  text-align: center;
-  margin-top: 80px;
-`;
-
-const FeatureDescription = styled.p`
-  text-align: center;
-  font-size: 18px;
-`;
-
-const FeaturImgBig = styled.img`
-  display: block;
-  width: 99%;
-  margin: 0 auto;
-  margin-bottom: 60px;
-`;
-
-const FeatureImgsContainer = styled.div`
-  display: flex;
-  margin: 0 auto;
-  width: 100%;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  flex: 1;
-`;
-
-const FeaturImgSmall = styled.img`
-  display: block;
-  width: 300px;
-  height: 300px;
-  margin: 20px;
-  object-fit: cover;
-`;
-
 const TitleContainer = styled.div`
   display: flex;
   margin-top: 50px;
@@ -490,12 +429,6 @@ const Specification = styled.div`
 const SpecificationTopic = styled.h2`
   font-size: 24px;
   margin: 20px;
-`;
-
-const SpecificationMinorTopic = styled.h3`
-  font-weight: normal;
-  font-size: 24px;
-  margin: 20px 0 0 20px;
 `;
 
 const SpecificationContent = styled.p`
@@ -575,6 +508,7 @@ const ArticleContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
+
 export default function Product() {
   const { id } = useParams();
   const history = useHistory();
@@ -669,7 +603,11 @@ export default function Product() {
       );
       const modelsData = res.models;
       const defaultColor = res.models.length > 0 ? res.models[0].colorChip : '';
+      const defaultModelId =
+        res.models.length > 0 ? res.models[0].id : '';
       const defaultStorage = res.models.length > 0 ? modelsData[0].storage : '';
+
+      setSelectedModelId(defaultModelId);
       setArticle(getArticle(res.article));
       setModels(modelsData);
       setSelectedModel(defaultColor);
@@ -749,6 +687,7 @@ export default function Product() {
                       $active={selectedModel === model.colorChip}
                       onClick={() => {
                         setSelectedModel(model.colorChip);
+                        setSelectedModelId(model.id);
                         setStorage(model.storage);
                       }}
                       key={`model-${model.colorChip}`}

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
 import { useHistory, useParams } from 'react-router-dom';
 import { memo, useState, useEffect, useRef } from 'react';
 
@@ -91,7 +90,7 @@ export default function Transaction() {
           <H3>訂單成立</H3>
           <OrderDesc>
             您的訂單編號為
-            <OrderLink to={`/membership/order/${id}`}> {id}</OrderLink>
+            <OrderLink to={`/membership/order/${id}`}>{id}</OrderLink>
             <OrderTips>若要查詢訂單狀況，請點選以下查詢訂單</OrderTips>
           </OrderDesc>
         </SuccessInfoWrapper>
