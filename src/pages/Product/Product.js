@@ -637,10 +637,13 @@ export default function Product() {
         return data;
       });
       setCartToken(NewCart);
+      setIsShowModal(true)
+      console.log(isShowModal)
     } else {
       cart.push({ productId:id ,modelId: selectedModelId, count: amount });
       setCartToken(cart);
       dispatch(updateCart());
+      setIsShowModal(true)
     }
     if (goPayment) {
       history.push('/shopping-cart');
@@ -717,7 +720,7 @@ export default function Product() {
         <Anchor to={`${pathname}#support`}>支援</Anchor>
       </ProductNav>
 
-      <Container>
+      {/* <Container>
         <div>
           <ArticleContainer dangerouslySetInnerHTML={Article(article)} />
           <TitleContainer id="spec">
@@ -746,7 +749,7 @@ export default function Product() {
             <SupportTitle>聯絡客服</SupportTitle>
           </Support>
         </div>
-      </Container>
+      </Container> */}
 
       <Modal $isShowModal={isShowModal}>
         <h5>加入成功！</h5>
@@ -754,7 +757,7 @@ export default function Product() {
           <CloseModalButton onClick={() => handleShowModal(false)}>
             返回
           </CloseModalButton>
-          <CheckoutButton to="/">結帳</CheckoutButton>
+          <CheckoutButton to="/shopping-cart">結帳</CheckoutButton>
         </Actions>
       </Modal>
     </>

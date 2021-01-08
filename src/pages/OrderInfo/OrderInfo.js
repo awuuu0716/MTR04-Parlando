@@ -115,9 +115,7 @@ export default function OrderInfo() {
           </Li>
           <Li>
             <Header>訂購日期</Header>
-            <Info $flex={3}>
-              {isLoaded ? handleDateFormat(order.createdAt) : 'loading...'}
-            </Info>
+            <Info $flex={3}>{isLoaded ? handleDateFormat(order.createdAt) : 'loading...'}</Info>
             <Header>付款方式</Header>
             <Info $flex={2}>信用卡</Info>
           </Li>
@@ -135,13 +133,11 @@ export default function OrderInfo() {
               </OrderContent>
             </Info>
             <HeaderFat>訂單金額</HeaderFat>
-            <Info $flex={2}>
-              NT$ {order.totalPrice || 'Loading...'}
-            </Info>
+            <Info $flex={2}>NT$ {order.totalPrice || 'Loading...'}</Info>
           </Li>
           <Li>
             <HeaderFat>收貨地點</HeaderFat>
-            <Info $flex={6}>台中市潭子區三三路 121 巷 97 號 7 樓</Info>
+            <Info $flex={6}>{order.recipient[0].address || 'Loading...'}</Info>
           </Li>
         </Ul>
         <OptionContainer>

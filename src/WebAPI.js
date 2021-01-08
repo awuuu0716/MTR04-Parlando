@@ -289,18 +289,6 @@ export const addRecipient = ({ orderId, name, phone, email, address, cityId, dis
     body: JSON.stringify({ name, phone, email, address, cityId, districtId }),
   }).then((res) => res.json());
 };
-export const payment = (uuid) => {
-  const token = getAuthToken();
-  const authToken = `Bearer ${token}`;
-
-  return fetch(`${BASE_URL}/payments/${uuid}`, {
-    method: 'GET',
-    headers: {
-      Authorization: authToken,
-      'Content-Type': 'application/json;charset=utf-8',
-    },
-  }).then((res) => res.text())
-};
 
 // address
 export const getCities = () => {

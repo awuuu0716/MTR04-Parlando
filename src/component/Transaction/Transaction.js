@@ -1,28 +1,31 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useHistory, useParams } from 'react-router-dom';
-import { memo, useState, useEffect, useRef } from 'react';
+import { device } from '../../style/breakpoints';
 
 const Container = styled.div`
   margin: 80px auto;
   margin-bottom: 40px;
   position: relative;
-  height: calc(80vh - 277px);
+  font-size: 24px;
 `;
 const H3 = styled.h3`
-  font-size: 32px;
-  padding-top: 1em;
+  font-size: 1.3em;
+  padding-top: 40px;
   font-weight: bold;
 `;
 const SuccessInfoWrapper = styled.div`
   background-color: rgba(14, 78, 124, 0.2);
   padding: 2em;
   text-align: center;
-  width: 50vw;
+  width: 400px;
   margin: 0 auto;
+  @media ${device.Tablets} {
+    width: 50vw;
+  }
 `;
 const OrderDesc = styled.p`
-  font-size: 28px;
+  font-size: 1em;
   color: #000;
   margin-top: 80px;
 `;
@@ -80,9 +83,10 @@ const BtnWrapper = styled.div`
   margin: 30px auto;
   justify-content: center;
 `;
+
 export default function Transaction() {
   const { id } = useParams();
-
+  
   return (
     <>
       <Container>
@@ -90,7 +94,7 @@ export default function Transaction() {
           <H3>訂單成立</H3>
           <OrderDesc>
             您的訂單編號為
-            <OrderLink to={`/membership/order/${id}`}>{id}</OrderLink>
+            <OrderLink to={`/membership/order/${id}`}> {id.slice(0, 8)}</OrderLink>
             <OrderTips>若要查詢訂單狀況，請點選以下查詢訂單</OrderTips>
           </OrderDesc>
         </SuccessInfoWrapper>
