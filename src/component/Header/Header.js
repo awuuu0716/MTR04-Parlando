@@ -17,7 +17,8 @@ const HeaderContainer = styled.div`
   height: 80px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+
   background: ${(props) => props.theme.background};
 
   @media ${device.Mobiles} {

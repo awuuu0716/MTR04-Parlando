@@ -99,7 +99,6 @@ export default function OrderInfo() {
     dispatch(getOrder(id)).then(() => setIsLoaded(true));
   }, [dispatch, id]);
 
-  // console.log(order.recipient[0])
   return (
     <Container>
       <MemberNav />
@@ -116,7 +115,9 @@ export default function OrderInfo() {
           </Li>
           <Li>
             <Header>訂購日期</Header>
-            <Info $flex={3}>{isLoaded ? handleDateFormat(order.createdAt) : 'loading...'}</Info>
+            <Info $flex={3}>
+              {isLoaded ? handleDateFormat(order.createdAt) : 'loading...'}
+            </Info>
             <Header>付款方式</Header>
             <Info $flex={2}>信用卡</Info>
           </Li>

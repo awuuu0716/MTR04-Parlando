@@ -151,7 +151,6 @@ export default function Login() {
           </InputContainer>
           <ErrorMessage>{errorMessage}</ErrorMessage>
           <OptionsContainer>
-            <SignUpLink to="/signup">建立帳戶</SignUpLink>
             <LoginButton>登入</LoginButton>
           </OptionsContainer>
         </form>
