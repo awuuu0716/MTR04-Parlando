@@ -116,7 +116,7 @@ const ProductImg = styled.div`
 `;
 const NextBtn = styled(Button)`
   position: absolute;
-  bottom: -15%;
+  bottom:-80px;
   right: 0;
   margin-top: 40px;
   display: inline-block;

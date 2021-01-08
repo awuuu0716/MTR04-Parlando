@@ -24,7 +24,7 @@
     "react-scripts": "4.0.1",
     "styled-components": "^5.2.1"
   },
-  "homepage": "https://awuuu0716.github.io/MTR04-Parlando",
+  "homepage": "https://www.parlando.tw/",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",

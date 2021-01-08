@@ -134,7 +134,7 @@ export default function OrdersPage() {
                     </td>
                     <td>{order.totalPrice}</td>
                     <td>{handleDateFormat(order.createdAt)}</td>
-                    <td>{handleOrderStatus(order.status)}</td>
+                    <td>{order.status}</td>
                     <td>
                       {!order.status > 0 ? (
                         <ButtonLight $size={'s'} onClick={() => handleChangeStatus(order.UUID)}>

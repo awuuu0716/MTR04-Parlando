@@ -74,7 +74,6 @@ const types = [
 ];
 export default function AddProductPage() {
   let isValid = false;
-  const isSubmit = useRef(false);
   const history = useHistory();
   const dispatch = useDispatch();
   const [productErrorMessage, setProductErrorMessage] = useState(productErrorMessageInit);

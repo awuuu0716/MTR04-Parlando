@@ -18,7 +18,6 @@ export const setCartToken = (token) => {
 };
 
 
-
 export const isLengthValid = (string) => string.length < 20;
 
 export const replaceInvalidWord = (string) => string.replaceAll(/\W/g, '').slice(0, 20);
@@ -78,21 +77,21 @@ export const initFormErrorData = () => {
   };
 };
 
+export const initRecipientFormErrorData = () => {
+  return {
+    address: { valid: true, message: '' },
+    name: { valid: true, message: '' },
+    email: { valid: true, message: '' },
+    phone: { valid: true, message: '' },
+  };
+};
+
 export const handleDateFormat = (date) => {
   const breakPoint = date.indexOf('T');
   return date.slice(0, breakPoint);
 };
 
-export const handleOrderStatus = (status) => {
-  switch (status) {
-    case 1:
-      return '處理中';
-    case 2:
-      return '已出貨';
-    default:
-      return '未付款';
-  }
-};
+
 export const findOrder = (orders, id) => {
   return orders.filter((order) => order.id === id)[0];
 };
