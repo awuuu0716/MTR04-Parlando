@@ -264,7 +264,7 @@ export const updateOrderStatue = (id) => {
 };
 
 export const addOrder = (products) => {
-  console.log(products);
+  console.log("addOrder",products);
   const token = getAuthToken();
   const authToken = token ? `Bearer ${token}` : '';
   return fetch(`${BASE_URL}/orders`, {

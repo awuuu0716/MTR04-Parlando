@@ -1,3 +1,5 @@
+const QuillDeltaToHtmlConverter = require('quill-delta-to-html')
+  .QuillDeltaToHtmlConverter;
 const TOKEN_NAME = 'token';
 const TOKEN_CART = 'cart';
 
@@ -57,7 +59,8 @@ export const isPriceValid = (price) => {
   if (!rule.test(price)) {
     return 0;
   }
-  return true
+
+  return true;
 };
 
 export const isProductNameValid = (productName) => {
@@ -67,6 +70,7 @@ export const isProductNameValid = (productName) => {
 
 export const initFormErrorData = () => {
   return {
+    username: { valid: true, message: '' },
     comfirmpassword: { valid: true, message: '' },
     realName: { valid: true, message: '' },
     email: { valid: true, message: '' },
@@ -90,4 +94,11 @@ export const handleDateFormat = (date) => {
 
 export const findOrder = (orders, id) => {
   return orders.filter((order) => order.id === id)[0];
+};
+
+export const getArticle = (data) => {
+  const cfg = {};
+  const deltaOps = JSON.parse(data).ops;
+  const converter = new QuillDeltaToHtmlConverter(deltaOps, cfg);
+  return converter.convert();
 };

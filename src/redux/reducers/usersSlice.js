@@ -41,8 +41,7 @@ export const signUp = ({ username, password, realName, email, phone }) => (
   return signUpAPI({ username, password, realName, email, phone }).then(
     (res) => {
       if (!res.success) {
-        dispatch(setErrorMessage(res.message));
-        return;
+        return res;
       }
       dispatch(setUserLevel('member'));
       setAuthToken(res.data.token);
@@ -90,9 +89,10 @@ export const login = ({ username, password }) => (dispatch) => {
 
 export const getMemberInfo = () => (dispatch) => {
   return getMemberInfoAPI().then((res) => {
+    console.log(res)
     if (!res.success) {
       setAuthToken('');
-      return;
+      return res;
     }
     if (res.data.admin) {
       dispatch(setUserLevel('admin'));
@@ -101,7 +101,7 @@ export const getMemberInfo = () => (dispatch) => {
     dispatch(setUserInfo(res.data.user));
     dispatch(setUserLevel('member'));
     return res;
-  });
+  }).catch(err=>console.log(err));
 };
 
 // selector

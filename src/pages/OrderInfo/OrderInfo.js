@@ -89,25 +89,6 @@ const Back = styled(Link)`
   }
 `;
 
-const ReturnButton = styled.button`
-  width: 160px;
-  height: 60px;
-  display: flex;
-  border: 1px solid #07273c;
-  border-radius: 3px;
-  margin-right: 10px;
-  color: white;
-  background: #07273c;
-  font-weight: bold;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 3px 3px 5px #07273c85;
-
-  &:hover {
-    background: #293e4c;
-  }
-`;
-
 export default function OrderInfo() {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -161,7 +142,7 @@ export default function OrderInfo() {
         </Ul>
         <OptionContainer>
           <Back to="/membership/order">回到上頁</Back>
-          <ReturnButton>我要退貨</ReturnButton>
+
         </OptionContainer>
       </section>
     </Container>
