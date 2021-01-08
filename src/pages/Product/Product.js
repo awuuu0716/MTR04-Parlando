@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
@@ -9,7 +9,7 @@ import preload from '../../img/preload.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct, selectProduct } from '../../redux/reducers/productsSlice';
 import { updateCart } from '../../redux/reducers/ordersSlice';
-import { getCartToken, setCartToken } from '../../utils';
+import { getCartToken, setCartToken, getArticle } from '../../utils';
 import { device } from '../../style/breakpoints';
 
 const Container = styled.div`
@@ -49,6 +49,7 @@ const Breadcrumb = styled(Link)`
 const ProductContainer = styled.div`
   display: flex;
   width: 100%;
+
   justify-content: center;
 
   @media ${device.Mobiles} {
@@ -57,11 +58,20 @@ const ProductContainer = styled.div`
   }
 
   @media ${device.Tablets} {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media ${device.Laptop} {
     flex-direction: row;
+    justify-content: space-around;
+    padding: 2% 6%;
   }
 
   @media ${device.Desktops} {
     flex-direction: row;
+    justify-content: space-around;
+    padding: 2% 10%;
   }
 `;
 
@@ -77,16 +87,24 @@ const Thumbnail = styled.img`
 
 const ProductImgContainer = styled.div`
   position: relative;
-  flex: 2;
   height: 450px;
-  background: ${(props) => `url(${props.$url}) center/cover no-repeat`};
+  background: ${(props) =>
+    props.$isLoading
+      ? `url(${props.$url}) center/contain no-repeat`
+      : `url(${props.$url}) center/cover no-repeat`};
 
   @media ${device.Mobiles} {
+    height: 500px;
+    width: 100%;
     text-align: center;
   }
-
   @media ${device.Tablets} {
-    flex: 1;
+    height: 500px;
+    width: 500px;
+  }
+  @media ${device.Desktops} {
+    height: 500px;
+    width: 600px;
   }
 `;
 
@@ -109,77 +127,90 @@ const ProductImg = styled.img`
   }
 `;
 
-const ArrowLeft = styled.div`
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  border-top: 5px solid #ddd;
-  border-left: 5px solid #ddd;
-  transform: rotate(-45deg);
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    transform: rotate(-45deg) scale(1.1);
-    border-top: 5px solid white;
-    border-left: 5px solid white;
-  }
+const PhotosContainer = styled.div`
+  flex-wrap: wrap;
+  max-width: 180px;
 
   @media ${device.Mobiles} {
-    top: 40%;
-    left: 5%;
+    display: none;
   }
-
-  @media ${device.Tablets} {
-    top: 40%;
-    left: 5%;
-  }
-
   @media ${device.Desktops} {
-    top: 45%;
-    left: 5%;
+    display: flex;
   }
 `;
 
-const ArrowRight = styled.div`
+const PrePicContainer = styled.div`
   position: absolute;
-  top: 215px;
-  right: 85px;
-  width: 30px;
-  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  width: 12%;
+  height: 100%;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background: #0000001c;
+  }
+`;
+
+const NextPicContainer = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 0;
+  width: 12%;
+  height: 100%;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background: #0000001c;
+  }
+`;
+
+const Arrow = styled.div`
+  width: 20px;
+  height: 20px;
   border-top: 5px solid #ddd;
-  border-right: 5px solid #ddd;
-  transform: rotate(45deg);
+  border-left: 5px solid #ddd;
+  transform: rotate(${(props) => (props.$direction === 'left' ? -45 : 135)}deg);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    transform: rotate(45deg) scale(1.1);
+    transform: rotate(
+        ${(props) => (props.$direction === 'left' ? -45 : 135)}deg
+      )
+      scale(1.1);
     border-top: 5px solid white;
-    border-right: 5px solid white;
-  }
-
-  @media ${device.Mobiles} {
-    top: 40%;
-    right: 5%;
-  }
-  @media ${device.Desktops} {
-    top: 45%;
-    right: 15%;
+    border-left: 5px solid white;
   }
 `;
 
 const ProductInfomationContainer = styled.div`
   display: flex;
-  flex: 1;
+
   @media ${device.Mobiles} {
+    margin-top: 50px;
     width: 100%;
     flex-direction: column;
     align-items: center;
   }
   @media ${device.Tablets} {
+    justify-content: space-between;
+    width: auto;
+    height: 400px;
+  }
+  @media ${device.Laptop} {
+    justify-content: space-between;
+    height: 500px;
+    margin-top: 0;
   }
   @media ${device.Desktops} {
+    width: 400px;
   }
 `;
 
@@ -322,11 +353,17 @@ const AddToCart = styled.button`
   height: 40px;
   margin-top: 20px;
   color: #07273c;
-  background: rgb(251, 209, 168);
+  background: rgba(7, 39, 60, 0.2);
   border: none;
   border-radius: 5px;
   font-size: 16px;
   font-weight: bold;
+
+  &:hover {
+    background: rgba(7, 39, 60, 0.3);
+    box-shadow: 0 0px 3px #c1c1c1;
+  }
+
   @media ${device.Mobiles} {
     font-size: 14px;
     width: 120px;
@@ -334,10 +371,6 @@ const AddToCart = styled.button`
   @media ${device.Tablets} {
   }
   @media ${device.Desktops} {
-  }
-
-  &:hover {
-    box-shadow: 0 0px 3px #c1c1c1;
   }
 `;
 
@@ -349,10 +382,14 @@ const Buy = styled.button`
   color: white;
   font-weight: bold;
   background: #07273c;
-  box-shadow: 0 0px 3px #c1c1c1;
   border: none;
   border-radius: 5px;
   font-size: 16px;
+
+  &:hover {
+    background: rgba(7, 39, 60, 0.9);
+    box-shadow: 0 0px 3px #c1c1c1;
+  }
 
   @media ${device.Mobiles} {
     font-size: 14px;
@@ -437,7 +474,7 @@ const TitleContainer = styled.div`
   background: #9bb7ca;
 `;
 
-const Title = styled.h2`
+const Title = styled.h3`
   color: white;
   font-weight: bold;
   text-shadow: 2px 2px 2px #737373;
@@ -532,19 +569,12 @@ const Actions = styled.div`
   display: flex;
 `;
 
-const PhotosContainer = styled.div`
-  flex-wrap: wrap;
-  margin-right: 20px;
-  max-width: 180px;
+const Article = (article) => ({ __html: article });
 
-  @media ${device.Mobiles} {
-    display: none;
-  }
-  @media ${device.Desktops} {
-    display: flex;
-  }
+const ArticleContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
-
 export default function Product() {
   const { id } = useParams();
   const history = useHistory();
@@ -557,9 +587,11 @@ export default function Product() {
   const [selectedModelId, setSelectedModelId] = useState('');
   const [models, setModels] = useState([]);
   const [storage, setStorage] = useState('');
+  const [article, setArticle] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const { pathname } = useLocation();
   let cart = getCartToken();
+  const isLoading = useRef(true);
 
   const handleShowModal = (state) => {
     setIsShowModal(state);
@@ -583,6 +615,7 @@ export default function Product() {
   };
 
   const nextPic = () => {
+    if (isLoading.current) return
     if (nowPicIndex + 1 >= picList.length) {
       setPicList(
         picList.map((data, index) => {
@@ -603,6 +636,7 @@ export default function Product() {
   };
 
   const prePic = () => {
+    if (isLoading.current) return;
     if (nowPicIndex - 1 < 0) {
       setPicList(
         picList.map((data, index) => {
@@ -624,17 +658,22 @@ export default function Product() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    isLoading.current = true;
     dispatch(getProduct(id)).then((res) => {
+      isLoading.current = false;
       setPicList(
         res.photos.map((url, index) => {
           if (index === 0) return { src: url, isActive: true, id: `photo-${index}` };
           return { src: url, isActive: false, id: `photo-${index}` };
         })
       );
-      setModels(res.models);
-      setSelectedModel(res.models[0].colorChip);
-      setSelectedModelId(res.models[0].id);
-      setStorage(res.models[0].storage);
+      const modelsData = res.models;
+      const defaultColor = res.models.length > 0 ? res.models[0].colorChip : '';
+      const defaultStorage = res.models.length > 0 ? modelsData[0].storage : '';
+      setArticle(getArticle(res.article));
+      setModels(modelsData);
+      setSelectedModel(defaultColor);
+      setStorage(defaultStorage);
     });
     return () => {
       setModels([]);
@@ -685,9 +724,16 @@ export default function Product() {
             ))}
           </PhotosContainer>
 
-          <ProductImgContainer $url={picList.length > 0 ? picList[nowPicIndex].src : preload}>
-            <ArrowLeft onClick={prePic} />
-            <ArrowRight onClick={nextPic} />
+          <ProductImgContainer
+            $url={picList.length > 0 ? picList[nowPicIndex].src : preload}
+            $isLoading={isLoading.current}
+          >
+            <PrePicContainer onClick={prePic}>
+              <Arrow $direction="left" />
+            </PrePicContainer>
+            <NextPicContainer onClick={nextPic}>
+              <Arrow $direction="right" />
+            </NextPicContainer>
           </ProductImgContainer>
 
           <ProductInfomationContainer>
@@ -696,18 +742,19 @@ export default function Product() {
             <Price>NT${product.price}</Price>
             <Label>Model</Label>
             <Alternative>
-              {models.map((model) => (
-                <Option
-                  $color={model.colorChip}
-                  $active={selectedModel === model.colorChip}
-                  onClick={() => {
-                    setSelectedModel(model.colorChip);
-                    setSelectedModelId(model.id);
-                    setStorage(model.storage);
-                  }}
-                  key={`model-${model.colorChip}`}
-                />
-              ))}
+              {models.length > 0
+                ? models.map((model) => (
+                    <Option
+                      $color={model.colorChip}
+                      $active={selectedModel === model.colorChip}
+                      onClick={() => {
+                        setSelectedModel(model.colorChip);
+                        setStorage(model.storage);
+                      }}
+                      key={`model-${model.colorChip}`}
+                    />
+                  ))
+                : ''}
             </Alternative>
             <Storage>庫存狀況: {storage}</Storage>
             <Amount>
@@ -725,7 +772,7 @@ export default function Product() {
         </ProductContainer>
       </Container>
 
-      {/* <ProductNav>
+      <ProductNav>
         <Anchor to={`${pathname}#feature`}>概觀</Anchor>
         <Anchor to={`${pathname}#spec`}>規格</Anchor>
         <Anchor to={`${pathname}#support`}>支援</Anchor>
@@ -733,20 +780,7 @@ export default function Product() {
 
       <Container>
         <div>
-          <Feature id="feature">FEATURES</Feature>
-          <FeatureDescription>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-            euismod bibendum laoreet. Proin gravida dolor sit amet lacus
-            accumsan et viverra justo commodo.
-          </FeatureDescription>
-          <FeaturImgBig src={feature} />
-          <FeatureImgsContainer>
-            <FeaturImgSmall src={product_pic_3} />
-            <FeaturImgSmall src={product_pic_1} />
-            <FeaturImgSmall src={product_pic_3} />
-            <FeaturImgSmall src={product_pic_1} />
-          </FeatureImgsContainer>
-
+          <ArticleContainer dangerouslySetInnerHTML={Article(article)} />
           <TitleContainer id="spec">
             <Title>規格</Title>
           </TitleContainer>
@@ -754,16 +788,13 @@ export default function Product() {
           <Specification>
             <SpecificationTopic>尺寸 / 重量</SpecificationTopic>
             <SpecificationContent>
-              耳機: 高 10 公分 x 寬 10 公分 x 深 10 公分 (150 公克)
-              USB 連接線: 30 公分
+              耳機: 高 10 公分 x 寬 10 公分 x 深 10 公分 (150 公克) USB 連接線:
+              30 公分
             </SpecificationContent>
-            
+
             <SpecificationTopic>包裝盒內容物</SpecificationTopic>
             <SpecificationContent>
-              耳機
-              USB 充電連接線
-              音頻連接線
-              攜帶盒
+              耳機 USB 充電連接線 音頻連接線 攜帶盒
             </SpecificationContent>
           </Specification>
 
@@ -786,7 +817,7 @@ export default function Product() {
           </CloseModalButton>
           <CheckoutButton to="/">結帳</CheckoutButton>
         </Actions>
-      </Modal> */}
+      </Modal>
     </>
   );
 }

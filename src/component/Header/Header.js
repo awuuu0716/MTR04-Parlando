@@ -7,23 +7,34 @@ import member from '../../img/member.svg';
 import { selectIsBackstageMode, setIsBackstageMode } from '../../redux/reducers/themeSlice';
 import { selectUserLevel, setUserLevel, getMemberInfo } from '../../redux/reducers/usersSlice';
 import { selectCart, updateCart } from '../../redux/reducers/ordersSlice';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, getAuthToken, getCartToken, setCartToken } from '../../utils';
+import { device } from '../../style/breakpoints';
+
 
 const HeaderContainer = styled.div`
+  position: relative;
   height: 80px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 50px;
+  justify-content: flex-end;
+
   background: ${(props) => props.theme.background};
+
+  @media ${device.Mobiles} {
+    padding: 0 10px;
+  }
+  @media ${device.Tablets} {
+    padding: 20px;
+  }
+  @media ${device.Desktops} {
+  }
 `;
 const LinkContainer = styled.div`
   width: ${(props) => props.$width}px;
   display: flex;
   justify-content: space-between;
-  margin-left: ${(props) => props.$marginLeft}px;
+  margin-left: ${(props) => (props.$marginLeft ? props.$marginLeft : 0)}px;
 `;
 
 const IconContainer = styled.div`
@@ -43,6 +54,7 @@ const Nav = styled(Link)`
 `;
 
 const Logo = styled(Link)`
+  display: block;
   width: 200px;
   height: 55px;
   background: url(${logo}) no-repeat;
@@ -126,10 +138,59 @@ const CartTotal = styled.div`
   line-height: 1em;
 `;
 
+const FullHeaderContainer = styled.div`
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+  @media ${device.Mobiles} {
+    display: none;
+  }
+  @media ${device.Tablets} {
+  }
+  @media ${device.Laptop} {
+    display: flex;
+  }
+`;
+
+const MobileNavContainer = styled.div`
+  width: 100%;
+  justify-content: space-between;
+  align-items:center;
+  @media ${device.Mobiles} {
+    display: flex;
+  }
+  @media ${device.Laptop} {
+    display: none;
+  }
+`;
+
+const MenuModal = styled.div`
+  position: absolute;
+  display: ${(props) => (props.$isShow ? 'flex' : 'none')};
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  top: 80px;
+  right: 0px;
+  width: 200px;
+  background: #07273c;
+  z-index: 5;
+  transition: all 0.4s ease-in-out;
+`;
+
+const Hamburger = () => (
+  <svg viewBox="0 0 100 80" width="40" height="40" style={{ fill: 'white' }}>
+    <rect width="100" height="15" rx="8"></rect>
+    <rect y="30" width="100" height="15" rx="8"></rect>
+    <rect y="60" width="100" height="15" rx="8"></rect>
+  </svg>
+);
+
 export default function Header() {
   const [isShowProducts, setIsShowProducts] = useState(false);
-
   const cart = useSelector(selectCart);
+  const [isShowModal, setIsShowModal] = useState(false);
   const isBackstageMode = useSelector(selectIsBackstageMode);
   const userLevel = useSelector(selectUserLevel);
   const history = useHistory();
@@ -185,22 +246,68 @@ export default function Header() {
       {!isBackstageMode && (
         <>
           <HeaderContainer>
-            <Logo to="/" />
-            <LinkContainer $width={400}>
-              <Nav to="/about">關於我們</Nav>
-              <Nav to="/news">最新消息</Nav>
-              <Nav to="/products/all" onMouseEnter={handleMouseEnter}>
+            <FullHeaderContainer>
+              <Logo to="/" />
+              <LinkContainer $width={400}>
+                <Nav to="/about">關於我們</Nav>
+                <Nav to="/news">最新消息</Nav>
+                <Nav to="/products/all" onMouseEnter={handleMouseEnter}>
+                  選購商品
+                </Nav>
+              </LinkContainer>
+              <IconContainer $isLogin={userLevel === 'member'}>
+                <IconCartContainer>
+                  <IconCart onClick={handleGoShoppingCart} />
+                  {cart ? <CartTotal>{cart}</CartTotal> : ''}
+                </IconCartContainer>
+                <IconMember to="/membership/info" />
+                {userLevel === 'member' && <LogOut onClick={handleLogOut}>登出</LogOut>}
+              </IconContainer>
+            </FullHeaderContainer>
+
+            <MobileNavContainer>
+              <Logo to="/" />
+              <div onClick={() => setIsShowModal(!isShowModal)}>
+                <Hamburger />
+              </div>
+            </MobileNavContainer>
+
+            <MenuModal $isShow={isShowModal}>
+              <Nav to="/about" onClick={() => setIsShowModal(!isShowModal)}>
+                關於我們
+              </Nav>
+              <Nav to="/news" onClick={() => setIsShowModal(!isShowModal)}>
+                最新消息
+              </Nav>
+              <Nav
+                to="/products/all"
+                onClick={() => setIsShowModal(!isShowModal)}
+              >
                 選購商品
               </Nav>
-            </LinkContainer>
-            <IconContainer $isLogin={userLevel === 'member'}>
-              <IconCartContainer>
-                <IconCart onClick={handleGoShoppingCart} />
-                {cart ? <CartTotal>{cart}</CartTotal> : ''}
-              </IconCartContainer>
-              <IconMember to="/membership/info" />
-              {userLevel === 'member' && <LogOut onClick={handleLogOut}>登出</LogOut>}
-            </IconContainer>
+              <Nav
+                to="/shopping-cart"
+                onClick={() => setIsShowModal(!isShowModal)}
+              >
+                購物車
+              </Nav>
+              <Nav
+                to="/membership/info"
+                onClick={() => setIsShowModal(!isShowModal)}
+              >
+                會員專區
+              </Nav>
+              {userLevel === 'member' && (
+                <LogOut
+                  onClick={() => {
+                    handleLogOut();
+                    setIsShowModal(!isShowModal);
+                  }}
+                >
+                  登出
+                </LogOut>
+              )}
+            </MenuModal>
           </HeaderContainer>
 
           <HoverContainer $isShow={isShowProducts} onMouseLeave={handleMouseLeave}>

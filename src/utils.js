@@ -1,3 +1,5 @@
+const QuillDeltaToHtmlConverter = require('quill-delta-to-html')
+  .QuillDeltaToHtmlConverter;
 const TOKEN_NAME = 'token';
 const TOKEN_CART = 'cart';
 
@@ -60,7 +62,8 @@ export const isPriceValid = (price) => {
   if (!rule.test(price)) {
     return 0;
   }
-  return true
+
+  return true;
 };
 
 export const isProductNameValid = (productName) => {
@@ -91,7 +94,24 @@ export const handleDateFormat = (date) => {
   return date.slice(0, breakPoint);
 };
 
+export const handleOrderStatus = (status) => {
+  switch (status) {
+    case 1:
+      return '處理中';
+    case 2:
+      return '已出貨';
+    default:
+      return '未付款';
+  }
+};
 
 export const findOrder = (orders, id) => {
   return orders.filter((order) => order.id === id)[0];
+};
+
+export const getArticle = (data) => {
+  const cfg = {};
+  const deltaOps = JSON.parse(data).ops; 
+  const converter = new QuillDeltaToHtmlConverter(deltaOps, cfg);
+  return converter.convert()
 };
