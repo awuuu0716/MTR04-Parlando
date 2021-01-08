@@ -9,7 +9,6 @@ export const setAuthToken = (token) => {
 
 export const getAuthToken = () => localStorage.getItem(TOKEN_NAME);
 
-
 export const setOrderList = (token) => {
   localStorage.setItem(TOKEN_ORDER, token);
 };
@@ -70,6 +69,7 @@ export const isProductNameValid = (productName) => {
 
 export const initFormErrorData = () => {
   return {
+    username: { valid: true, message: '' },
     comfirmpassword: { valid: true, message: '' },
     realName: { valid: true, message: '' },
     email: { valid: true, message: '' },
@@ -99,7 +99,7 @@ export const findOrder = (orders, id) => {
 
 export const getArticle = (data) => {
   const cfg = {};
-  const deltaOps = JSON.parse(data).ops; 
+  const deltaOps = JSON.parse(data).ops;
   const converter = new QuillDeltaToHtmlConverter(deltaOps, cfg);
-  return converter.convert()
+  return converter.convert();
 };
