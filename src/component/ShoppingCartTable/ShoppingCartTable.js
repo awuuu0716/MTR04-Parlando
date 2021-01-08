@@ -87,6 +87,15 @@ const TableBody = styled(Li)`
   justify-content: space-around;
   height: 120px;
 `;
+const DeleteBtnContainer = styled.div`
+  position: relative;
+  &:hover {
+    .deleteTips {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+`;
 const DeleteBtn = styled(Trash)`
   fill: rgba(7, 39, 60, 0.7);
   width: 30px;
@@ -97,6 +106,35 @@ const DeleteBtn = styled(Trash)`
     fill: red;
   }
 `;
+const DeleteTip = styled.span`
+  visibility: hidden;
+  width: 140px;
+  background-color: lightcoral;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  font-size: 14px;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: lightcoral transparent transparent transparent;
+  }
+`;
+
 const ProductInfoContainer = styled(Link)`
   width: 600px;
   display: flex;
@@ -159,13 +197,8 @@ export default function ShoppingCartTable() {
         });
     });
     Promise.all(getOrderInfo).then((data) => {
-      cartInfo = cart.map((cart, index) =>
-        Object.assign({}, cart, data[index])
-      );
+      cartInfo = cart.map((cart, index) => Object.assign({}, cart, data[index]));
       setCartInfoList(cartInfo);
-
-      console.log("cartInfo: ", cartInfo);
-      
       const priceList = cartInfo.map((cart) => cart.price * cart.count);
       const amount = priceList.reduce((a, b) => a + b);
       setTotal(amount);
@@ -185,7 +218,7 @@ export default function ShoppingCartTable() {
     }
     const products = cart.map(({ productId, ...data }) => data);
 
-    console.log('cart: ', cart)
+    console.log('cart: ', cart);
     console.log('products: ', products);
 
     dispatch(addOrder(products)).then((res) => {
@@ -219,9 +252,14 @@ export default function ShoppingCartTable() {
                   <ProductInfo>{order.count}</ProductInfo>
                   <ProductInfo>NT${order.price * order.count}</ProductInfo>
                   <ProductInfo>
-                    <DeleteBtn
-                      onClick={() => handelDeleteOrder(order.modelId)}
-                    />
+                    <DeleteBtnContainer>
+                      <DeleteBtn onClick={() => handelDeleteOrder(order.modelId)} />
+                      <DeleteTip className={'deleteTips'}>
+                        嗚嗚嗚～
+                        <br />
+                        不要帶我走拉
+                      </DeleteTip>
+                    </DeleteBtnContainer>
                   </ProductInfo>
                 </TableBody>
               ))

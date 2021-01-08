@@ -121,6 +121,17 @@ const Icon = styled(Link)`
     background-color: rgb(251, 209, 168);
   }
 `;
+const IconGithub = styled.a`
+  display: block;
+  width: 50px;
+  height: 50px;
+  mask: url(${(props) => props.$icon}) no-repeat;
+  background-color: white;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(251, 209, 168);
+  }
+`;
 
 export default function Footer() {
   return (
@@ -143,19 +154,10 @@ export default function Footer() {
         <RightContainer>
           <Icon $icon={fb} to="/" />
           <Icon $icon={ig} to="/" />
-          <Icon $icon={github} to="/" />
+          <IconGithub $icon={github} target="_blank"  href="https://github.com/awuuu0716/MTR04-Parlando" />
         </RightContainer>
       </FooterTop>
       <FooterBottom>Made by MTR04 Team Parlando</FooterBottom>
     </Container>
   );
 }
-// @media ${device.Mobiles} {
-
-// }
-// @media ${device.Tablets} {
-
-// }
-// @media ${device.Desktops} {
-
-// }
