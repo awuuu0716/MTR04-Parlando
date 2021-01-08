@@ -72,7 +72,7 @@
 
 * Git － 版本控制
 
-* Responsive web design (RWD) -
+* Responsive web design (RWD) - 桌電、平版
 
 ### 前端介面
 

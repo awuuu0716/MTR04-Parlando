@@ -720,7 +720,7 @@ export default function Product() {
         <Anchor to={`${pathname}#support`}>支援</Anchor>
       </ProductNav>
 
-      {/* <Container>
+      <Container>
         <div>
           <ArticleContainer dangerouslySetInnerHTML={Article(article)} />
           <TitleContainer id="spec">
@@ -749,7 +749,7 @@ export default function Product() {
             <SupportTitle>聯絡客服</SupportTitle>
           </Support>
         </div>
-      </Container> */}
+      </Container>
 
       <Modal $isShowModal={isShowModal}>
         <h5>加入成功！</h5>
