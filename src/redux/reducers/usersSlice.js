@@ -89,9 +89,10 @@ export const login = ({ username, password }) => (dispatch) => {
 
 export const getMemberInfo = () => (dispatch) => {
   return getMemberInfoAPI().then((res) => {
+    console.log(res)
     if (!res.success) {
       setAuthToken('');
-      return;
+      return res;
     }
     if (res.data.admin) {
       dispatch(setUserLevel('admin'));
@@ -100,7 +101,7 @@ export const getMemberInfo = () => (dispatch) => {
     dispatch(setUserInfo(res.data.user));
     dispatch(setUserLevel('member'));
     return res;
-  });
+  }).catch(err=>console.log(err));
 };
 
 // selector

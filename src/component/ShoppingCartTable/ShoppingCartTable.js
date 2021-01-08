@@ -116,7 +116,7 @@ const ProductImg = styled.div`
 `;
 const NextBtn = styled(Button)`
   position: absolute;
-  bottom:-80px;
+  bottom: -80px;
   right: 0;
   margin-top: 40px;
   display: inline-block;
@@ -141,17 +141,20 @@ export default function ShoppingCartTable() {
     const getOrderInfo = productIds.map((id) => {
       return dispatch(getProduct(id))
         .then((res) => {
-          console.log(res);
           return res;
         })
         .catch((err) => {
-          console.log(err);
+          console.log('err: ', err);
         });
     });
     Promise.all(getOrderInfo).then((data) => {
-      cartInfo = cart.map((cart, index) => Object.assign({}, cart, data[index]));
+      cartInfo = cart.map((cart, index) =>
+        Object.assign({}, cart, data[index])
+      );
       setCartInfoList(cartInfo);
 
+      console.log("cartInfo: ", cartInfo);
+      
       const priceList = cartInfo.map((cart) => cart.price * cart.count);
       const amount = priceList.reduce((a, b) => a + b);
       setTotal(amount);
@@ -169,17 +172,19 @@ export default function ShoppingCartTable() {
     if (total >= 30000) {
       return alert('單筆訂單不得大於30000，請刪除部分訂單');
     }
-    // console.log(cart);
     const products = cart.map(({ productId, ...data }) => data);
+
+    console.log('cart: ', cart)
+    console.log('products: ', products);
+
     dispatch(addOrder(products)).then((res) => {
-      // console.log(res);
       if (!res.success) {
         return alert('結帳失敗，請聯絡客服，');
       }
       history.push(`/recipient/${res.data.UUID}`);
     });
   };
-  // console.log(cartInfoList);
+
   return (
     <>
       <Container>
@@ -203,7 +208,9 @@ export default function ShoppingCartTable() {
                   <ProductInfo>{order.count}</ProductInfo>
                   <ProductInfo>NT${order.price * order.count}</ProductInfo>
                   <ProductInfo>
-                    <DeleteBtn onClick={() => handelDeleteOrder(order.modelId)} />
+                    <DeleteBtn
+                      onClick={() => handelDeleteOrder(order.modelId)}
+                    />
                   </ProductInfo>
                 </TableBody>
               ))

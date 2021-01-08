@@ -232,7 +232,7 @@ export default function Header() {
   useEffect(() => {
     if (getAuthToken())
       dispatch(getMemberInfo()).then((res) => {
-        if (res.success) history.push('/');
+        if (!res.success) history.push('/');
       });
   }, [dispatch, history]);
 
