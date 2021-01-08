@@ -19,7 +19,6 @@ export const setCartToken = (token) => {
   localStorage.setItem(TOKEN_CART, JSON.stringify(token));
 };
 
-
 export const isLengthValid = (string) => string.length < 20;
 
 export const replaceInvalidWord = (string) => string.replaceAll(/\W/g, '').slice(0, 20);
@@ -73,6 +72,7 @@ export const isProductNameValid = (productName) => {
 
 export const initFormErrorData = () => {
   return {
+    username: { valid: true, message: '' },
     comfirmpassword: { valid: true, message: '' },
     realName: { valid: true, message: '' },
     email: { valid: true, message: '' },
@@ -111,7 +111,7 @@ export const findOrder = (orders, id) => {
 
 export const getArticle = (data) => {
   const cfg = {};
-  const deltaOps = JSON.parse(data).ops; 
+  const deltaOps = JSON.parse(data).ops;
   const converter = new QuillDeltaToHtmlConverter(deltaOps, cfg);
-  return converter.convert()
+  return converter.convert();
 };

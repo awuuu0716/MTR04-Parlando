@@ -41,8 +41,7 @@ export const signUp = ({ username, password, realName, email, phone }) => (
   return signUpAPI({ username, password, realName, email, phone }).then(
     (res) => {
       if (!res.success) {
-        dispatch(setErrorMessage(res.message));
-        return;
+        return res;
       }
       dispatch(setUserLevel('member'));
       setAuthToken(res.data.token);

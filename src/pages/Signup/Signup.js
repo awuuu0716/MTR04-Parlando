@@ -115,12 +115,26 @@ export default function Signup() {
     }
     dispatch(signUp({ username, password, realName, email, phone })).then(
       (res) => {
-        // 還需要處理 username 重複的情況
+        if (!res.success) {
+          setFormErrorData({
+            ...formErrorData,
+            username: { valid: false, message: res.message },
+          });
+          isSubmit.current = false;
+          return;
+        }
         isSubmit.current = false;
         history.push('/');
-        console.log(res);
       }
     );
+  };
+
+  const handleInputUsername = (e) => {
+    setUsername(replaceInvalidWord(e.target.value));
+    setFormErrorData({
+      ...formErrorData,
+      username: { valid: true, message: '' },
+    });
   };
 
   const checkPasswordConsistent = () => {
@@ -170,7 +184,7 @@ export default function Signup() {
               required
               value={username}
               placeholder="20 字以內英數字"
-              onChange={(e) => setUsername(replaceInvalidWord(e.target.value))}
+              onChange={handleInputUsername}
             ></Input>
             <ErrorMessage>{formErrorData.username.message}</ErrorMessage>
           </InputContainer>
@@ -184,7 +198,7 @@ export default function Signup() {
               onChange={(e) => setPassword(e.target.value.trim().slice(0, 20))}
               onBlur={checkPasswordConsistent}
             ></Input>
-            <ErrorMessage>{formErrorData.username.message}</ErrorMessage>
+            <ErrorMessage></ErrorMessage>
           </InputContainer>
           <InputContainer>
             <Label>確認密碼：</Label>
