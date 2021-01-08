@@ -95,7 +95,7 @@ export default function HomePage() {
     <>
       <BannerCarousel />
       <Promotion />
-      <ProductsContainer>
+      <ProductsContainer id="news">
         {promotionProducts.map((product) => (
           <ImgContainer
             $url={product.photos[0].url}
