@@ -86,7 +86,6 @@ const BtnWrapper = styled.div`
 
 export default function Transaction() {
   const { id } = useParams();
-  
   return (
     <>
       <Container>
