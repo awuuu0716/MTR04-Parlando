@@ -89,7 +89,7 @@ const Member = () => (
     <Route exact path="/payments/:id">
       {/* <Payments /> */}
     </Route>
-    <Route exact path="/transaction">
+    <Route exact path="/transaction/:id">
       <TransactionPage />
     </Route>
     <Route exact path="/membership/info">

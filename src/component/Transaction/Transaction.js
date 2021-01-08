@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import { useHistory, useParams } from 'react-router-dom';
+import { memo, useState, useEffect, useRef } from 'react';
+
 const Container = styled.div`
   margin: 80px auto;
   margin-bottom: 40px;
@@ -79,6 +82,8 @@ const BtnWrapper = styled.div`
   justify-content: center;
 `;
 export default function Transaction() {
+  const { id } = useParams();
+
   return (
     <>
       <Container>
@@ -86,13 +91,13 @@ export default function Transaction() {
           <H3>訂單成立</H3>
           <OrderDesc>
             您的訂單編號為
-            <OrderLink to="/order/xxxxx-12345"> xxxxx-12345</OrderLink>
+            <OrderLink to={`/membership/order/${id}`}> {id}</OrderLink>
             <OrderTips>若要查詢訂單狀況，請點選以下查詢訂單</OrderTips>
           </OrderDesc>
         </SuccessInfoWrapper>
         <BtnWrapper>
           <HomeBtn to="/">回到首頁</HomeBtn>
-          <OrderBtn to="/order">查詢訂單</OrderBtn>
+          <OrderBtn to="/membership/order">查詢訂單</OrderBtn>
         </BtnWrapper>
       </Container>
     </>
