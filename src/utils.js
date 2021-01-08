@@ -1,25 +1,28 @@
 const QuillDeltaToHtmlConverter = require('quill-delta-to-html')
   .QuillDeltaToHtmlConverter;
 const TOKEN_NAME = 'token';
-const TOKEN_ORDER = 'order';
+const TOKEN_CART = 'cart';
 
 export const setAuthToken = (token) => {
   localStorage.setItem(TOKEN_NAME, token);
 };
 
 export const getAuthToken = () => localStorage.getItem(TOKEN_NAME);
-
-
-export const setOrderList = (token) => {
-  localStorage.setItem(TOKEN_ORDER, token);
+export const getCartToken = () => {
+  if (localStorage.getItem(TOKEN_CART)) {
+    return JSON.parse(localStorage.getItem(TOKEN_CART));
+  }
+  return [];
 };
 
-export const getOrderList = () => localStorage.getItem(TOKEN_ORDER);
+export const setCartToken = (token) => {
+  localStorage.setItem(TOKEN_CART, JSON.stringify(token));
+};
+
 
 export const isLengthValid = (string) => string.length < 20;
 
-export const replaceInvalidWord = (string) =>
-  string.replaceAll(/\W/g, '').slice(0, 20);
+export const replaceInvalidWord = (string) => string.replaceAll(/\W/g, '').slice(0, 20);
 
 export const isPhoneValid = (phone) => {
   const rule = /^09[\d]{8}$/;
@@ -72,6 +75,15 @@ export const initFormErrorData = () => {
   return {
     comfirmpassword: { valid: true, message: '' },
     realName: { valid: true, message: '' },
+    email: { valid: true, message: '' },
+    phone: { valid: true, message: '' },
+  };
+};
+
+export const initRecipientFormErrorData = () => {
+  return {
+    address: { valid: true, message: '' },
+    name: { valid: true, message: '' },
     email: { valid: true, message: '' },
     phone: { valid: true, message: '' },
   };

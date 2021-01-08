@@ -177,7 +177,7 @@ export const linkProductPhotos = ({ id, photos }) => {
   }).then((res) => res.json());
 };
 
-//model
+// model
 export const getModel = (id) => {
   const token = getAuthToken();
   const authToken = token ? `Bearer ${token}` : '';
@@ -195,7 +195,7 @@ export const deleteModel = (id) => {
     headers: {
       Authorization: authToken,
     },
-  }).then((res) =>res.json());
+  }).then((res) => res.json());
 };
 export const updateModelStatus = ({ id, isShow }) => {
   const token = getAuthToken();
@@ -263,30 +263,54 @@ export const updateOrderStatue = (id) => {
   }).then((res) => res.json());
 };
 
-export const addOrder = ({ productName, price, article, type }) => {
+export const addOrder = (products) => {
+  console.log(products);
   const token = getAuthToken();
-  const authToken = `Bearer ${token}`;
-
-  return fetch(`${BASE_URL}/products/`, {
+  const authToken = token ? `Bearer ${token}` : '';
+  return fetch(`${BASE_URL}/orders`, {
     method: 'POST',
     headers: {
       Authorization: authToken,
-      'content-type': 'application/json;charset=utf-8',
+      'Content-Type': 'application/json;charset=utf-8',
     },
-    body: JSON.stringify({ productName, price, article, type }),
+    body: JSON.stringify({ products:products }),
   }).then((res) => res.json());
 };
 
-export const addRecipient = ({ productName, price, article, type }) => {
+export const addRecipient = ({ orderId, name, phone, email, address, cityId, districtId }) => {
   const token = getAuthToken();
-  const authToken = `Bearer ${token}`;
-  
-  return fetch(`${BASE_URL}/products/`, {
+  const authToken = token ? `Bearer ${token}` : '';
+  return fetch(`${BASE_URL}/recipients/${orderId}`, {
     method: 'POST',
     headers: {
       Authorization: authToken,
-      'content-type': 'application/json;charset=utf-8',
+      'Content-Type': 'application/json;charset=utf-8',
     },
-    body: JSON.stringify({ productName, price, article, type }),
+    body: JSON.stringify({ name, phone, email, address, cityId, districtId }),
+  }).then((res) => res.json());
+};
+export const payment = (uuid) => {
+  const token = getAuthToken();
+  const authToken = `Bearer ${token}`;
+
+  return fetch(`${BASE_URL}/payments/${uuid}`, {
+    method: 'GET',
+    headers: {
+      Authorization: authToken,
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  }).then((res) => res.text())
+};
+
+// address
+export const getCities = () => {
+  return fetch(`${BASE_URL}/cities`, {
+    method: 'GET',
+  }).then((res) => res.json());
+};
+
+export const getDistricts = (id) => {
+  return fetch(`${BASE_URL}/districts?cityId=${id}`, {
+    method: 'GET',
   }).then((res) => res.json());
 };

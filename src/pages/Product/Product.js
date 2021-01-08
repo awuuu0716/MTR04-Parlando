@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import product_pic_1 from '../../img/product_pic_1.webp';
 import product_pic_3 from '../../img/carousel_4.webp';
@@ -8,7 +8,8 @@ import feature from '../../img/feature.jpg';
 import preload from '../../img/preload.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct, selectProduct } from '../../redux/reducers/productsSlice';
-import { getArticle } from '../../utils';
+import { updateCart } from '../../redux/reducers/ordersSlice';
+import { getCartToken, setCartToken, getArticle } from '../../utils';
 import { device } from '../../style/breakpoints';
 
 const Container = styled.div`
@@ -576,24 +577,30 @@ const ArticleContainer = styled.div`
 `;
 export default function Product() {
   const { id } = useParams();
+  const history = useHistory();
   const dispatch = useDispatch();
   const product = useSelector(selectProduct);
   const [picList, setPicList] = useState([]);
   const [nowPicIndex, setNowPicIndex] = useState(0);
   const [amount, setAmount] = useState(1);
   const [isShowModal, setIsShowModal] = useState(false);
+  const [selectedModelId, setSelectedModelId] = useState('');
   const [models, setModels] = useState([]);
   const [storage, setStorage] = useState('');
   const [article, setArticle] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const { pathname } = useLocation();
+  let cart = getCartToken();
   const isLoading = useRef(true);
 
   const handleShowModal = (state) => {
     setIsShowModal(state);
   };
 
-  const addAmount = () => setAmount(amount + 1);
+  const addAmount = () => {
+    if (amount === 9) return;
+    setAmount(amount + 1);
+  };
 
   const minusAmount = () => setAmount(amount - 1 <= 0 ? 1 : amount - 1);
 
@@ -656,8 +663,7 @@ export default function Product() {
       isLoading.current = false;
       setPicList(
         res.photos.map((url, index) => {
-          if (index === 0)
-            return { src: url, isActive: true, id: `photo-${index}` };
+          if (index === 0) return { src: url, isActive: true, id: `photo-${index}` };
           return { src: url, isActive: false, id: `photo-${index}` };
         })
       );
@@ -669,8 +675,39 @@ export default function Product() {
       setSelectedModel(defaultColor);
       setStorage(defaultStorage);
     });
+    return () => {
+      setModels([]);
+      setSelectedModel('');
+      setSelectedModelId('');
+      setStorage('');
+    };
   }, [dispatch, id]);
 
+  const handleAddCart = (goPayment) => {
+    const checkHasOrder = cart.filter((item) => item.modelId === selectedModelId);
+    if (checkHasOrder.length !== 0) {
+      const NewCart = cart.map((data, index) => {
+        if (data.modelId === selectedModelId) {
+          return {
+            ...data,
+            count: data.count + amount,
+          };
+        }
+        if (data.modelId !== selectedModelId && index === cart.length - 1) {
+          return { productId:id, modelId: selectedModelId, count: amount };
+        }
+        return data;
+      });
+      setCartToken(NewCart);
+    } else {
+      cart.push({ productId:id ,modelId: selectedModelId, count: amount });
+      setCartToken(cart);
+      dispatch(updateCart());
+    }
+    if (goPayment) {
+      history.push('/shopping-cart');
+    }
+  };
   return (
     <>
       <Container>
@@ -683,12 +720,7 @@ export default function Product() {
         <ProductContainer>
           <PhotosContainer>
             {picList.map((data, index) => (
-              <Thumbnail
-                $active={data.isActive}
-                src={data.src}
-                onClick={() => handleChangePic(index)}
-                key={data.id}
-              />
+              <Thumbnail $active={data.isActive} src={data.src} onClick={() => handleChangePic(index)} key={data.id} />
             ))}
           </PhotosContainer>
 
@@ -731,10 +763,10 @@ export default function Product() {
               <AmountButton onClick={addAmount}>+</AmountButton>
             </Amount>
             <div>
-              <AddToCart onClick={() => handleShowModal(true)}>
-                ADD TO CART
-              </AddToCart>
-              <Buy to="/">BUY</Buy>
+              <AddToCart onClick={() => handleAddCart(false)}>ADD TO CART</AddToCart>
+              <Buy to="/" onClick={() => handleAddCart(true)}>
+                BUY
+              </Buy>
             </div>
           </ProductInfomationContainer>
         </ProductContainer>

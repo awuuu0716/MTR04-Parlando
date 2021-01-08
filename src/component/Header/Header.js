@@ -4,18 +4,13 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 import logo from '../../img/logo.svg';
 import cart from '../../img/cart.svg';
 import member from '../../img/member.svg';
-import {
-  selectIsBackstageMode,
-  setIsBackstageMode,
-} from '../../redux/reducers/themeSlice';
-import {
-  selectUserLevel,
-  setUserLevel,
-  getMemberInfo,
-} from '../../redux/reducers/usersSlice';
+import { selectIsBackstageMode, setIsBackstageMode } from '../../redux/reducers/themeSlice';
+import { selectUserLevel, setUserLevel, getMemberInfo } from '../../redux/reducers/usersSlice';
+import { selectCart, updateCart } from '../../redux/reducers/ordersSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken, getAuthToken } from '../../utils';
+import { setAuthToken, getAuthToken, getCartToken, setCartToken } from '../../utils';
 import { device } from '../../style/breakpoints';
+
 
 const HeaderContainer = styled.div`
   position: relative;
@@ -66,7 +61,12 @@ const Logo = styled(Link)`
   cursor: pointer;
 `;
 
-const IconCart = styled(Link)`
+const IconCartContainer = styled.div`
+  position: relative;
+`;
+
+const IconCart = styled.div`
+  display: inline-block;
   width: 40px;
   height: 40px;
   cursor: pointer;
@@ -109,11 +109,7 @@ const BackstageHeader = ({ isLogin, handleLogOut }) => {
   return (
     <HeaderContainer>
       <Logo to="/" />
-      {isLogin ? (
-        <LogOut onClick={handleLogOut}>登出</LogOut>
-      ) : (
-        <Nav to="/backstage/adminLogin">登入</Nav>
-      )}
+      {isLogin ? <LogOut onClick={handleLogOut}>登出</LogOut> : <Nav to="/backstage/adminLogin">登入</Nav>}
     </HeaderContainer>
   );
 };
@@ -127,6 +123,19 @@ const LogOut = styled.div`
     color: rgb(251, 209, 168);
     text-decoration: none;
   }
+`;
+const CartTotal = styled.div`
+  text-align: center;
+  background-color: #f65e60;
+  border-radius: 50%;
+  color: white;
+  width: 20px;
+  height: 20px;
+  font-size: 18px;
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  line-height: 1em;
 `;
 
 const FullHeaderContainer = styled.div`
@@ -180,6 +189,7 @@ const Hamburger = () => (
 
 export default function Header() {
   const [isShowProducts, setIsShowProducts] = useState(false);
+  const cart = useSelector(selectCart);
   const [isShowModal, setIsShowModal] = useState(false);
   const isBackstageMode = useSelector(selectIsBackstageMode);
   const userLevel = useSelector(selectUserLevel);
@@ -193,10 +203,21 @@ export default function Header() {
   };
 
   const handleMouseLeave = () => setIsShowProducts(false);
-
+  const handleGoShoppingCart = () => {
+    if (userLevel !== 'member') {
+      alert('請先登入會員！');
+      return history.push('/login');
+    }
+    if (!cart) {
+      alert('目前購物車是空的，請先去購物唷！');
+      return history.push('/products/all');
+    }
+    return history.push('/shopping-cart');
+  };
   const handleLogOut = () => {
     dispatch(setUserLevel('guest'));
     setAuthToken('');
+    setCartToken([]);
     history.push('/');
   };
 
@@ -215,14 +236,13 @@ export default function Header() {
       });
   }, [dispatch, history]);
 
+  useEffect(() => {
+    dispatch(updateCart());
+  });
+
   return (
     <>
-      {isBackstageMode && (
-        <BackstageHeader
-          handleLogOut={handleLogOut}
-          isLogin={userLevel === 'admin'}
-        />
-      )}
+      {isBackstageMode && <BackstageHeader handleLogOut={handleLogOut} isLogin={userLevel === 'admin'} />}
       {!isBackstageMode && (
         <>
           <HeaderContainer>
@@ -236,11 +256,12 @@ export default function Header() {
                 </Nav>
               </LinkContainer>
               <IconContainer $isLogin={userLevel === 'member'}>
-                <IconCart to="/shopping-cart" />
+                <IconCartContainer>
+                  <IconCart onClick={handleGoShoppingCart} />
+                  {cart ? <CartTotal>{cart}</CartTotal> : ''}
+                </IconCartContainer>
                 <IconMember to="/membership/info" />
-                {userLevel === 'member' && (
-                  <LogOut onClick={handleLogOut}>登出</LogOut>
-                )}
+                {userLevel === 'member' && <LogOut onClick={handleLogOut}>登出</LogOut>}
               </IconContainer>
             </FullHeaderContainer>
 
@@ -289,10 +310,7 @@ export default function Header() {
             </MenuModal>
           </HeaderContainer>
 
-          <HoverContainer
-            $isShow={isShowProducts}
-            onMouseLeave={handleMouseLeave}
-          >
+          <HoverContainer $isShow={isShowProducts} onMouseLeave={handleMouseLeave}>
             <LinkContainer $width={550} $marginLeft={110}>
               <Nav to="/products/1">耳罩式耳機</Nav>
               <Nav to="/products/2">入耳式耳機</Nav>

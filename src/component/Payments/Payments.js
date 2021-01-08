@@ -1,9 +1,7 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-
-import { useHistory, useParams } from 'react-router-dom';
-import { memo, useState, useEffect, useRef } from 'react';
-
+import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { payment } from '../../WebAPI';
 const Container = styled.div`
   margin: 80px auto;
   margin-bottom: 40px;
@@ -81,25 +79,29 @@ const BtnWrapper = styled.div`
   margin: 30px auto;
   justify-content: center;
 `;
-export default function Transaction() {
+export default function Payments() {
   const { id } = useParams();
+  const [form, setForm] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    window.location =`https://huiming.tw/v1/payments/${id}`
+    // payment(id).then((html) => {
+    //   const parser = new DOMParser();
+    //   const doc = parser.parseFromString(html, 'text/html');
+    //   document.body.innerHTML = html;
+    //   console.log(html)
+    //   console.log(doc)
+
+      // console.log(array);
+      // setForm(array);
+      // setIsLoaded(true);
+    // });
+  }, []);
 
   return (
     <>
-      <Container>
-        <SuccessInfoWrapper>
-          <H3>訂單成立</H3>
-          <OrderDesc>
-            您的訂單編號為
-            <OrderLink to={`/membership/order/${id}`}> {id}</OrderLink>
-            <OrderTips>若要查詢訂單狀況，請點選以下查詢訂單</OrderTips>
-          </OrderDesc>
-        </SuccessInfoWrapper>
-        <BtnWrapper>
-          <HomeBtn to="/">回到首頁</HomeBtn>
-          <OrderBtn to="/membership/order">查詢訂單</OrderBtn>
-        </BtnWrapper>
-      </Container>
+      {/* <Container>{isLoaded ? form.map((item) => item) : ''}</Container> */}
     </>
   );
 }
