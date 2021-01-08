@@ -8,6 +8,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import About from '../../pages/About'
 import Info from '../../pages/Info';
 import CheckOrder from '../../pages/CheckOrder';
 import HomePage from '../../pages/Homepage';
@@ -101,6 +102,9 @@ function App() {
           </Route>
           <Route exact path="/backstage/adminLogin">
             <Auth component={AdminLogin} role="guest" />
+          </Route>
+          <Route exact path="/about">
+            <Auth component={About} role="guest" />
           </Route>
           {/* member */}
           <Route exact path="/shopping-cart">
