@@ -10,7 +10,17 @@ import { selectCart, updateCart } from '../../redux/reducers/ordersSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, getAuthToken, getCartToken, setCartToken } from '../../utils';
 import { device } from '../../style/breakpoints';
+import { HashLink } from 'react-router-hash-link';
 
+const Anchor = styled(HashLink)`
+  color: white;
+  font-size: 24px;
+
+  &:hover {
+    color: rgb(251, 209, 168);
+    text-decoration: none;
+  }
+`;
 
 const HeaderContainer = styled.div`
   position: relative;
@@ -242,7 +252,12 @@ export default function Header() {
 
   return (
     <>
-      {isBackstageMode && <BackstageHeader handleLogOut={handleLogOut} isLogin={userLevel === 'admin'} />}
+      {isBackstageMode && (
+        <BackstageHeader
+          handleLogOut={handleLogOut}
+          isLogin={userLevel === 'admin'}
+        />
+      )}
       {!isBackstageMode && (
         <>
           <HeaderContainer>
@@ -250,7 +265,7 @@ export default function Header() {
               <Logo to="/" />
               <LinkContainer $width={400}>
                 <Nav to="/about">關於我們</Nav>
-                <Nav to="/news">最新消息</Nav>
+                <Anchor to="/#news">最新消息</Anchor>
                 <Nav to="/products/all" onMouseEnter={handleMouseEnter}>
                   選購商品
                 </Nav>
@@ -261,7 +276,9 @@ export default function Header() {
                   {cart ? <CartTotal>{cart}</CartTotal> : ''}
                 </IconCartContainer>
                 <IconMember to="/membership/info" />
-                {userLevel === 'member' && <LogOut onClick={handleLogOut}>登出</LogOut>}
+                {userLevel === 'member' && (
+                  <LogOut onClick={handleLogOut}>登出</LogOut>
+                )}
               </IconContainer>
             </FullHeaderContainer>
 
@@ -310,7 +327,10 @@ export default function Header() {
             </MenuModal>
           </HeaderContainer>
 
-          <HoverContainer $isShow={isShowProducts} onMouseLeave={handleMouseLeave}>
+          <HoverContainer
+            $isShow={isShowProducts}
+            onMouseLeave={handleMouseLeave}
+          >
             <LinkContainer $width={550} $marginLeft={110}>
               <Nav to="/products/1">耳罩式耳機</Nav>
               <Nav to="/products/2">入耳式耳機</Nav>
