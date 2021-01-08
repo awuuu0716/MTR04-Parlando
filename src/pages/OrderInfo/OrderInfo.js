@@ -98,7 +98,7 @@ export default function OrderInfo() {
   useEffect(() => {
     dispatch(getOrder(id)).then(() => setIsLoaded(true));
   }, [dispatch, id]);
-
+  console.log(order)
   return (
     <Container>
       <MemberNav />
@@ -115,7 +115,9 @@ export default function OrderInfo() {
           </Li>
           <Li>
             <Header>訂購日期</Header>
-            <Info $flex={3}>{isLoaded ? handleDateFormat(order.createdAt) : 'loading...'}</Info>
+            <Info $flex={3}>
+              {isLoaded ? handleDateFormat(order.createdAt) : 'loading...'}
+            </Info>
             <Header>付款方式</Header>
             <Info $flex={2}>信用卡</Info>
           </Li>
@@ -133,16 +135,15 @@ export default function OrderInfo() {
               </OrderContent>
             </Info>
             <HeaderFat>訂單金額</HeaderFat>
-            <Info $flex={2}>NT$ {order.totalPrice || 'Loading...'}</Info>
+            <Info $flex={2}>NT$ {isLoaded ? order.totalPrice : 'loading...'}</Info>
           </Li>
           <Li>
             <HeaderFat>收貨地點</HeaderFat>
-            <Info $flex={6}>{order.recipient[0].address || 'Loading...'}</Info>
+            <Info $flex={6}>{isLoaded ? order.recipient[0].address : 'loading...'}</Info>
           </Li>
         </Ul>
         <OptionContainer>
           <Back to="/membership/order">回到上頁</Back>
-
         </OptionContainer>
       </section>
     </Container>

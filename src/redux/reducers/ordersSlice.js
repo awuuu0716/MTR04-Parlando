@@ -6,7 +6,7 @@ export const ordersSlice = createSlice({
   name: 'orders',
   initialState: {
     orders: [],
-    order: {},
+    order: [],
     cart: [],
   },
   reducers: {

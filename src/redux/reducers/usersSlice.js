@@ -89,7 +89,6 @@ export const login = ({ username, password }) => (dispatch) => {
 
 export const getMemberInfo = () => (dispatch) => {
   return getMemberInfoAPI().then((res) => {
-    console.log(res)
     if (!res.success) {
       setAuthToken('');
       return res;
