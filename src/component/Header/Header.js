@@ -5,12 +5,11 @@ import logo from '../../img/logo.svg';
 import cart from '../../img/cart.svg';
 import member from '../../img/member.svg';
 import { selectIsBackstageMode, setIsBackstageMode } from '../../redux/reducers/themeSlice';
-import { selectUserLevel, setUserLevel, getMemberInfo } from '../../redux/reducers/usersSlice';
+import { selectUserLevel, setUserLevel, getMemberInfo, setUserInfo } from '../../redux/reducers/usersSlice';
 import { selectCart, updateCart } from '../../redux/reducers/ordersSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken, getAuthToken, getCartToken, setCartToken } from '../../utils';
 import { device } from '../../style/breakpoints';
-
 
 const HeaderContainer = styled.div`
   position: relative;
@@ -156,7 +155,7 @@ const FullHeaderContainer = styled.div`
 const MobileNavContainer = styled.div`
   width: 100%;
   justify-content: space-between;
-  align-items:center;
+  align-items: center;
   @media ${device.Mobiles} {
     display: flex;
   }
@@ -216,6 +215,7 @@ export default function Header() {
   };
   const handleLogOut = () => {
     dispatch(setUserLevel('guest'));
+    dispatch(setUserInfo({}));
     setAuthToken('');
     setCartToken([]);
     history.push('/');
@@ -279,22 +279,13 @@ export default function Header() {
               <Nav to="/news" onClick={() => setIsShowModal(!isShowModal)}>
                 最新消息
               </Nav>
-              <Nav
-                to="/products/all"
-                onClick={() => setIsShowModal(!isShowModal)}
-              >
+              <Nav to="/products/all" onClick={() => setIsShowModal(!isShowModal)}>
                 選購商品
               </Nav>
-              <Nav
-                to="/shopping-cart"
-                onClick={() => setIsShowModal(!isShowModal)}
-              >
+              <Nav to="/shopping-cart" onClick={() => setIsShowModal(!isShowModal)}>
                 購物車
               </Nav>
-              <Nav
-                to="/membership/info"
-                onClick={() => setIsShowModal(!isShowModal)}
-              >
+              <Nav to="/membership/info" onClick={() => setIsShowModal(!isShowModal)}>
                 會員專區
               </Nav>
               {userLevel === 'member' && (
@@ -302,8 +293,7 @@ export default function Header() {
                   onClick={() => {
                     handleLogOut();
                     setIsShowModal(!isShowModal);
-                  }}
-                >
+                  }}>
                   登出
                 </LogOut>
               )}
