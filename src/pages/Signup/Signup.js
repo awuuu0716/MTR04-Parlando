@@ -105,6 +105,7 @@ export default function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     if (isSubmit.current) return;
     isSubmit.current = true;
     for (let prop in formErrorData) {

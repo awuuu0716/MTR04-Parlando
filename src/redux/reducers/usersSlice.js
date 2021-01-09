@@ -45,7 +45,7 @@ export const signUp = ({ username, password, realName, email, phone }) => (
       }
       dispatch(setUserLevel('member'));
       setAuthToken(res.data.token);
-      return res.data.token;
+      return res;
     }
   );
 };
