@@ -77,8 +77,8 @@ Parlando 為音響品牌官網，使用者身份為遊客、會員、管理員�
 ### 前端介面
 
 #### 前台 - 首頁
-![Imgur](https://imgur.com/5Y19nA3.gif)
-![首頁](https://imgur.com/aYM3KDL.gif)
+![首頁](https://imgur.com/bunFgaN.png)
+![首頁](https://i.imgur.com/0aGoFHU.png)
 
 #### 前台 - 商品列表 / 資訊 
 ![商品列表](https://i.imgur.com/BIHJnK2.gif)
