@@ -20,7 +20,7 @@
 [後端專案連結](https://github.com/hero19931012/mtr04-express-parlando.git)
 
 ### 簡介
-Parlando 為音響品牌官網，使用者身份為遊客、會員、管理員，功能如下：
+Parlando 為一間假想的音響品牌官網，使用 React.js 建立前端頁面，配搭 Node.js 後端 api 的前後端分離網站，使用者身份為訪客、會員、管理員，功能如下：
 
 * 會員註冊 / 登入 
 
@@ -36,8 +36,9 @@ Parlando 為音響品牌官網，使用者身份為遊客、會員、管理員�
 
 ### Demo
 
-[Demo－前台](https://www.parlando.tw/)
-[Demo－後台](https://www.parlando.tw/#/backStage/adminLogin)
+[前台](https://www.parlando.tw/)
+
+[後台](https://www.parlando.tw/#/backStage/adminLogin)
 
 #### 測試帳號
 
@@ -53,6 +54,13 @@ Parlando 為音響品牌官網，使用者身份為遊客、會員、管理員�
 
 ```
 
+結帳部分請使用測試用信用卡帳戶：
+
+卡號：4311-9522-2222-2222
+
+安全碼：222
+
+有效年月:請設定大於測試時間。假如您的測試時間在2013年11月26號，該筆交易的信用卡有效年月請設定2013年11月以後，因為系統會判斷有效年月是否已過期，已過期則會回應刷卡失敗。
 
 ### 使用技術
 
@@ -60,19 +68,25 @@ Parlando 為音響品牌官網，使用者身份為遊客、會員、管理員�
   
 * React Router - 路由管理
 
-* Redux Toolkit
+* Redux Toolkit - 元件狀態管理
 
-* styled-components 
+* styled-components - 使用 CSS-IN-JS 處理版面配置、動態更改 CSS
 
 * react-bootstrap － 首頁輪播
 
-* quill - 新增、編輯商品文案
+* quill - 新增、編輯商品文案編輯器，提供簡易網頁排版功能及上傳圖片
 
 * Grid － 瀏覽商品頁採用 grid 排版
 
-* Git － 版本控制
+* Git － 版本控制、基本上以各個 Feature 或是修正某問題為分支單位，完成功能後在 GitHub 上發起 PR，小組成員互相 code review 後 merge 至 master 分支以便部署
 
-* Responsive web design (RWD) 
+* Responsive web design (RWD) - 網頁排版自適應大部分瀏覽器
+
+* gh-pages - 快速部署前端應用程式 
+
+* LocalStorage - 儲存身份認證的 JWT、購物車資訊
+
+* fetch - 與後端 API 資料交換
 
 ### 前端介面
 
@@ -136,6 +150,8 @@ npm install
 yarn start
 ```
 
+### 資料引用來源
+[unsplash](https://unsplash.com/)
 
 ## 聲明
 本網站僅作為個人練習，註冊時請勿使用真實資料。另本網站包含之圖片與內容僅作練習使用，不作任何商業用途。
