@@ -70,7 +70,6 @@ export default function CheckOrder() {
 
   useEffect(() => {
     dispatch(getOrders());
-    console.log(orders)
   }, [dispatch]);
 
   return (

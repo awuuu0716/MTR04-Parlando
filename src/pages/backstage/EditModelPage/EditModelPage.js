@@ -3,11 +3,11 @@ import { useState, useEffect, useRef } from 'react';
 import Aside from '../../../component/Aside';
 import { ButtonLight } from '../../../component/Button';
 import { device } from '../../../style/breakpoints';
-import Input, { InputSelect, InputTitle, InputContainer, ErrorMessage, HeaderContainer } from '../../../component/Input';
+import Input, { InputSelect, InputContainer } from '../../../component/Input';
 import { isColorChipValid, isModelNameValid, isStorageValid } from '../../../utils';
 import { useParams, useHistory } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { getModel, updateModel, selectModel } from '../../../redux/reducers/modelsSlice';
+import { useDispatch } from 'react-redux';
+import { getModel, updateModel } from '../../../redux/reducers/modelsSlice';
 const Root = styled.div`
   max-width: 1280px;
   margin: 0 auto;
@@ -42,7 +42,6 @@ const Form = styled.form`
   max-width: 100%;
   padding: 24px;
   position: relative;
-  /* height: 730px; */
   padding-bottom: 7em;
   box-shadow: 0px 1px 4px 1px ${(props) => props.theme.shadow};
   @media ${device.Tablets} {
@@ -70,7 +69,6 @@ export default function EditModelPage() {
   const { id } = useParams();
   const history = useHistory();
   const isSubmit = useRef(false);
-  const model = useSelector(selectModel);
   const dispatch = useDispatch();
   const [modelErrorMessage, setModelErrorMessage] = useState(modelErrorMessageInit);
   const [modelName, setModelName] = useState('');

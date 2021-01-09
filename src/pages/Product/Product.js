@@ -523,8 +523,8 @@ export default function Product() {
   const [article, setArticle] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const { pathname } = useLocation();
-  let cart = getCartToken();
   const isLoading = useRef(true);
+  let cart = getCartToken();
 
   const handleShowModal = (state) => {
     setIsShowModal(state);
@@ -639,7 +639,6 @@ export default function Product() {
       });
       setCartToken(NewCart);
       setIsShowModal(true);
-      console.log(isShowModal);
     } else {
       cart.push({ productId: id, modelId: selectedModelId, count: amount });
       setCartToken(cart);

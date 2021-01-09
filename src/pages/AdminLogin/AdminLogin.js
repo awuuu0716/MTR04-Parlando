@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectErrorMessage,
@@ -46,22 +46,6 @@ const OptionsContainer = styled.div`
   display: flex;
   margin-top: 20px;
   justify-content: space-around;
-`;
-
-const SignUpLink = styled(Link)`
-  display: flex;
-  margin-right: 10px;
-  color: #1c79b7;
-  font-size: 16px;
-  font-weight: bold;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: none;
-    transform: scale(1.2);
-  }
 `;
 
 const LoginButton = styled.button`

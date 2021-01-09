@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getOrders as getOrdersAPI, getOrder as getOrderAPI, updateOrderStatue as updateOrderStatueAPI, addOrder as addOrderAPI } from '../../WebAPI';
-import { getCartToken, setCartToken } from '../../utils';
+import { getCartToken } from '../../utils';
 
 export const ordersSlice = createSlice({
   name: 'orders',
