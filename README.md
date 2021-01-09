@@ -2,44 +2,25 @@
 ![](https://i.imgur.com/jqlYdUm.png)
 
 ### 目錄
+- [起源](#起源)
 - [簡介](#簡介)
 - [Demo](#Demo)
-- [平台功能](#平台功能)
 - [使用技術](#使用技術)
 - [操作介面](#操作介面)
 - [專案安裝流程](#專案安裝流程)
 - [聲明](#聲明)
 
+### 起源
+此專案為 [程式導師實驗計畫第四期](https://github.com/Lidemy/mentor-program-4th) 的 Final project 藉由實作過程練習課程所學。
+
+團隊成員包含
+前端：[awuuu0716](https://github.com/awuuu0716)、[vick12052002](https://github.com/vick12052002)
+
+後端：[huiming](https://github.com/hero19931012) 
+[後端專案連結](https://github.com/hero19931012/mtr04-express-parlando.git)
+
 ### 簡介
-此專案為 [程式導師實驗計畫第四期](https://github.com/Lidemy/mentor-program-4th) 的 Final project - Parlando 後端專案，藉由實作過程練習課程所學。團隊成員包含 [awuuu0716](https://github.com/awuuu0716), [vick12052002](https://github.com/vick12052002) 與 [huiming](https://github.com/hero19931012)，使用 React + Express 前後端分離開發，專案主題為音樂品牌官網，主要功能為使用者註冊、查看商品、加入購物車、結帳，管理員可以上架與管理商品。
-
-#### 起源
-專案發想自 MTR04-餐廳官網練習作業，在學習到 React 與後端 Node.js 後我決定試著從零開始打造一個前後端分離的 SPA 網站，讓使用者擁有像是 APP 般的使用體驗，輕鬆了解一家餐廳，並且能夠直接在網頁上訂位，無需浪費寶貴的電話費~
-
-[後端專案](https://github.com/hero19931012/mtr04-express-parlando.git)  
-
-### Demo
-
-[Demo Link](https://www.parlando.tw/)
-
-[操作流程](https://gist.github.com/jedy05097952/63762af683b032a1c3a738d065e753dd)
-
-#### 測試帳號
-
-前台也可以自行註冊個帳號試試～
-```
-  前台
-    帳號：lidemymtr
-    密碼：mtr04fp
-  
-  後台
-    帳號：Leo
-    密碼：Leo
-
-```
-
-
-### 平台功能
+Parlando 為音響品牌官網，使用者身份為遊客、會員、管理員，功能如下：
 
 * 會員註冊 / 登入 
 
@@ -51,7 +32,26 @@
 
 * 管理商品 (新增、上下架、商品文案)
 
-* 管理訂單
+* 管理訂單 
+
+### Demo
+
+[Demo－前台](https://www.parlando.tw/)
+[Demo－後台](https://www.parlando.tw/#/backStage/adminLogin)
+
+#### 測試帳號
+
+前台也可以自行註冊個帳號試試～
+```
+  前台
+    帳號：Leo
+    密碼：Leo
+  
+  後台
+    帳號：lidemymtr
+    密碼：mtr04fp
+
+```
 
 
 ### 使用技術
@@ -60,39 +60,64 @@
   
 * React Router - 路由管理
 
-* Redux 
+* Redux Toolkit
 
 * styled-components 
 
-* react-bootstrap
+* react-bootstrap － 首頁輪播
 
 * quill - 新增、編輯商品文案
 
-* Grid － 瀏覽商品頁採用 grid
+* Grid － 瀏覽商品頁採用 grid 排版
 
 * Git － 版本控制
 
-* Responsive web design (RWD) - 桌電、平版
+* Responsive web design (RWD) 
 
 ### 前端介面
 
 #### 前台 - 首頁
-
+![Imgur](https://imgur.com/5Y19nA3.gif)
+![首頁](https://imgur.com/aYM3KDL.gif)
 
 #### 前台 - 商品列表 / 資訊 
-
+![商品列表](https://i.imgur.com/BIHJnK2.gif)
+![dew](https://i.imgur.com/Pym5DOH.gif)
 
 #### 前台 - 登入 / 註冊
-
+![登入](https://imgur.com/fnu2s8S.png)
+![註冊](https://i.imgur.com/AeP5vlK.png)
 
 #### 前台 - 會員資訊 / 編輯會員資料
+![會員資料](https://i.imgur.com/fx0lD82.png)
+![編輯會員資料](https://i.imgur.com/nkTWDDn.png)
 
 #### 前台 - 查詢訂單 
+![查詢訂單](https://i.imgur.com/3mC5c51.png)
+
+#### 前台 - 關於我們
+![關於我們](https://i.imgur.com/MqveSzz.png)
 
 #### 前台 - 購物車 
+![訂單成立](https://i.imgur.com/dleJJ12.png)
+
+#### 後台 - 入口 ( 登入 )
+![後台登入](https://i.imgur.com/bLzAdGr.png)
+![後台登入](https://i.imgur.com/eL3tCci.png)
+
+#### 後台 - 商品管理 
+![所有商品](https://i.imgur.com/TiNEVOf.png)
+![所有商品型號](https://i.imgur.com/kaoB0JX.png)
+![新增商品型號](https://i.imgur.com/9eGz5kb.png)
+#### 後台 - 新增商品
+![新增商品](https://i.imgur.com/Tgs5mnm.png)
+![新增商品圖片](https://i.imgur.com/fiXAd2O.png)
+![新增商品圖片](https://i.imgur.com/E2gfuXJ.png)
 
 
-
+#### 後台 - 訂單管理
+![查詢訂單](https://i.imgur.com/705VPLD.png)
+![訂單資訊](https://i.imgur.com/mljG0ST.png)
 
 ### Installing - 專案安裝流程
 
