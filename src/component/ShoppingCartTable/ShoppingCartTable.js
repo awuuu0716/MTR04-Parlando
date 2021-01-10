@@ -19,42 +19,7 @@ const H3 = styled.h3`
   color: #07273c;
   margin: 0 0 40px 40px;
 `;
-const StyledTable = styled.table`
-  margin: 0 auto;
-  border: none;
-  text-align: right;
-  thead {
-    background-color: rgba(14, 78, 123, 0.4);
-    tr th {
-      font-size: 18px;
-      color: #333;
-      padding: 0.5rem 2rem;
 
-      &:first-child {
-        text-align: left;
-        width: 700px;
-      }
-      &:last-child {
-        text-align: center;
-      }
-    }
-  }
-
-  tbody tr td {
-    background-color: white;
-    padding: 20px;
-    align-items: right;
-
-    &:first-child {
-      text-align: left;
-      display: flex;
-      align-items: center;
-    }
-    &:last-child {
-      text-align: center;
-    }
-  }
-`;
 const Table = styled(Ul)`
   @media ${device.Tablets} {
     width: 70vw;
@@ -217,9 +182,6 @@ export default function ShoppingCartTable() {
       return alert('單筆訂單不得大於30000，請刪除部分訂單');
     }
     const products = cart.map(({ productId, ...data }) => data);
-
-    console.log('cart: ', cart);
-    console.log('products: ', products);
 
     dispatch(addOrder(products)).then((res) => {
       if (!res.success) {

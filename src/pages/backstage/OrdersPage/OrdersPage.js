@@ -3,11 +3,10 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Aside from '../../../component/Aside';
 import { ButtonLight } from '../../../component/Button';
-import { Ul, Li, Header, Info, OrderContent, HeaderFat } from '../../../component/Table';
 import { device } from '../../../style/breakpoints';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrders, selectOrders, updateOrderStatue } from '../../../redux/reducers/ordersSlice';
-import { handleDateFormat, handleOrderStatus } from '../../../utils';
+import { handleDateFormat} from '../../../utils';
 
 const Root = styled.div`
   max-width: 1280px;

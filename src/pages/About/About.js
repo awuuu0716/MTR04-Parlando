@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import pic_1 from '../../img/huiming.jpg';
 import pic_2 from '../../img/summer.jpg';
 import pic_3 from '../../img/awu.jpg';
-import { Link } from 'react-router-dom';
 
 const Root = styled.div`
   min-height: calc(100vh - 460px);

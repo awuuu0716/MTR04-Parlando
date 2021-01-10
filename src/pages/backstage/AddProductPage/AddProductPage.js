@@ -41,7 +41,6 @@ const Form = styled.form`
   max-width: 100%;
   padding: 24px;
   position: relative;
-  /* height: 730px; */
   padding-bottom: 7em;
   box-shadow: 0px 1px 4px 1px ${(props) => props.theme.shadow};
   @media ${device.Tablets} {

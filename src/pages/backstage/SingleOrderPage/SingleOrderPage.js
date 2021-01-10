@@ -45,7 +45,6 @@ export default function SingleOrderPage() {
     return () => dispatch(setOrder({}));
   }, [dispatch, uuid]);
 
-  console.log(order);
   return (
     <Root>
       <Aside />

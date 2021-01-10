@@ -7,7 +7,7 @@ import Input, { InputSelect, InputTitle, InputContainer, ErrorMessage, HeaderCon
 import Editor from '../../../component/Editor';
 import { useParams, useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProduct, updateProduct, selectProduct, selectArticle } from '../../../redux/reducers/productsSlice';
+import { getProduct, updateProduct, selectArticle } from '../../../redux/reducers/productsSlice';
 
 const Root = styled.div`
   max-width: 1280px;
@@ -77,7 +77,6 @@ export default function EditProductPage() {
   let typeHasChange = useRef(false);
   const history = useHistory();
   const dispatch = useDispatch();
-  const product = useSelector(selectProduct);
   const articleInit = useSelector(selectArticle);
 
   const [productErrorMessage, setProductErrorMessage] = useState(productErrorMessageInit);
