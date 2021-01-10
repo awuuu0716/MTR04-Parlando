@@ -8,7 +8,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import About from '../../pages/About'
+import About from '../../pages/About';
 import Info from '../../pages/Info';
 import CheckOrder from '../../pages/CheckOrder';
 import HomePage from '../../pages/Homepage';
@@ -16,7 +16,7 @@ import Products from '../../pages/Products';
 import Product from '../../pages/Product';
 import ShoppingCartPage from '../../pages/ShoppingCartpage';
 import RecipientPage from '../../pages/RecipientPage';
-import { getAuthToken } from '../../utils';
+import { getAuthToken, setAuthToken, setCartToken } from '../../utils';
 import TransactionPage from '../../pages/TransactionPage';
 import {
   AddProductPage,
@@ -40,9 +40,23 @@ import { selectIsBackstageMode } from '../../redux/reducers/themeSlice';
 import {
   selectUserLevel,
   getMemberInfo,
+  setUserLevel,
+  setUserInfo,
 } from '../../redux/reducers/usersSlice';
 
-const Auth = ({ component: Component, role }) => {
+const AdminToGuest = ({ component: Component }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setUserLevel('guest'));
+    dispatch(setUserInfo({}));
+    setAuthToken('');
+    setCartToken([]);
+  });
+
+  return <Component />;
+};
+
+const Auth = ({ component: Component, role, isLoginPage }) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const userLevel = useSelector(selectUserLevel);
@@ -60,9 +74,15 @@ const Auth = ({ component: Component, role }) => {
   switch (role) {
     case 'guest':
       if (isLoading) return <></>;
+      if (userLevel === 'admin' && !isLoginPage) {
+        return <AdminToGuest component={Component} />;
+      }
       return <Component />;
     case 'member':
       if (isLoading) return <></>;
+      if (userLevel === 'admin' && !isLoginPage) {
+        return <AdminToGuest component={Component} />;
+      }
       return userLevel === role ? <Component /> : <Redirect to="/login" />;
     case 'admin':
       if (isLoading) return <></>;
@@ -100,11 +120,11 @@ function App() {
           <Route exact path="/signup">
             <Auth component={Signup} role="guest" />
           </Route>
-          <Route exact path="/backstage/adminLogin">
-            <Auth component={AdminLogin} role="guest" />
-          </Route>
           <Route exact path="/about">
             <Auth component={About} role="guest" />
+          </Route>
+          <Route exact path="/backstage/adminLogin">
+            <Auth component={AdminLogin} role="guest" isLoginPage={true} />
           </Route>
           {/* member */}
           <Route exact path="/shopping-cart">
@@ -126,9 +146,6 @@ function App() {
             <Auth component={OrderInfo} role="member" />
           </Route>
           {/* admin */}
-          <Route exact path="/backstage/adminLogin">
-            <Auth component={AdminLogin} role="admin" />
-          </Route>
           <Route exact path="/backstage/products">
             <Auth component={AllProductsPage} role="admin" />
           </Route>

@@ -5,10 +5,10 @@ import logo from '../../img/logo.svg';
 import cart from '../../img/cart.svg';
 import member from '../../img/member.svg';
 import { selectIsBackstageMode, setIsBackstageMode } from '../../redux/reducers/themeSlice';
-import { selectUserLevel, setUserLevel, getMemberInfo, setUserInfo } from '../../redux/reducers/usersSlice';
+import { selectUserLevel, setUserLevel, setUserInfo } from '../../redux/reducers/usersSlice';
 import { selectCart, updateCart } from '../../redux/reducers/ordersSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthToken, getAuthToken, getCartToken, setCartToken } from '../../utils';
+import { setAuthToken, setCartToken } from '../../utils';
 import { device } from '../../style/breakpoints';
 import { HashLink } from 'react-router-hash-link';
 
@@ -238,13 +238,6 @@ export default function Header() {
       dispatch(setIsBackstageMode(false));
     }
   }, [location.pathname, dispatch]);
-
-  useEffect(() => {
-    if (getAuthToken())
-      dispatch(getMemberInfo()).then((res) => {
-        if (!res.success) history.push('/');
-      });
-  }, [dispatch, history]);
 
   useEffect(() => {
     dispatch(updateCart());
